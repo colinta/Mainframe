@@ -138,19 +138,13 @@ class Button: TextNode {
         var minY = -height / 2
         var maxY = height / 2
 
-        switch style {
-        case .None:
-            switch alignment {
-            case .Left:
-                minX = 0
-                maxX = width
-            case .Right:
-                minX = -width
-                maxX = 0
-            default:
-                minX = -width / 2
-                maxX = width / 2
-            }
+        switch alignment {
+        case .Left:
+            minX = 0
+            maxX = width
+        case .Right:
+            minX = -width
+            maxX = 0
         default:
             minX = -width / 2
             maxX = width / 2

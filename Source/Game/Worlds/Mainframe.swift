@@ -30,6 +30,11 @@ class Mainframe: World {
         static var ButtonY: CGFloat = -50
     }
 
+    enum OutputStyle {
+        case Exact
+        case Number
+    }
+    var outputStyle: OutputStyle = .Exact
     let outputCalc = Button()
     let outputFormula = TextNode()
 
@@ -61,6 +66,10 @@ class Mainframe: World {
             if let mathOp = newValue where mathOp.op.isNoOp {
                 mathOp.op = .NoOpSelected
                 togglePanel(numbersItem, show: true)
+            }
+
+            if let mathOp = newValue, panel = mathOp.op.panel(self) {
+                togglePanel(panel, show: true)
             }
         }
         didSet {
@@ -97,6 +106,12 @@ class Mainframe: World {
         outputCalc.touchableComponent?.off(.Enter)
         outputCalc.touchableComponent?.off(.Exit)
         outputCalc.onTapped {
+            switch self.outputStyle {
+            case .Exact:
+                self.outputStyle = .Number
+            case .Number:
+                self.outputStyle = .Exact
+            }
             self.updateCalc(self.topNode.calculate())
         }
         self << outputCalc
@@ -160,18 +175,19 @@ class Mainframe: World {
         }
 
         createPanel(numbersItem.panel, buttons: [
-            [.Delete, .Clear, .Next],
-            [.Num1, .Num2, .Num3],
-            [.Num4, .Num5, .Num6],
-            [.Num7, .Num8, .Num9],
-            [.NumDot, .Num0, .SignSwitch]
+            [.Key(.Delete), .Key(.Clear), .Next],
+            [.Key(.Num1), .Key(.Num2), .Key(.Num3)],
+            [.Key(.Num4), .Key(.Num5), .Key(.Num6)],
+            [.Key(.Num7), .Key(.Num8), .Key(.Num9)],
+            [.Key(.NumDot), .Key(.Num0), .Key(.SignSwitch)]
         ])
         createPanel(operatorsItem.panel, buttons: [
-            [.Add, .Subtract, .Divide, .Multiply],
+            [.Operator(AddOperation()), .Operator(SubtractOperation()), .Operator(DivideOperation()), .Operator(MultiplyOperation())],
+            [.Operator(SquareRootOperation())],
         ])
         createPanel(functionsItem.panel, buttons: [
-            [.Sin, .Cos, .Tan],
-//            ["arcsin", "arccos", "arctan"],
+            [.Function(SinOperation()), .Function(CosOperation()), .Function(TanOperation())],
+            [.Function(ArcSinOperation()), .Function(ArcCosOperation()), .Function(ArcTanOperation())],
         ])
         createPanel(variablesItem.panel, buttons: [
             [.Variable("𝑥"), .Variable("𝑦"), .Variable("𝑧")],
@@ -187,7 +203,12 @@ class Mainframe: World {
     }
 
     func updateCalc(calc: OperationResult) {
-        outputCalc.text = topNode.calculate().description
+        switch outputStyle {
+        case .Exact:
+            outputCalc.text = topNode.calculate().description
+        case .Number:
+            outputCalc.text = topNode.calculate().number
+        }
         outputFormula.text = topNode.formula(isTop: true) + "="
 
         if outputCalc.textSize.width > self.screenSize.width {

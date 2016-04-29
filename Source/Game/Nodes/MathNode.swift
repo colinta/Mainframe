@@ -162,7 +162,10 @@ class MathNode: Node {
 
     override func insertChild(node: SKNode, atIndex index: Int) {
         var newIndex = index
-        if node is MathNode && index == children.count {
+        if let node = node as? MathNode
+        where index == children.count && !node.op.isNoOp
+        {
+            newIndex = 0
             for (childIndex, child) in children.enumerate() {
                 if let child = child as? MathNode where !child.op.isNoOp {
                     newIndex = childIndex + 1
@@ -307,7 +310,7 @@ class MathNode: Node {
         let node = MathNode()
         node.alpha = 0
         switch prevOp {
-        case .Number, .Variable:
+        case .Number, .Variable, .Pi, .Tau, .E:
             node.numberString = numberString
             node.op = prevOp
         default: break
@@ -357,7 +360,7 @@ class MathNode: Node {
                     let worldPosition = world.convertPoint(dragDest, fromNode: self)
                     if let button = world.touchableNodeAtLocation(worldPosition),
                         mathNode = button.parent as? MathNode
-                    where mathNode != self
+                    where mathNode != self && mathNode.canReceiveChildren
                     {
                         dragParent = mathNode
                     }

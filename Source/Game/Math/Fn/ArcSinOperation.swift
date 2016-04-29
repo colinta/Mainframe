@@ -1,22 +1,22 @@
 //
-//  SinOperation.swift
+//  ArcSinOperation.swift
 //  Mainframe
 //
-//  Created by Colin Gray on 4/23/2016.
+//  Created by Colin Gray on 4/29/2016.
 //  Copyright (c) 2016 Mainframe. All rights reserved.
 //
 
-struct SinOperation: OperationValue {
-    var description: String { return "sin(◻︎)" }
-    var treeDescription: String { return "sin" }
+struct ArcSinOperation: OperationValue {
+    var description: String { return "arcsin()" }
+    var treeDescription: String { return "arcsin" }
     var minChildNodes: Int? { return 1 }
     var maxChildNodes: Int? { return 1 }
 
     func formula(nodes: [MathNode], isTop: Bool) -> String {
         if let node = nodes.first where nodes.count == 1 {
-            return "sin(\(node.formula()))"
+            return "arcsin(\(node.formula(isTop: true)))"
         }
-        return "sin(◻︎)"
+        return "arcsin(◻︎)"
     }
 
     func calculate(nodes: [MathNode]) -> OperationResult {
@@ -25,18 +25,18 @@ struct SinOperation: OperationValue {
             switch nodeVal {
             case .DivZero, .NeedsInput: return nodeVal
             case let .Number(number: number, pi: pi):
-                if number == 0 {
-                    switch (2 * pi.doubleValue) % 4 {
-                    case 0, 2:
+                if pi == 0 {
+                    switch number {
+                    case -1:
+                        return .Number(number: 0, pi: -1.5)
+                    case 0:
                         return .Number(number: 0, pi: 0)
                     case 1:
-                        return .Number(number: 1, pi: 0)
-                    case 3:
-                        return .Number(number: -1, pi: 0)
+                        return .Number(number: 0, pi: 1.5)
                     default: break
                     }
                 }
-                return .Number(number: NSDecimalNumber(double: sin((number + NSDecimalNumber.pi(pi)).doubleValue)), pi: 0)
+                return .Number(number: NSDecimalNumber(double: asin((number + NSDecimalNumber.pi(pi)).doubleValue)), pi: 0)
             }
         }
         return .NeedsInput

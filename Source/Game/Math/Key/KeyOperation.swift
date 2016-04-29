@@ -6,12 +6,29 @@
 //  Copyright (c) 2016 Mainframe. All rights reserved.
 //
 
+enum KeyCode {
+    case Delete
+    case Clear
+    case Num1
+    case Num2
+    case Num3
+    case Num4
+    case Num5
+    case Num6
+    case Num7
+    case Num8
+    case Num9
+    case Num0
+    case NumDot
+    case SignSwitch
+}
+
 struct KeyOperation: OperationValue {
     var minChildNodes: Int? { return 0 }
     var maxChildNodes: Int? { return 0 }
     var description: String
 
-    init(op: Operation) {
+    init(op: KeyCode) {
         switch op {
         case .Delete:     description = "⌫"
         case .Clear:      description = "C"
@@ -27,7 +44,6 @@ struct KeyOperation: OperationValue {
         case .Num0:       description = "0"
         case .NumDot:     description = "."
         case .SignSwitch: description = "+/-"
-        default:         description = ""
         }
     }
 }
