@@ -31,7 +31,7 @@ enum OperationResult {
         if num > 100_000_000 {
             let pow: Int = Int(floor(log10(num.doubleValue)))
             let exp = num / (NSDecimalNumber(int: 10) ^ pow)
-            let expStr = exp.description
+            var expStr = exp.description
             let powStr = pow.description
             let charCount = expStr.characters.count + powStr.characters.count
             let maxCount = 17
@@ -39,11 +39,11 @@ enum OperationResult {
                 let begin = expStr.startIndex
                 var end = expStr.startIndex
                 (maxCount - powStr.characters.count).times { end = end.successor() }
-                return expStr[begin..<end] + "𝚎" + powStr
+                expStr = expStr[begin..<end]
             }
-            return expStr + "𝚎" + powStr
+            return expStr.withCommas() + "𝚎" + powStr
         }
-        return num.description
+        return num.description.withCommas()
     }
 
     var description: String {

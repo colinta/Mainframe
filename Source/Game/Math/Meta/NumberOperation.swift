@@ -15,18 +15,7 @@ struct NumberOperation: OperationValue {
     init(_ numberString: String) {
         let dec = NSDecimalNumber(string: numberString)
         if dec != NSDecimalNumber.notANumber() {
-            if numberString.contains(".") {
-                var found = false
-                let parts = numberString.characters.split {
-                    if $0 == "." && !found { found = true ; return true }
-                    return false
-                    }.map { String($0) }
-                let (lhs, rhs) = (parts.safe(0) ?? "", parts.safe(1) ?? "")
-                self.description = lhs.withCommas() + "." + rhs
-            }
-            else {
-                self.description = numberString.withCommas()
-            }
+            self.description = numberString.withCommas()
 
             self.number = dec
         }

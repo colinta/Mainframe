@@ -13,12 +13,13 @@ let SmallFont = Font(
     scale: 3,
     space: 2,
     art: [
-    " ": Letter(style: .Line, size: CGSize(width: 3, height: defaultSize.height), points: [[CGPoint]]()),
-    ".": Letter(style: .Line, size: CGSize(width: 0.5, height: defaultSize.height), points: [[
+    " ": Letter(style: .Line, size: CGSize(3, defaultSize.height), points: [[CGPoint]]()),
+    "␠": Letter(style: .Line, size: CGSize(1, defaultSize.height), points: [[CGPoint]]()),
+    ".": Letter(style: .Line, size: CGSize(0.5, defaultSize.height), points: [[
         CGPoint(x: -0.25, y: 6),
         CGPoint(x: 0.25, y: 6),
     ]]),
-    ",": Letter(style: .Loop, size: CGSize(width: 0.5, height: defaultSize.height), points: [[
+    ",": Letter(style: .Loop, size: CGSize(0.5, defaultSize.height), points: [[
         CGPoint(x: -0.25, y: 6),
         CGPoint(x: 0.25, y: 6),
         CGPoint(x: 0.25, y: 7),
