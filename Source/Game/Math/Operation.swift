@@ -12,9 +12,6 @@ enum Operation {
 
     case Number(String)
     case Variable(String)
-    case Pi
-    case Tau
-    case E
 
     case Factorial
     case SquareRoot
@@ -36,7 +33,7 @@ enum Operation {
         switch self {
         case Operator:
             return mainframe.operatorsItem
-        case Variable, Pi, E, Tau:
+        case Variable:
             return mainframe.variablesItem
         case Number:
             return mainframe.numbersItem
@@ -55,9 +52,6 @@ extension Operation {
         case Next:              return NextOperation()
         case let Number(num):   return NumberOperation(num)
         case let Variable(num): return VariableOperation(num)
-        case Pi:                return VariableOperation("π")
-        case Tau:               return VariableOperation("τ")
-        case E:                 return VariableOperation("𝑒")
         case Factorial:         return FactorialOperation()
         case SquareRoot:        return SquareRootOperation()
         case let Operator(op):  return op

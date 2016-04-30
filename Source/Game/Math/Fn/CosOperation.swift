@@ -7,7 +7,7 @@
 //
 
 struct CosOperation: OperationValue {
-    var description: String { return "cos(◻︎)" }
+    var description: String { return "cos(◻)" }
     var treeDescription: String { return "cos" }
     var minChildNodes: Int? { return 1 }
     var maxChildNodes: Int? { return 1 }
@@ -16,15 +16,15 @@ struct CosOperation: OperationValue {
         if let node = nodes.first where nodes.count == 1 {
             return "cos(\(node.formula(isTop: true)))"
         }
-        return "cos(◻︎)"
+        return "cos(◻)"
     }
 
     func calculate(nodes: [MathNode]) -> OperationResult {
         if let node = nodes.first where nodes.count == 1 {
             let nodeVal = node.calculate()
             switch nodeVal {
-            case .DivZero, .NeedsInput: return nodeVal
-            case let .Number(number: number, pi: pi):
+            case .NaN, .DivZero, .NeedsInput: return nodeVal
+            case let .Number(number, pi):
                 if number == 0 {
                     switch (2 * pi.doubleValue) % 4 {
                     case 1, 3:
@@ -36,7 +36,7 @@ struct CosOperation: OperationValue {
                     default: break
                     }
                 }
-                return .Number(number: NSDecimalNumber(double: cos((number + NSDecimalNumber.pi(pi)).doubleValue)), pi: 0)
+                return .CheckNumber(number: NSDecimalNumber(double: cos((number + NSDecimalNumber.pi(pi)).doubleValue)), pi: 0)
             }
         }
         return .NeedsInput

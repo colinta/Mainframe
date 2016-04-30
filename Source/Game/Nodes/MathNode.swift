@@ -140,9 +140,9 @@ class MathNode: Node {
         clearButton.onTapped {
             guard let world = (self.world as? Mainframe) else { return }
 
-            if let parent = self.parent as? MathNode where self.op.isNoOp {
+            if self.op.isNoOp && self.topMostParent == self && world.hasManyTopNodes {
                 self.removeFromParent()
-                parent.updateMathNodes()
+                world.updateTopNode()
                 return
             }
 
@@ -201,7 +201,7 @@ class MathNode: Node {
             button.text = ""
             button.style = .SquareSized(50)
         case .Number:
-            button.text = numberString
+            button.text = op.description
             button.style = .RectToFit
         default:
             button.text = op.treeDescription
@@ -212,7 +212,7 @@ class MathNode: Node {
         let isCurrentOp = mainframe?.currentOp == self ?? false
         let childIsCurrentOp = isCurrentOp || (mainframe?.currentOp?.parent == self ?? false)
 
-        button.textScale = isCurrentOp ? 2 : 1
+        button.textScale = isCurrentOp ? 1.5 : 1
         clearButton.position = CGPoint(x: button.size.width / 2 + 5 + clearButton.size.width / 2)
 
         var visibleNodes: [MathNode] = mathChildren
@@ -232,11 +232,10 @@ class MathNode: Node {
         }
 
         if !op.isNoOp {
-            _clearEnabled = isCurrentOp
             if let maxCount = op.maxChildNodes {
                 if mathChildren.count > maxCount {
                     for node in mathChildren[maxCount..<mathChildren.count] {
-                        node.fadeTo(0, duration: 0.3)
+                        node.fadeTo(0, duration: 0.3, removeNode: node.op.isNoOp)
                         node.active = false
                     }
                 }
@@ -252,14 +251,11 @@ class MathNode: Node {
             }
             else if !childIsCurrentOp {
                 for node in visibleNodes where node.op.isNoOp {
-                    node.fadeTo(0, duration: 0.3)
+                    node.fadeTo(0, duration: 0.3, removeNode: true)
                     node.active = false
                 }
                 visibleNodes = visibleNodes.filter { !$0.op.isNoOp }
             }
-        }
-        else {
-            _clearEnabled = false
         }
 
         let totalWidth: CGFloat
@@ -310,7 +306,7 @@ class MathNode: Node {
         let node = MathNode()
         node.alpha = 0
         switch prevOp {
-        case .Number, .Variable, .Pi, .Tau, .E:
+        case .Number, .Variable:
             node.numberString = numberString
             node.op = prevOp
         default: break

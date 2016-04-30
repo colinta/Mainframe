@@ -21,7 +21,7 @@ class AddButton: Button {
         touchableComponent?.off(.Enter, .Exit)
 
         touchableComponent?.on(.Tapped) { _ in
-            self.addNode(at: CGPoint(x: 20, y: -20))
+            self.addNode()
         }
         touchableComponent?.on(.DragMoved) { pt in
             guard let beginPt = self.dragBeginPoint else { return }
@@ -59,12 +59,18 @@ class AddButton: Button {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func addNode(at at: CGPoint) {
+    func addNode(at delta: CGPoint? = nil) {
         guard let mainframe = world as? Mainframe else { return }
 
-        let position = mainframe.convertPoint(self.position, toNode: mainframe.tree)
+        let position: CGPoint
+        if let delta = delta {
+            position = mainframe.convertPoint(self.position, toNode: mainframe.tree) + delta
+        }
+        else {
+            position = mainframe.topNode.position + CGPoint(x: 75)
+        }
         let node = MathNode()
-        node.position = position + at
+        node.position = position
         mainframe.tree << node
     }
 

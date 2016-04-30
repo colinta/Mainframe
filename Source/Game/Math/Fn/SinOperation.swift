@@ -7,7 +7,7 @@
 //
 
 struct SinOperation: OperationValue {
-    var description: String { return "sin(◻︎)" }
+    var description: String { return "sin(◻)" }
     var treeDescription: String { return "sin" }
     var minChildNodes: Int? { return 1 }
     var maxChildNodes: Int? { return 1 }
@@ -16,15 +16,15 @@ struct SinOperation: OperationValue {
         if let node = nodes.first where nodes.count == 1 {
             return "sin(\(node.formula(isTop: true)))"
         }
-        return "sin(◻︎)"
+        return "sin(◻)"
     }
 
     func calculate(nodes: [MathNode]) -> OperationResult {
         if let node = nodes.first where nodes.count == 1 {
             let nodeVal = node.calculate()
             switch nodeVal {
-            case .DivZero, .NeedsInput: return nodeVal
-            case let .Number(number: number, pi: pi):
+            case .NaN, .DivZero, .NeedsInput: return nodeVal
+            case let .Number(number, pi):
                 if number == 0 {
                     switch (2 * pi.doubleValue) % 4 {
                     case 0, 2:
@@ -36,7 +36,7 @@ struct SinOperation: OperationValue {
                     default: break
                     }
                 }
-                return .Number(number: NSDecimalNumber(double: sin((number + NSDecimalNumber.pi(pi)).doubleValue)), pi: 0)
+                return .CheckNumber(number: NSDecimalNumber(double: sin((number + NSDecimalNumber.pi(pi)).doubleValue)), pi: 0)
             }
         }
         return .NeedsInput

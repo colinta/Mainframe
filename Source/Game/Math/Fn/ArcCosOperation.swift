@@ -16,15 +16,15 @@ struct ArcCosOperation: OperationValue {
         if let node = nodes.first where nodes.count == 1 {
             return "arccos(\(node.formula(isTop: true)))"
         }
-        return "arccos(◻︎)"
+        return "arccos(◻)"
     }
 
     func calculate(nodes: [MathNode]) -> OperationResult {
         if let node = nodes.first where nodes.count == 1 {
             let nodeVal = node.calculate()
             switch nodeVal {
-            case .DivZero, .NeedsInput: return nodeVal
-            case let .Number(number: number, pi: pi):
+            case .NaN, .DivZero, .NeedsInput: return nodeVal
+            case let .Number(number, pi):
                 if pi == 0 {
                     switch number {
                     case -1:
@@ -36,7 +36,7 @@ struct ArcCosOperation: OperationValue {
                     default: break
                     }
                 }
-                return .Number(number: NSDecimalNumber(double: acos((number + NSDecimalNumber.pi(pi)).doubleValue)), pi: 0)
+                return .CheckNumber(number: NSDecimalNumber(double: acos((number + NSDecimalNumber.pi(pi)).doubleValue)), pi: 0)
             }
         }
         return .NeedsInput

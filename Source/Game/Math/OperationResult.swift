@@ -7,14 +7,21 @@
 //
 
 enum OperationResult {
+    case NaN
     case DivZero
     case NeedsInput
     case Number(number: NSDecimalNumber, pi: NSDecimalNumber)
 
+    static func CheckNumber(number number: NSDecimalNumber, pi: NSDecimalNumber) -> OperationResult {
+        if number == NSDecimalNumber.notANumber() || pi == NSDecimalNumber.notANumber() {
+            return .NaN
+        }
+        return .Number(number: number, pi: pi)
+    }
+
     var number: String {
         switch self {
-        case .DivZero: return description
-        case .NeedsInput: return description
+        case .NaN, .DivZero, .NeedsInput: return description
         case let .Number(number, pi):
             return (number + NSDecimalNumber.pi(pi)).description
         }
@@ -22,20 +29,31 @@ enum OperationResult {
 
     private func numDesc(num: NSDecimalNumber) -> String {
         if num > 100_000_000 {
-            let powers: Int = floor(log(num.doubleValue))
-            let exp = num / (NSDecimalNumber(int: 10) ^ powers)
-            return exp.description + "×10^" + powers.description
+            let pow: Int = Int(floor(log10(num.doubleValue)))
+            let exp = num / (NSDecimalNumber(int: 10) ^ pow)
+            let expStr = exp.description
+            let powStr = pow.description
+            let charCount = expStr.characters.count + powStr.characters.count
+            let maxCount = 17
+            if charCount > maxCount {
+                let begin = expStr.startIndex
+                var end = expStr.startIndex
+                (maxCount - powStr.characters.count).times { end = end.successor() }
+                return expStr[begin..<end] + "𝚎" + powStr
+            }
+            return expStr + "𝚎" + powStr
         }
         return num.description
     }
 
     var description: String {
         switch self {
+        case .NaN: return "NaN"
         case .DivZero: return "!/0"
         case .NeedsInput: return "..."
         case let .Number(number, pi):
             if pi == 0 {
-                return numDesc(number.description)
+                return numDesc(number)
             }
             else {
                 let piDesc = (pi == 1 ? "" : numDesc(pi)) + "π"
@@ -43,7 +61,7 @@ enum OperationResult {
                     return piDesc
                 }
                 else {
-                    return numDesc(number.description) + "+\(piDesc)"
+                    return numDesc(number) + "+\(piDesc)"
                 }
             }
         }

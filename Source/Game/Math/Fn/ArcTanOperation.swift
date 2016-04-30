@@ -16,16 +16,16 @@ struct ArcTanOperation: OperationValue {
         if let node = nodes.first where nodes.count == 1 {
             return "arctan(\(node.formula(isTop: true)))"
         }
-        return "arctan(◻︎)"
+        return "arctan(◻)"
     }
 
     func calculate(nodes: [MathNode]) -> OperationResult {
         if let node = nodes.first where nodes.count == 1 {
             let nodeVal = node.calculate()
             switch nodeVal {
-            case .DivZero, .NeedsInput: return nodeVal
-            case let .Number(number: number, pi: pi):
-                return .Number(number: NSDecimalNumber(double: atan((number + NSDecimalNumber.pi(pi)).doubleValue)), pi: 0)
+            case .NaN, .DivZero, .NeedsInput: return nodeVal
+            case let .Number(number, pi):
+                return .CheckNumber(number: NSDecimalNumber(double: atan((number + NSDecimalNumber.pi(pi)).doubleValue)), pi: 0)
             }
         }
         return .NeedsInput

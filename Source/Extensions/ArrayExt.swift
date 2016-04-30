@@ -10,6 +10,10 @@
 extension Array {
     typealias MatcherFn = (el: Element) -> Bool
 
+    func safe(index: Int) -> Element? {
+        return (startIndex..<endIndex).contains(index) ? self[index] : .None
+    }
+
     func zip<T>(array: [T]) -> [(Element, T)] {
         var retVal: [(Element, T)] = []
         for (index, item) in array.enumerate() {

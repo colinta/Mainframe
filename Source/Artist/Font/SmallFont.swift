@@ -18,6 +18,11 @@ let SmallFont = Font(
         CGPoint(x: -0.25, y: 6),
         CGPoint(x: 0.25, y: 6),
     ]]),
+    ",": Letter(style: .Loop, size: CGSize(width: 0.5, height: defaultSize.height), points: [[
+        CGPoint(x: -0.25, y: 6),
+        CGPoint(x: 0.25, y: 6),
+        CGPoint(x: 0.25, y: 7),
+    ]]),
     "?": Letter(style: .Line, size: smallSize, points: [[
         CGPoint(x: 0, y: 0.5),
         CGPoint(x: 0.5, y: 0),
@@ -173,13 +178,31 @@ let SmallFont = Font(
         CGPoint(x: 3, y: 5),
         CGPoint(x: 1, y: 7),
     ]]),
-    "◻︎": Letter(style: .Loop, size: smallSize, points: [[
+    "√": Letter(style: .Line, size: smallSize, points: [[
+        CGPoint(x: -0.5, y: 4),
+        CGPoint(x: 0, y: 4),
+        CGPoint(x: 1, y: 6),
+        CGPoint(x: 3, y: 0),
+    ]]),
+    "⁰": Letter(style: .Loop, size: CGSize(2, defaultSize.height), points: [[
+        CGPoint(x: 0, y: 0),
+        CGPoint(x: 2, y: 0),
+        CGPoint(x: 2, y: 2),
+        CGPoint(x: 0, y: 2),
+    ]]),
+    "ₒ": Letter(style: .Loop, size: CGSize(2, defaultSize.height), points: [[
+        CGPoint(x: 0, y: 6),
+        CGPoint(x: 2, y: 6),
+        CGPoint(x: 2, y: 8),
+        CGPoint(x: 0, y: 8),
+    ]]),
+    "◻": Letter(style: .Loop, size: smallSize, points: [[
         CGPoint(x: 0, y: 1.5),
         CGPoint(x: 3, y: 1.5),
         CGPoint(x: 3, y: 4.5),
         CGPoint(x: 0, y: 4.5),
     ]]),
-    "◼︎": Letter(style: .Fill, size: smallSize, points: [[
+    "◼": Letter(style: .Fill, size: smallSize, points: [[
         CGPoint(x: 0, y: 1.5),
         CGPoint(x: 3, y: 1.5),
         CGPoint(x: 3, y: 4.5),
@@ -283,6 +306,15 @@ let SmallFont = Font(
         CGPoint(x: 0, y: 3),
         CGPoint(x: 4, y: 3),
     ]]),
+    "b": Letter(style: .Loop, size: smallSize, points: [[
+        CGPoint(x: 0, y: 0),
+        CGPoint(x: 0, y: 6),
+        CGPoint(x: 2, y: 6),
+        CGPoint(x: 3, y: 5.25),
+        CGPoint(x: 3, y: 2.75),
+        CGPoint(x: 2, y: 2),
+        CGPoint(x: 0, y: 2),
+    ]]),
     "B": Letter(style: .Loop, size: defaultSize, points: [[
         CGPoint(x: 0, y: 0),
         CGPoint(x: 2, y: 0),
@@ -318,6 +350,15 @@ let SmallFont = Font(
         CGPoint(x: 3, y: 6),
         CGPoint(x: 0, y: 6),
     ]]),
+    "𝚎": Letter(style: .Line, size: smallSize, points: [[
+        CGPoint(x: 3, y: 2),
+        CGPoint(x: 0, y: 2),
+        CGPoint(x: 0, y: 6),
+        CGPoint(x: 3, y: 6),
+    ], [
+        CGPoint(x: 0, y: 4),
+        CGPoint(x: 3, y: 4),
+    ]]),
     "e": Letter(style: .Line, size: smallSize, points: [[
         CGPoint(x: 0, y: 4),
         CGPoint(x: 3, y: 4),
@@ -342,6 +383,17 @@ let SmallFont = Font(
     ], [
         CGPoint(x: 0, y: 3),
         CGPoint(x: 1.5, y: 3),
+    ]]),
+    "g": Letter(style: .Line, size: defaultSize, points: [[
+        CGPoint(x: 3, y: 6),
+        CGPoint(x: 1, y: 6),
+        CGPoint(x: 0, y: 5.25),
+        CGPoint(x: 0, y: 2.75),
+        CGPoint(x: 1, y: 2),
+        CGPoint(x: 3, y: 2),
+        CGPoint(x: 3, y: 8),
+        CGPoint(x: 1, y: 8),
+        CGPoint(x: 0, y: 7.25),
     ]]),
     "G": Letter(style: .Line, size: defaultSize, points: [[
         CGPoint(x: 4, y: 0),
@@ -388,6 +440,11 @@ let SmallFont = Font(
         CGPoint(x: 4, y: 0),
         CGPoint(x: 0, y: 3),
         CGPoint(x: 4, y: 6),
+    ]]),
+    "l": Letter(style: .Line, size: CGSize(2, defaultSize.height), points: [[
+        CGPoint(x: 0, y: 0),
+        CGPoint(x: 1, y: 0),
+        CGPoint(x: 1, y: 6),
     ]]),
     "L": Letter(style: .Line, size: defaultSize, points: [[
         CGPoint(x: 0, y: -0.25),

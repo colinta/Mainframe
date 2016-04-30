@@ -38,6 +38,9 @@ class Mainframe: World {
     let outputCalc = Button()
     let outputFormula = TextNode()
 
+    var hasManyTopNodes: Bool {
+        return tree.children.filter { $0 is MathNode }.count > 1
+    }
     var topNode = MathNode() {
         willSet {
             guard newValue != topNode else { return }
@@ -74,7 +77,11 @@ class Mainframe: World {
         }
         didSet {
             oldValue?.clearEnabled = false
-            currentOp?.clearEnabled = !(currentOp?.op.isNoOp ?? true)
+            if let currentOp = currentOp {
+                let clearableOp = !currentOp.op.isNoOp
+                let isTopLevel = currentOp.topMostParent == currentOp
+                currentOp.clearEnabled = clearableOp || isTopLevel && hasManyTopNodes
+            }
 
             checkCameraLocation()
         }
@@ -186,12 +193,13 @@ class Mainframe: World {
             [.Operator(SquareRootOperation())],
         ])
         createPanel(functionsItem.panel, buttons: [
+            [.Function(LogOperation()), .Function(LnOperation()), .Function(LogNOperation())],
             [.Function(SinOperation()), .Function(CosOperation()), .Function(TanOperation())],
             [.Function(ArcSinOperation()), .Function(ArcCosOperation()), .Function(ArcTanOperation())],
         ])
         createPanel(variablesItem.panel, buttons: [
             [.Variable("𝑥"), .Variable("𝑦"), .Variable("𝑧")],
-            [.Pi, .Tau, .E],
+            [.Variable("π"), .Variable("τ"), .Variable("𝑒")],
         ])
 
         numbersItem.button.onTapped { self.togglePanel(self.numbersItem) }
@@ -200,6 +208,15 @@ class Mainframe: World {
         variablesItem.button.onTapped { self.togglePanel(self.variablesItem) }
 
         currentOp = topNode
+    }
+
+    func updateTopNode() {
+        for child in tree.children {
+            if let child = child as? MathNode {
+                topNode = child
+                break
+            }
+        }
     }
 
     func updateCalc(calc: OperationResult) {
@@ -301,6 +318,13 @@ class Mainframe: World {
         if moveCamera {
             let position = tree.convertPoint(.zero, fromNode: currentOp)
             tree.moveTo(-1 * position + CGPoint(y: Size.TreeOffset), duration: 0.3)
+        }
+    }
+
+    override func worldShook() {
+        tree.moveTo(.zero, duration: 0.3)
+        if let panel = panel {
+            togglePanel(panel)
         }
     }
 

@@ -7,7 +7,7 @@
 //
 
 struct MultiplyOperation: OperationValue {
-    var description: String { return "◻︎×◼︎" }
+    var description: String { return "◻×◼" }
     var treeDescription: String { return "×" }
     var minChildNodes: Int? { return 2 }
 
@@ -15,7 +15,7 @@ struct MultiplyOperation: OperationValue {
         guard isTop else { return "(\(formula(nodes, isTop: true)))" }
 
         if let node = nodes.first where nodes.count == 1 {
-            return node.formula() + "×◼︎"
+            return node.formula() + "×◼"
         }
         else if nodes.count > 1 {
             var result = ""
@@ -29,7 +29,7 @@ struct MultiplyOperation: OperationValue {
             }
             return result
         }
-        return "◻︎×◼︎"
+        return "◻×◼"
     }
 
     func calculate(nodes: [MathNode]) -> OperationResult {
@@ -39,7 +39,7 @@ struct MultiplyOperation: OperationValue {
             for node in nodes {
                 let nodeVal = node.calculate()
                 switch nodeVal {
-                case .DivZero, .NeedsInput: return nodeVal
+                case .NaN, .DivZero, .NeedsInput: return nodeVal
                 case let .Number(number, pi):
                     if number == 0 && pi == 0 {
                         return .Number(number: 0, pi: 0)
