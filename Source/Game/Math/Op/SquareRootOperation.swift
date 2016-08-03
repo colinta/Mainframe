@@ -8,15 +8,15 @@
 
 struct SquareRootOperation: OperationValue {
     var description: String { return "√◻" }
-    var treeDescription: String { return "√︎" }
+    var treeDescription: String { return "√" }
     var minChildNodes: Int? { return 1 }
     var maxChildNodes: Int? { return 1 }
 
     func formula(nodes: [MathNode], isTop: Bool) -> String {
         if let node = nodes.first where nodes.count == 1 {
-            return "√︎(\(node.formula()))"
+            return "√(\(node.formula(isTop: true)))"
         }
-        return "√︎(◻)"
+        return "√(◻)"
     }
 
     func calculate(nodes: [MathNode], vars: VariableLookup) -> OperationResult {
