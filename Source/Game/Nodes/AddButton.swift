@@ -16,43 +16,34 @@ class AddButton: Button {
         style = .CircleSized(20)
         text = "+"
         newNode.alpha = 0
+        newNode.op = .NoOpSelected
         self << newNode
+
+        let defaultOffset = CGPoint(x: 60, y: -10)
 
         touchableComponent?.off(.Enter, .Exit)
 
-        touchableComponent?.on(.Tapped) { _ in
-            self.addNode()
+        touchableComponent?.on(.Down) { pt in
+            self.dragBeginPoint = pt + defaultOffset
+            let newPoint = pt + defaultOffset
+            self.addToPoint = newPoint
+            self.newNode.position = newPoint
+            self.newNode.fadeTo(0.5, rate: 3.333)
         }
         touchableComponent?.on(.DragMoved) { pt in
-            guard let beginPt = self.dragBeginPoint else { return }
-
-            let minDist: CGFloat = 15
-            let offset: CGFloat = 30
-            let dist = pt.distanceTo(beginPt)
-
-            let newPoint = pt + CGPoint(x: offset)
+            let newPoint = pt + defaultOffset
             self.newNode.position = newPoint
-
-            if dist >= minDist {
-                self.newNode.fadeTo(0.5, rate: 3.333)
-                self.addToPoint = newPoint
-            }
-            else {
-                self.newNode.fadeTo(0, rate: 3.333)
-                self.addToPoint = nil
-            }
+            self.addToPoint = newPoint
         }
-        touchableComponent?.on(.DragEnded) { pt in
+        touchableComponent?.on(.Up) { pt in
             if let addToPoint = self.addToPoint {
                 self.addNode(at: addToPoint)
             }
+            self.addToPoint = nil
             self.dragBeginPoint = nil
-            self.newNode.alpha = 0
+            self.newNode.fadeTo(0, start: 0, rate: 3.333) // to cancel previous fade-in
         }
 
-        touchableComponent?.on(.DragBegan) { pt in
-            self.dragBeginPoint = pt
-        }
     }
 
     required init?(coder: NSCoder) {
@@ -60,6 +51,10 @@ class AddButton: Button {
     }
 
     func addNode(at delta: CGPoint? = nil) {
+        addNode(MathNode(), at: delta)
+    }
+
+    func addNode(node: MathNode, at delta: CGPoint? = nil) {
         guard let mainframe = world as? Mainframe else { return }
 
         let position: CGPoint
@@ -69,9 +64,10 @@ class AddButton: Button {
         else {
             position = mainframe.topNode.position + CGPoint(x: 75)
         }
-        let node = MathNode()
+
         node.position = position
         mainframe.tree << node
+        mainframe.currentOp = node
     }
 
 }

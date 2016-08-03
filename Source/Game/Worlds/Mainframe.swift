@@ -46,46 +46,17 @@ class Mainframe: World {
             guard newValue != topNode else { return }
             topNode._onUpdate = []
             newValue.onUpdate(self.updateCalc)
-            updateCalc(newValue.calculate())
+            updateCalc()
         }
     }
     let tree = Node()
     var currentOp: MathNode? {
-        willSet {
-            guard currentOp != newValue else { return }
-
-            if let mathOp = newValue {
-                var topMost: MathNode = mathOp
-                while let parent = topMost.parent as? MathNode {
-                    topMost = parent
-                }
-                self.topNode = topMost
-            }
-
-            if let currentOp = currentOp where currentOp.op.isNoOp {
-                currentOp.op = .NoOp
-            }
-
-            if let mathOp = newValue where mathOp.op.isNoOp {
-                mathOp.op = .NoOpSelected
-                togglePanel(numbersItem, show: true)
-            }
-
-            if let mathOp = newValue, panel = mathOp.op.panel(self) {
-                togglePanel(panel, show: true)
-            }
-        }
-        didSet {
-            oldValue?.clearEnabled = false
-            if let currentOp = currentOp {
-                let clearableOp = !currentOp.op.isNoOp
-                let isTopLevel = currentOp.topMostParent == currentOp
-                currentOp.clearEnabled = clearableOp || isTopLevel && hasManyTopNodes
-            }
-
-            checkCameraLocation()
-        }
+        willSet { willSetCurrentOp(newValue) }
+        didSet { didSetCurrentOp(oldValue) }
     }
+    var firstKeyPress = true
+
+    let addButton = AddButton()
 
     var panel: PanelItem?
     let numbersItem = PanelItem()
@@ -119,7 +90,7 @@ class Mainframe: World {
             case .Number:
                 self.outputStyle = .Exact
             }
-            self.updateCalc(self.topNode.calculate())
+            self.updateCalc()
         }
         self << outputCalc
 
@@ -158,7 +129,6 @@ class Mainframe: World {
         Size.TreeOffset = topNode.position.y
         topNode.onUpdate(self.updateCalc)
 
-        let addButton = AddButton()
         addButton.fixedPosition = .TopLeft(x: 5 + addButton.size.width / 2, y: -95)
         self << addButton
 
@@ -190,7 +160,7 @@ class Mainframe: World {
         ])
         createPanel(operatorsItem.panel, buttons: [
             [.Operator(AddOperation()), .Operator(SubtractOperation()), .Operator(DivideOperation()), .Operator(MultiplyOperation())],
-            [.Operator(SquareRootOperation())],
+            [.Operator(SquareRootOperation()), .Operator(FactorialOperation())],
         ])
         createPanel(functionsItem.panel, buttons: [
             [.Function(LogOperation()), .Function(LnOperation()), .Function(LogNOperation())],
@@ -198,7 +168,7 @@ class Mainframe: World {
             [.Function(ArcSinOperation()), .Function(ArcCosOperation()), .Function(ArcTanOperation())],
         ])
         createPanel(variablesItem.panel, buttons: [
-            [.Variable("𝑥"), .Variable("𝑦"), .Variable("𝑧")],
+            [.Variable("𝑥"), .Assign("𝑥"), .Variable("𝑦"), .Assign("𝑦"), .Variable("𝑧"), .Assign("𝑧")],
             [.Variable("π"), .Variable("τ"), .Variable("𝑒")],
         ])
 
@@ -219,14 +189,17 @@ class Mainframe: World {
         }
     }
 
-    func updateCalc(calc: OperationResult) {
+    func updateCalc() {
         switch outputStyle {
         case .Exact:
-            outputCalc.text = topNode.calculate().description
+            outputCalc.text = topNode.calculate(self).description
         case .Number:
-            outputCalc.text = topNode.calculate().number
+            outputCalc.text = topNode.calculate(self).number
         }
-        outputFormula.text = topNode.formula(isTop: true) + "="
+        outputFormula.text = topNode.formula(isTop: true)
+        if !outputFormula.text.contains("=") {
+            outputFormula.text += "="
+        }
 
         if outputCalc.textSize.width > self.screenSize.width {
             outputCalc.alignment = .Left
@@ -236,7 +209,44 @@ class Mainframe: World {
             outputCalc.alignment = .Right
             outputCalc.fixedPosition = .TopRight(x: 0, y: Size.ButtonY)
         }
+    }
 
+    func willSetCurrentOp(newValue: MathNode?) {
+        guard currentOp != newValue else { return }
+
+        if let mathOp = newValue {
+            var topMost: MathNode = mathOp
+            while let parent = topMost.parent as? MathNode {
+                topMost = parent
+            }
+            self.topNode = topMost
+        }
+
+        if let currentOp = currentOp where currentOp.op.isNoOp {
+            currentOp.op = .NoOp
+        }
+
+        if let mathOp = newValue where mathOp.op.isNoOp {
+            mathOp.op = .NoOpSelected
+            togglePanel(numbersItem, show: true)
+        }
+
+        if let mathOp = newValue, panel = mathOp.op.panel(self) {
+            togglePanel(panel, show: true)
+        }
+
+        firstKeyPress = true
+    }
+
+    func didSetCurrentOp(oldValue: MathNode?) {
+        oldValue?.clearEnabled = false
+        if let currentOp = currentOp {
+            let clearableOp = !currentOp.op.isNoOp
+            let isTopLevel = currentOp.topMostParent == currentOp
+            currentOp.clearEnabled = clearableOp || isTopLevel && hasManyTopNodes
+        }
+
+        checkCameraLocation()
     }
 
     func createPanel(panel: Node, buttons: [[Operation]]) {
@@ -252,7 +262,8 @@ class Mainframe: World {
                 button.style = .RectSized(buttonWidth, Size.TabbarHeight)
                 button.position = CGPoint(x, y)
                 button.onTapped {
-                    op.tapped(self)
+                    op.tapped(self, first: self.firstKeyPress)
+                    self.firstKeyPress = false
                 }
                 panel << button
                 x += buttonWidth
@@ -285,6 +296,12 @@ class Mainframe: World {
             button.color = 0x0
             button.background = 0xFFFFFF
             button.border = 0xFFFFFF
+
+            for node in nextPanel.panel.children {
+                if let button = node as? OperationButton {
+                    button.enabled = button.op.compatible(self)
+                }
+            }
 
             panel = nextPanel
 
@@ -328,6 +345,21 @@ class Mainframe: World {
         }
     }
 
+}
+
+protocol VariableLookup {
+    func valueForVariable(name: String) -> OperationResult
+}
+
+extension Mainframe: VariableLookup {
+    func valueForVariable(name: String) -> OperationResult {
+        for child in tree.children {
+            if let child = child as? MathNode where child.op.isVariable(name) {
+                return child.calculate(self)
+            }
+        }
+        return .NeedsInput
+    }
 }
 
 func ==(lhs: Mainframe.PanelItem, rhs: Mainframe.PanelItem) -> Bool {

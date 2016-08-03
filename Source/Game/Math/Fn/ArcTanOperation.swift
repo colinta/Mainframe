@@ -19,9 +19,9 @@ struct ArcTanOperation: OperationValue {
         return "arctan(◻)"
     }
 
-    func calculate(nodes: [MathNode]) -> OperationResult {
+    func calculate(nodes: [MathNode], vars: VariableLookup) -> OperationResult {
         if let node = nodes.first where nodes.count == 1 {
-            let nodeVal = node.calculate()
+            let nodeVal = node.calculate(vars)
             switch nodeVal {
             case .NaN, .DivZero, .NeedsInput: return nodeVal
             case let .Number(number, pi):

@@ -19,9 +19,9 @@ struct LogOperation: OperationValue {
         return "log(◻)"
     }
 
-    func calculate(nodes: [MathNode]) -> OperationResult {
+    func calculate(nodes: [MathNode], vars: VariableLookup) -> OperationResult {
         if let node = nodes.first where nodes.count == 1 {
-            let nodeVal = node.calculate()
+            let nodeVal = node.calculate(vars)
             switch nodeVal {
             case .NaN, .DivZero, .NeedsInput: return nodeVal
             case let .Number(number, pi):
@@ -54,9 +54,9 @@ struct LnOperation: OperationValue {
         return "ln(◻)"
     }
 
-    func calculate(nodes: [MathNode]) -> OperationResult {
+    func calculate(nodes: [MathNode], vars: VariableLookup) -> OperationResult {
         if let node = nodes.first where nodes.count == 1 {
-            let nodeVal = node.calculate()
+            let nodeVal = node.calculate(vars)
             switch nodeVal {
             case .NaN, .DivZero, .NeedsInput: return nodeVal
             case let .Number(number, pi):
@@ -92,10 +92,10 @@ struct LogNOperation: OperationValue {
         return "logₒ(◻)"
     }
 
-    func calculate(nodes: [MathNode]) -> OperationResult {
+    func calculate(nodes: [MathNode], vars: VariableLookup) -> OperationResult {
         if let number = nodes.first, base = nodes.last where nodes.count == 2 {
-            let baseVal = base.calculate()
-            let numberVal = number.calculate()
+            let baseVal = base.calculate(vars)
+            let numberVal = number.calculate(vars)
             switch (numberVal, baseVal) {
             case (.NaN, _), (.DivZero, _), (.NeedsInput, _): return numberVal
             case (_, .NaN), (_, .DivZero), (_, .NeedsInput): return baseVal

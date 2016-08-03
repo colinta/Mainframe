@@ -93,13 +93,14 @@ class Button: TextNode {
     }
 
     required init() {
+        buttonStyleNode = SKSpriteNode(id: .None)
+        buttonBackgroundNode = SKSpriteNode(id: .None)
+
         super.init()
 
-        buttonStyleNode = SKSpriteNode(id: .None)
         buttonStyleNode.zPosition = zPosition - 0.1
         self << buttonStyleNode
 
-        buttonBackgroundNode = SKSpriteNode(id: .None)
         buttonBackgroundNode.zPosition = zPosition - 0.2
         self << buttonBackgroundNode
 
@@ -162,7 +163,8 @@ class Button: TextNode {
         var textureStyle = style
 
         switch style {
-        case .None: break
+        case .None:
+            break
         case .RectToFit:
             let margin: CGFloat = 10
             size = CGSize(CGFloat(ceil(textSize.width)) + margin, CGFloat(ceil(textSize.height)) + margin)
@@ -185,15 +187,15 @@ class Button: TextNode {
         buttonBackgroundNode.textureId(backgroundId)
 
         switch alignment {
-            case .Left:
-                buttonStyleNode.anchorPoint = CGPoint(0, 0.5)
-                buttonBackgroundNode.anchorPoint = CGPoint(0, 0.5)
-            case .Right:
-                buttonStyleNode.anchorPoint = CGPoint(1, 0.5)
-                buttonBackgroundNode.anchorPoint = CGPoint(1, 0.5)
-            default:
-                buttonStyleNode.anchorPoint = CGPoint(0.5, 0.5)
-                buttonBackgroundNode.anchorPoint = CGPoint(0.5, 0.5)
+        case .Left:
+            buttonStyleNode.anchorPoint = CGPoint(0, 0.5)
+            buttonBackgroundNode.anchorPoint = CGPoint(0, 0.5)
+        case .Right:
+            buttonStyleNode.anchorPoint = CGPoint(1, 0.5)
+            buttonBackgroundNode.anchorPoint = CGPoint(1, 0.5)
+        default:
+            buttonStyleNode.anchorPoint = CGPoint(0.5, 0.5)
+            buttonBackgroundNode.anchorPoint = CGPoint(0.5, 0.5)
         }
     }
 

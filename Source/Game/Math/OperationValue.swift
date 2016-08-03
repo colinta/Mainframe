@@ -8,7 +8,10 @@
 
 protocol OperationValue {
     func formula(nodes: [MathNode], isTop: Bool) -> String
-    func calculate(nodes: [MathNode]) -> OperationResult
+    func calculate(nodes: [MathNode], vars: VariableLookup) -> OperationResult
+    func newNode() -> MathNode
+
+    var mustBeTop: Bool { get }
     var minChildNodes: Int? { get }
     var maxChildNodes: Int? { get }
     var description: String { get }
@@ -17,7 +20,9 @@ protocol OperationValue {
 
 extension OperationValue {
     func formula(nodes: [MathNode], isTop: Bool) -> String { return "..." }
-    func calculate(nodes: [MathNode]) -> OperationResult { return .NeedsInput }
+    func calculate(nodes: [MathNode], vars: VariableLookup) -> OperationResult { return .NeedsInput }
+    func newNode() -> MathNode { return MathNode() }
+    var mustBeTop: Bool { return false }
     var minChildNodes: Int? { return nil }
     var maxChildNodes: Int? { return nil }
     var treeDescription: String { return description }

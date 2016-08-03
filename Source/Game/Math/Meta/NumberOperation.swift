@@ -29,7 +29,7 @@ struct NumberOperation: OperationValue {
         return description
     }
 
-    func calculate(nodes: [MathNode]) -> OperationResult {
+    func calculate(nodes: [MathNode], vars: VariableLookup) -> OperationResult {
         if let number = number {
             return .Number(number: number, pi: 0)
         }

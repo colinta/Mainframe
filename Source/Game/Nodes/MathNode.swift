@@ -7,11 +7,15 @@
 //
 
 class MathNode: Node {
+    struct Size {
+        static let spacing: CGFloat = 15
+    }
+
     var numberString = ""
     var prevOp: Operation = .NoOp
     var op: Operation = .NoOp {
         willSet { prevOp = op }
-        didSet { updateMathNodes() }
+        didSet { updateMathNodes(select: true) }
     }
     var topMostParent: MathNode {
         var retval = self
@@ -62,11 +66,11 @@ class MathNode: Node {
     }
     var active = true
 
-    typealias OnUpdate = (OperationResult) -> Void
+    typealias OnUpdate = () -> Void
     var _onUpdate: [OnUpdate] = []
     func onUpdate(handler: OnUpdate) {
         _onUpdate << handler
-        handler(calculate())
+        handler()
     }
 
     required init() {
@@ -90,9 +94,13 @@ class MathNode: Node {
             self.buttonTimer = 0.5
         }
         button.touchableComponent?.on(.Up) { _ in
-            if let dragParent = self.dragParent where self.dragParent != self.parent {
+            if let dragParent = self.dragParent
+            where self.dragParent != self.parent
+            {
                 let oldParent = self.parent as? MathNode
+                let position = dragParent.convertPosition(self)
                 self.moveToParent(dragParent)
+                self.position = position
                 (self.world as? Mainframe)?.topNode = self.topMostParent
                 dragParent.updateMathNodes()
                 oldParent?.updateMathNodes()
@@ -108,7 +116,7 @@ class MathNode: Node {
         }
 
         button.touchableComponent?.on(.DragBegan) { pt in
-            if !self.moving {
+            if !self.moving && !self.op.mustBeTop {
                 self.buttonTimer = nil
                 self.dragDest = pt
             }
@@ -119,10 +127,6 @@ class MathNode: Node {
             }
             else if self.dragging {
                 self.dragDest = pt
-            }
-        }
-        button.touchableComponent?.on(.DragEnded) { pt in
-            if self.dragging {
             }
         }
         button.onTapped {
@@ -157,7 +161,7 @@ class MathNode: Node {
             self.op = world.currentOp == self ? .NoOpSelected : .NoOp
         }
 
-        updateSize()
+        updateSize([])
     }
 
     override func insertChild(node: SKNode, atIndex index: Int) {
@@ -188,11 +192,11 @@ class MathNode: Node {
         return op.formula(activeMathChildren, isTop: isTop)
     }
 
-    func calculate() -> OperationResult {
-        return op.calculate(activeMathChildren)
+    func calculate(vars: VariableLookup) -> OperationResult {
+        return op.calculate(activeMathChildren, vars: vars)
     }
 
-    private func updateMathNodes() {
+    private func updateMathNodes(select select: Bool = false) {
         switch op {
         case .NoOp:
             button.text = ""
@@ -258,11 +262,12 @@ class MathNode: Node {
             }
         }
 
-        let totalWidth: CGFloat
+        updateSize(visibleNodes)
+
         if visibleNodes.count > 0 {
-            totalWidth = visibleNodes.reduce(CGFloat(0)) { $0 + $1.size.width + 15 } - 15
+            let totalWidth = self.size.width - (Size.spacing + (clearEnabled ? 5 + clearButton.size.width : 0))
             var x = -totalWidth / 2
-            let y: CGFloat = -75
+            let y: CGFloat = -60
             for node in visibleNodes {
                 node.active = true
                 if node.alpha < 1 {
@@ -271,11 +276,8 @@ class MathNode: Node {
 
                 let position = CGPoint(x + node.size.width / 2, y)
                 node.moveTo(position, duration: 0.3)
-                x += node.size.width + 15
+                x += node.size.width + Size.spacing
             }
-        }
-        else {
-            totalWidth = 0
         }
 
         switch op {
@@ -283,36 +285,40 @@ class MathNode: Node {
         default: numberString = ""
         }
 
-        updateSize()
-
         (parent as? MathNode)?.updateMathNodes()
 
         for handler in _onUpdate {
-            handler(calculate())
+            handler()
         }
 
         if let selectNode = selectNode
-        where isCurrentOp
+        where isCurrentOp && select
         {
             mainframe?.currentOp = selectNode
         }
     }
 
-    private func updateSize() {
-        size = CGSize(width: button.size.width + (clearEnabled ? 5 + clearButton.size.width : 0), height: 50)
+    private func updateSize(visibleNodes: [Node]) {
+        let totalWidth = visibleNodes.reduce(CGFloat(0)) { $0 + $1.size.width + Size.spacing }
+        size = CGSize(
+            width: max(totalWidth, button.size.width) + (clearEnabled ? 5 + clearButton.size.width : 0),
+            height: 50
+        )
     }
 
     private func generateNode() -> MathNode {
-        let node = MathNode()
+        let node = op.newNode()
         node.alpha = 0
-        switch prevOp {
-        case .Number, .Variable:
-            node.numberString = numberString
-            node.op = prevOp
-        default: break
+        if node.op.isNoOp {
+            switch prevOp {
+            case .Number, .Variable:
+                node.numberString = numberString
+                node.op = prevOp
+            default: break
+            }
+            prevOp = .NoOp
+            numberString = ""
         }
-        prevOp = .NoOp
-        numberString = ""
         return node
     }
 

@@ -20,7 +20,7 @@ struct VariableOperation: OperationValue {
         return name
     }
 
-    func calculate(_: [MathNode]) -> OperationResult {
+    func calculate(nodes: [MathNode], vars: VariableLookup) -> OperationResult {
         if name == "π" {
             return .Number(number: 0, pi: 1)
         }
@@ -30,18 +30,6 @@ struct VariableOperation: OperationValue {
         else if name == "𝑒" {
             return .Number(number: NSDecimalNumber(string: "2.71828182845904523536028747135266249775724709369995"), pi: 0)
         }
-        return .NeedsInput
-    }
-}
-
-func gcd(a: Int, _ b: Int) -> Int {
-    if b == 0 {
-        return a
-    } else {
-        if a > b {
-            return gcd(a-b, b)
-        } else {
-            return gcd(a, b-a)
-        }
+        return vars.valueForVariable(name)
     }
 }

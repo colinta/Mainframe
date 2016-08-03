@@ -32,12 +32,12 @@ struct DivideOperation: OperationValue {
         return "◻÷◼"
     }
 
-    func calculate(nodes: [MathNode]) -> OperationResult {
+    func calculate(nodes: [MathNode], vars: VariableLookup) -> OperationResult {
         if nodes.count > 1 {
             var numbers: [(NSDecimalNumber, pi: NSDecimalNumber)] = []
 
             for node in nodes {
-                let nodeVal = node.calculate()
+                let nodeVal = node.calculate(vars)
                 switch nodeVal {
                 case .NaN, .DivZero, .NeedsInput: return nodeVal
                 case let .Number(number, pi):

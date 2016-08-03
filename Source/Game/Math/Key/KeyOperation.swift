@@ -21,6 +21,23 @@ enum KeyCode {
     case Num0
     case NumDot
     case SignSwitch
+
+    var string: String {
+        switch self {
+        case Num1: return "1"
+        case Num2: return "2"
+        case Num3: return "3"
+        case Num4: return "4"
+        case Num5: return "5"
+        case Num6: return "6"
+        case Num7: return "7"
+        case Num8: return "8"
+        case Num9: return "9"
+        case Num0: return "0"
+        case NumDot: return "."
+        default: return ""
+        }
+    }
 }
 
 struct KeyOperation: OperationValue {
