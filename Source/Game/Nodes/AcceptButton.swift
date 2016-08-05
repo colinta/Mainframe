@@ -6,7 +6,7 @@
 //  Copyright (c) 2016 FlatoutWar. All rights reserved.
 //
 
-class acceptButton: Button {
+class AcceptButton: Button {
 
     required init() {
         super.init()
