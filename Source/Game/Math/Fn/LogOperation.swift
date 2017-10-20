@@ -59,17 +59,18 @@ struct LogNOperation: OperationValue {
         if let number = nodes.first, nodes.count == 1 {
             return "logₒ(\(number.formula(isTop: true)))"
         }
-        else if let number = nodes.first, let base = nodes.last, nodes.count == 2 {
-            return "log(\(number.formula(isTop: true)) b \(base.formula(isTop: true)))"
+        else if let base = nodes.first, let number = nodes.last, nodes.count == 2 {
+            return "log(\(number.formula(isTop: true)) base \(base.formula(isTop: true)))"
         }
         return "logₒ(◻)"
     }
 
     func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
-        guard let number = nodes.first, let base = nodes.last, nodes.count == 2 else { return .NeedsInput }
+        guard let base = nodes.first, let number = nodes.last, nodes.count == 2 else { return .NeedsInput }
 
         let baseVal = base.calculate(vars)
         let numberVal = number.calculate(vars)
+
         switch (numberVal, baseVal) {
         case (.NaN, _), (.DivZero, _), (.NeedsInput, _): return numberVal
         case (_, .NaN), (_, .DivZero), (_, .NeedsInput): return baseVal
