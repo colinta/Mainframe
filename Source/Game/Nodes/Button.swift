@@ -40,7 +40,6 @@ class Button: TextNode {
         didSet { updateButtonStyle() }
     }
 
-    private var prevZ: CGFloat = 0
     override var zPosition: CGFloat {
         didSet {
             buttonStyleNode.zPosition = zPosition - 0.1
@@ -196,13 +195,10 @@ class Button: TextNode {
     }
 
     func highlight() {
-        prevZ = zPosition
-        z = .Top
         super.setScale(preferredScale * 1.1)
     }
 
     func unhighlight() {
-        zPosition = prevZ
         super.setScale(preferredScale)
     }
 
