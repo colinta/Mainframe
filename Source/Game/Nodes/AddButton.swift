@@ -22,6 +22,10 @@ class AddButton: Button {
         touchableComponent?.off(.Enter, .Exit)
 
         touchableComponent?.on(.Down) { pt in
+            if let mainframe = self.world as? Mainframe {
+                mainframe.hidePanel()
+            }
+
             self.addToPoint = nil
 
             let newPoint = pt + defaultOffset
