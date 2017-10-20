@@ -40,6 +40,7 @@ class Button: TextNode {
         didSet { updateButtonStyle() }
     }
 
+    private var prevZ: CGFloat = 0
     override var zPosition: CGFloat {
         didSet {
             buttonStyleNode.zPosition = zPosition - 0.1
@@ -47,8 +48,8 @@ class Button: TextNode {
         }
     }
 
-    private var buttonStyleNode: SKSpriteNode!
-    private var buttonBackgroundNode: SKSpriteNode!
+    private var buttonStyleNode = SKSpriteNode(id: .None)
+    private var buttonBackgroundNode = SKSpriteNode(id: .None)
     private var alphaOverride = true
     override var alpha: CGFloat {
         didSet {
@@ -88,9 +89,6 @@ class Button: TextNode {
     }
 
     required init() {
-        buttonStyleNode = SKSpriteNode(id: .None)
-        buttonBackgroundNode = SKSpriteNode(id: .None)
-
         super.init()
 
         buttonStyleNode.zPosition = zPosition - 0.1
@@ -167,7 +165,7 @@ class Button: TextNode {
         default:
             size = style.size
         }
-        buttonStyleNode.textureId(.Button(style: textureStyle, color: borderColor ?? color))
+        buttonStyleNode.textureId(.Button(style: textureStyle, borderColor: borderColor))
 
         var backgroundId: ImageIdentifier = .None
         if let backgroundColor = backgroundColor {
@@ -181,24 +179,28 @@ class Button: TextNode {
         }
         buttonBackgroundNode.textureId(backgroundId)
 
+        let anchorPoint: CGPoint
         switch alignment {
         case .left:
-            buttonStyleNode.anchorPoint = CGPoint(0, 0.5)
-            buttonBackgroundNode.anchorPoint = CGPoint(0, 0.5)
+            anchorPoint = CGPoint(0, 0.5)
         case .right:
-            buttonStyleNode.anchorPoint = CGPoint(1, 0.5)
-            buttonBackgroundNode.anchorPoint = CGPoint(1, 0.5)
+            anchorPoint = CGPoint(1, 0.5)
         default:
-            buttonStyleNode.anchorPoint = CGPoint(0.5, 0.5)
-            buttonBackgroundNode.anchorPoint = CGPoint(0.5, 0.5)
+            anchorPoint = CGPoint(0.5, 0.5)
         }
+
+        buttonStyleNode.anchorPoint = anchorPoint
+        buttonBackgroundNode.anchorPoint = anchorPoint
     }
 
     func highlight() {
+        prevZ = zPosition
+        zPosition += 0.5
         super.setScale(preferredScale * 1.1)
     }
 
     func unhighlight() {
+        zPosition = prevZ
         super.setScale(preferredScale)
     }
 

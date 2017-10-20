@@ -65,10 +65,13 @@ class MathNode: Node {
     var active = true
 
     typealias OnUpdate = () -> Void
-    var _onUpdate: [OnUpdate] = []
+    private var _onUpdate: [OnUpdate] = []
     func onUpdate(_ handler: @escaping OnUpdate) {
         _onUpdate.append(handler)
         handler()
+    }
+    func offUpdate() {
+        _onUpdate = []
     }
 
     required init() {
@@ -85,6 +88,7 @@ class MathNode: Node {
         self << clearButton
 
         jiggle.isEnabled = false
+        button.borderColor = 0xffffff
         button.addComponent(jiggle)
         button.style = .SquareSized(25)
         button.touchableComponent?.on(.Down) { _ in

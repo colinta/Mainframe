@@ -23,9 +23,9 @@ extension ImageIdentifier {
             artist.color = UIColor(hex: color)
 
             return artist
-        case let .Button(style, color):
+        case let .Button(style, borderColor):
             let artist = ButtonArtist()
-            artist.color = UIColor(hex: color)
+            artist.borderColor = borderColor.map { UIColor(hex: $0) }
             switch style {
             case .Square, .SquareSized, .RectSized:
                 artist.style = .Square

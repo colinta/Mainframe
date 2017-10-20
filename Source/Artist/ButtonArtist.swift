@@ -4,13 +4,13 @@
 
 class ButtonArtist: Artist {
     var style: ButtonStyle = .None
-    var color = UIColor(hex: 0xFFFFFF)
+    var borderColor: UIColor?
 
     override func draw(context: CGContext) {
-        super.draw(context: context)
+        guard let borderColor = borderColor else { return }
 
         context.setLineWidth(1)
-        context.setStrokeColor(color.cgColor)
+        context.setStrokeColor(borderColor.cgColor)
 
         switch style {
         case .Square, .SquareSized, .RectSized:

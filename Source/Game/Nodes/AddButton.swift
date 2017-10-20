@@ -11,6 +11,7 @@ class AddButton: Button {
         super.init()
         style = .CircleSized(20)
         text = "+"
+        borderColor = 0xffffff
 
         newNode.alpha = 0
         newNode.op = .NoOpSelected
@@ -21,9 +22,10 @@ class AddButton: Button {
         touchableComponent?.off(.Enter, .Exit)
 
         touchableComponent?.on(.Down) { pt in
-            self.dragBeginPoint = pt + defaultOffset
+            self.addToPoint = nil
+
             let newPoint = pt + defaultOffset
-            self.addToPoint = newPoint
+            self.dragBeginPoint = newPoint
             self.newNode.position = newPoint
             self.newNode.fadeTo(0.5, rate: 3.333)
         }
@@ -33,11 +35,7 @@ class AddButton: Button {
             self.addToPoint = newPoint
         }
         touchableComponent?.on(.Up) { pt in
-            if let addToPoint = self.addToPoint {
-                self.addNode(at: addToPoint)
-            }
-            self.addToPoint = nil
-            self.dragBeginPoint = nil
+            self.addNode(at: self.addToPoint)
             self.newNode.fadeTo(0, start: 0, rate: 3.333) // to cancel previous fade-in
         }
     }

@@ -123,7 +123,8 @@ class ScaleToComponent: ApplyToNodeComponent {
 
 extension Node {
 
-    func scaleTo(targetScale: CGFloat, start: CGFloat? = nil, duration: CGFloat? = nil, rate: CGFloat? = nil, removeNode: Bool = false, easing: Easing? = nil) -> ScaleToComponent {
+    @discardableResult
+    func scaleTo(_ targetScale: CGFloat, start: CGFloat? = nil, duration: CGFloat? = nil, rate: CGFloat? = nil, removeNode: Bool = false, easing: Easing? = nil) -> ScaleToComponent {
         let scale = scaleToComponent ?? ScaleToComponent()
         if let start = start {
             self.setScale(start)

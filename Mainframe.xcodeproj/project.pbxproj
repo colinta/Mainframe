@@ -17,6 +17,7 @@
 		1A50890E1663046295260888 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C6EE1AB090344A7D41CABD /* Artist.swift */; };
 		1CD0FB332F309A8B658BB5E4 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D8A29F4313395D9598601A /* Line.swift */; };
 		1D0F58CA1F9A644F00AB48A0 /* ExpandArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0F58C91F9A644F00AB48A0 /* ExpandArtist.swift */; };
+		1D0F58CC1F9A849000AB48A0 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D0F58CB1F9A849000AB48A0 /* Launch Screen.storyboard */; };
 		206DC25A72CECF5D670618E5 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93474894F34CE8463FA53F54 /* Component.swift */; };
 		211E6E89716C020F15327473 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = E889A19284B55A8D974AF14D /* Node.swift */; };
 		2338DCC121B777EB053589E4 /* TextArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36923D1103B7AB39AA36B555 /* TextArtist.swift */; };
@@ -96,6 +97,7 @@
 		067C3D192E65BA94954CF80E /* ImageIdentifier.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImageIdentifier.swift; path = Source/Artist/ImageIdentifier.swift; sourceTree = "<group>"; };
 		102C887523331D4CFDE83BF1 /* CosOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CosOperation.swift; path = Source/Game/Math/Fn/CosOperation.swift; sourceTree = "<group>"; };
 		1D0F58C91F9A644F00AB48A0 /* ExpandArtist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExpandArtist.swift; path = Source/Artist/ExpandArtist.swift; sourceTree = "<group>"; };
+		1D0F58CB1F9A849000AB48A0 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "Launch Screen.storyboard"; path = "Resources/Launch Screen.storyboard"; sourceTree = "<group>"; };
 		1D7BFD81433148601E346CEC /* Easing.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Easing.swift; path = Source/Util/Easing.swift; sourceTree = "<group>"; };
 		1E3885DB38F015DE6ACCA142 /* TanOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TanOperation.swift; path = Source/Game/Math/Fn/TanOperation.swift; sourceTree = "<group>"; };
 		1F58AF12B89BF9E641D3A514 /* DivideOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DivideOperation.swift; path = Source/Game/Math/Op/DivideOperation.swift; sourceTree = "<group>"; };
@@ -427,6 +429,7 @@
 			children = (
 				4C9B94F3E4CE3CD40AB29072 /* Assets.xcassets */,
 				596C8884BADBE3A30B0A815A /* Default-568h@2x.png */,
+				1D0F58CB1F9A849000AB48A0 /* Launch Screen.storyboard */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -489,6 +492,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D0F58CC1F9A849000AB48A0 /* Launch Screen.storyboard in Resources */,
 				C0048354E8644C018A402634 /* Assets.xcassets in Resources */,
 				D8F2EE4712E9DFDBBA5508AF /* Default-568h@2x.png in Resources */,
 			);

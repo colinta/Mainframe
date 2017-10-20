@@ -155,6 +155,8 @@ extension World {
                 touchedNode.touchableComponent?.touchBegan(location)
             }
         }
+
+        touchedNode.map { touchedNode in print("touched node is \(touchedNode)") }
     }
 
     func worldTouchEnded(_ worldLocation: CGPoint) {
@@ -191,7 +193,10 @@ extension World {
 
 extension World {
     func touchableNodeAtLocation(_ worldLocation: CGPoint) -> Node? {
-        return touchableNodeAtLocation(worldLocation, inChildren: allChildNodes())
+        let sortedChildren = allChildNodes().sorted { a, b in
+            return a.zPosition < b.zPosition
+        }
+        return touchableNodeAtLocation(worldLocation, inChildren: sortedChildren)
     }
 
     private func touchableNodeAtLocation(_ worldLocation: CGPoint, inChildren children: [Node]) -> Node? {

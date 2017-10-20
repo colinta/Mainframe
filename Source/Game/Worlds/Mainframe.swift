@@ -7,7 +7,11 @@ private var RestoreTreeDelay: CGFloat = 3
 class Mainframe: World {
     struct PanelItem: Equatable {
         let panel = Node()
-        let button = Button()
+        let button: Button = {
+            let button = Button()
+            button.borderColor = 0xffffff
+            return button
+        }()
 
         func enable() {
             button.isEnabled = true
@@ -25,6 +29,7 @@ class Mainframe: World {
         static let formulaBgHeight: CGFloat = 80
         static let formulaHeight: CGFloat = 60
         static let expandSize: CGFloat = 40
+        static let newNodeSpacing: CGFloat = 75
 
         static var treeOffset: CGFloat = 0
     }
@@ -33,6 +38,8 @@ class Mainframe: World {
         case Exact
         case Number
     }
+
+    var remainingScreenSize: CGSize { return CGSize(width: screenSize.width, height: screenSize.height - Size.formulaBgHeight - Size.tabbarHeight) }
 
     var outputStyle: OutputStyle = .Exact
     let outputCalc = Button()
@@ -46,7 +53,7 @@ class Mainframe: World {
     var topNode = MathNode() {
         willSet {
             guard newValue != topNode else { return }
-            topNode._onUpdate = []
+            topNode.offUpdate()
             newValue.onUpdate(self.updateCalc)
             updateCalc()
         }
@@ -76,10 +83,23 @@ class Mainframe: World {
     }
 
     override func populateWorld() {
+        let treeDrag = TouchableComponent()
+        treeDrag.on(.Down) { _ in
+            self.hidePanel()
+        }
+        treeDrag.onDragged { p1, p2 in
+            self.tree.position += p2 - p1
+        }
+        treeDrag.on(.Tapped) { _ in
+            self.currentOp = nil
+        }
+        self.addComponent(treeDrag)
+        defaultNode = self
+
         outputCalc.z = .Top
         outputCalc.fixedPosition = .TopRight(x: 0, y: Size.buttonY)
         outputCalc.alignment = .right
-        outputCalc.style = .RectSized(screenSize.width, Size.formulaHeight)
+        outputCalc.style = .RectSized(remainingScreenSize.width, Size.formulaHeight)
         outputCalc.borderColor = 0x0
         outputCalc.margins.top = 10
         outputCalc.margins.left = 10
@@ -117,30 +137,16 @@ class Mainframe: World {
         }
         self << expandButton
 
-        let outputBg = SKSpriteNode(id: .FillColorBox(size: CGSize(screenSize.width, Size.formulaBgHeight), color: 0x0))
+        let outputBg = SKSpriteNode(id: .FillColorBox(size: CGSize(remainingScreenSize.width, Size.formulaBgHeight), color: 0x0))
         outputBg.position = CGPoint(y: screenSize.height / 2 - 40)
         outputBg.z = .Above
         self << outputBg
 
-        defaultNode = self
-        let treeDrag = TouchableComponent()
-        treeDrag.on(.Down) { _ in
-            if let panel = self.panel {
-                self.togglePanel(panel)
-            }
-        }
-        treeDrag.onDragged { p1, p2 in
-            self.tree.position += p2 - p1
-        }
-        treeDrag.on(.Tapped) { _ in
-            self.currentOp = nil
-        }
-        self.addComponent(treeDrag)
         self << tree
 
-        let topNode = self.topNode
         topNode.fixedPosition = .Top(x: 0, y: -160)
         tree << topNode
+
         Size.treeOffset = topNode.position.y
         topNode.onUpdate(self.updateCalc)
 
@@ -154,8 +160,8 @@ class Mainframe: World {
             ("𝑥𝑦𝑧", variablesItem.button),
         ]
         do {
-            let buttonWidth = screenSize.width / CGFloat(tabbarButtons.count)
-            var x: CGFloat = -screenSize.width / 2 + buttonWidth / 2
+            let buttonWidth = remainingScreenSize.width / CGFloat(tabbarButtons.count)
+            var x: CGFloat = -remainingScreenSize.width / 2 + buttonWidth / 2
             for (text, button) in tabbarButtons {
                 button.z = .Above
                 button.text = text
@@ -216,7 +222,7 @@ class Mainframe: World {
             outputFormula.text += "="
         }
 
-        if outputCalc.textSize.width > self.screenSize.width {
+        if outputCalc.textSize.width > self.remainingScreenSize.width {
             outputCalc.alignment = .left
             outputCalc.fixedPosition = .TopLeft(x: 0, y: Size.buttonY)
         }
@@ -238,25 +244,8 @@ class Mainframe: World {
             panelItem.button.isEnabled = panelButtonsEnabled
         }
 
-        if !panelButtonsEnabled, let panel = panel {
-            togglePanel(panel)
-        }
-
-        if let newOp = newValue {
-            var topMost: MathNode = newOp
-            while let parent = topMost.parent as? MathNode {
-                topMost = parent
-            }
-            self.topNode = topMost
-
-            if newOp.op.isNoOp {
-                newOp.op = .NoOpSelected
-                togglePanel(numbersItem, show: true)
-            }
-
-            if let panel = newOp.op.panel(mainframe: self) {
-                togglePanel(panel, show: true)
-            }
+        if !panelButtonsEnabled {
+            hidePanel()
         }
 
         firstKeyPress = true
@@ -265,6 +254,21 @@ class Mainframe: World {
     func didSetCurrentOp(_ oldValue: MathNode?) {
         oldValue?.isClearEnabled = false
         if let currentOp = currentOp {
+            var topMost: MathNode = currentOp
+            while let parent = topMost.parent as? MathNode {
+                topMost = parent
+            }
+            self.topNode = topMost
+
+            if currentOp.op.isNoOp {
+                currentOp.op = .NoOpSelected
+                togglePanel(numbersItem, show: true)
+            }
+
+            if let panel = currentOp.op.panel(mainframe: self) {
+                togglePanel(panel, show: true)
+            }
+
             let clearableOp = !currentOp.op.isNoOp
             let isTopLevel = currentOp.topMostParent == currentOp
             currentOp.isClearEnabled = clearableOp || isTopLevel && hasManyTopNodes
@@ -281,7 +285,7 @@ class Mainframe: World {
             position = convert(specificPosition, to: tree)
         }
         else {
-            position = lastTopNode.position + CGPoint(x: lastTopNode.size.width / 2 + MathNode.Size.spacing)
+            position = lastTopNode.position + CGPoint(x: lastTopNode.size.width / 2 + Size.newNodeSpacing)
         }
 
         node.position = position
@@ -294,8 +298,8 @@ class Mainframe: World {
         panel.fixedPosition = .Bottom(x: 0, y: Size.tabbarHeight + totalHeight / 2)
         var y = totalHeight / 2 - Size.tabbarHeight / 2
         for ops in buttons {
-            let buttonWidth = screenSize.width / CGFloat(ops.count)
-            var x = -screenSize.width / 2 + buttonWidth / 2
+            let buttonWidth = remainingScreenSize.width / CGFloat(ops.count)
+            var x = -remainingScreenSize.width / 2 + buttonWidth / 2
             for op in ops {
                 let button = op.asButton()
                 button.z = .Above
@@ -311,8 +315,13 @@ class Mainframe: World {
             y -= Size.tabbarHeight
         }
         panel.alpha = 0
-        panel.size = CGSize(screenSize.width, totalHeight)
+        panel.size = CGSize(remainingScreenSize.width, totalHeight)
         self << panel
+    }
+
+    func hidePanel() {
+        guard let panel = panel else { return }
+        togglePanel(panel)
     }
 
     func togglePanel(_ nextPanel: PanelItem, show: Bool? = nil) {
@@ -367,15 +376,16 @@ class Mainframe: World {
         let opTop = currentPosition.y + currentSize.height / 2
 
         var screenRect = CGRect(
-            x: -screenSize.width / 2,
+            x: -remainingScreenSize.width / 2,
             y: -screenSize.height / 2 + Size.tabbarHeight,
-            width: screenSize.width,
-            height: screenSize.height - Size.tabbarHeight - Size.formulaBgHeight
+            width: remainingScreenSize.width,
+            height: remainingScreenSize.height
         )
 
         var moveX: CGFloat?
         var moveY: CGFloat?
         let margin: CGFloat = 5
+        let rightMargin: CGFloat = 25
 
         if let panel = panel?.panel {
             let panelTop = panel.position.y + panel.size.height / 2
@@ -394,7 +404,7 @@ class Mainframe: World {
             moveX = screenRect.minX - opLeft + margin
         }
         else if opRight > screenRect.maxX {
-            moveX = screenRect.maxX - opRight - margin
+            moveX = screenRect.maxX - opRight - rightMargin
         }
 
         if moveX != nil || moveY != nil {
@@ -405,10 +415,63 @@ class Mainframe: World {
     }
 
     func expandToExtents() {
+        currentOp = nil
+        hidePanel()
+
+        var extents: CGRect?
+        for node in topNodes {
+            let nodeRect = CGRect(center: tree.convertPosition(node), size: node.calculateAccumulatedFrame().size)
+            if let prevExtents = extents {
+                extents = prevExtents.union(nodeRect)
+            }
+            else {
+                extents = nodeRect
+            }
+        }
+
+        if let extents = extents {
+            let insets: CGFloat = 10
+
+            let yCorrection = (Size.tabbarHeight - Size.formulaBgHeight) / 2
+            let scaleX = (remainingScreenSize.width - insets) / extents.width
+            let scaleY = (remainingScreenSize.height - insets) / extents.height
+            let scale = min(1, scaleX, scaleY)
+            let treePosition = CGPoint(x: -extents.center.x * scale, y: -extents.center.y * scale + yCorrection)
+            tree.scaleTo(scale, duration: 0.2)
+            tree.moveTo(treePosition, duration: 0.2)
+
+            if scale < 1 {
+                let zoomButton = Node()
+                let touchableComponent = TouchableComponent()
+                touchableComponent.on(.UpInside) { location in
+                    self.tree.scaleTo(1, duration: 0.2)
+                    self.tree.moveTo(location, duration: 0.2)
+                    zoomButton.removeFromParent()
+                }
+                touchableComponent.containsTouchTest = TouchableComponent.defaultTouchTest()
+                zoomButton.addComponent(touchableComponent)
+                zoomButton.size = CGSize(width: remainingScreenSize.width, height: remainingScreenSize.height)
+                zoomButton.z = .Top
+                zoomButton.position.y = yCorrection
+                self << zoomButton
+            }
+        }
     }
 
     override func worldShook() {
-        repositionTopNodes()
+         let positions = [
+             CGPoint(x: -screenSize.width / 2),
+             CGPoint(x: +screenSize.width / 2),
+             CGPoint(y: -screenSize.height / 2),
+             CGPoint(y: +screenSize.height / 2),
+         ]
+         for p in positions {
+             let node = MathNode()
+             node.position = p
+             tree << node
+         }
+         expandToExtents()
+         // repositionTopNodes()
     }
 
     func repositionTopNodes() {
@@ -426,9 +489,7 @@ class Mainframe: World {
             isFirst = false
         }
         tree.moveTo(CGPoint(x: -centerX / 2), duration: 0.3)
-        if let panel = panel {
-            togglePanel(panel)
-        }
+        hidePanel()
     }
 
 }

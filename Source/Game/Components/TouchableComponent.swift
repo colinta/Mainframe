@@ -32,12 +32,12 @@ class TouchableComponent: Component {
     }
 
     enum TouchTestShape {
-        case Square
+        case Rect
         case Circle
 
         var touchTest: TouchTest {
             switch self {
-            case .Square:
+            case .Rect:
                 return { (node, location) in
                     let width = max(44, node.size.width)
                     let height = max(44, node.size.height)
@@ -251,7 +251,7 @@ extension TouchableComponent {
 
 extension TouchableComponent {
 
-    class func defaultTouchTest(shape: TouchTestShape = .Square) -> TouchTest {
+    class func defaultTouchTest(shape: TouchTestShape = .Rect) -> TouchTest {
         return shape.touchTest
     }
 
