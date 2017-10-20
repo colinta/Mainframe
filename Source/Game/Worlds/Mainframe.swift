@@ -24,10 +24,12 @@ class Mainframe: World {
     }
 
     struct Size {
-        static let TabbarHeight: CGFloat = 50
-        static let ButtonHeight: CGFloat = 50
-        static var TreeOffset: CGFloat = 0
-        static var ButtonY: CGFloat = -50
+        static let tabbarHeight: CGFloat = 50
+        static let buttonY: CGFloat = -50
+        static let formulaBgHeight: CGFloat = 80
+        static let formulaHeight: CGFloat = 60
+
+        static var treeOffset: CGFloat = 0
     }
 
     enum OutputStyle {
@@ -76,9 +78,9 @@ class Mainframe: World {
 
     override func populateWorld() {
         outputCalc.z = .Top
-        outputCalc.fixedPosition = .TopRight(x: 0, y: Size.ButtonY)
+        outputCalc.fixedPosition = .TopRight(x: 0, y: Size.buttonY)
         outputCalc.alignment = .right
-        outputCalc.style = .RectSized(screenSize.width, 60)
+        outputCalc.style = .RectSized(screenSize.width, Size.formulaHeight)
         outputCalc.borderColor = 0x0
         outputCalc.margins.top = 10
         outputCalc.margins.left = 10
@@ -104,7 +106,7 @@ class Mainframe: World {
         outputFormula.alignment = .right
         self << outputFormula
 
-        let outputBg = SKSpriteNode(id: .FillColorBox(size: CGSize(screenSize.width, 80), color: 0x0))
+        let outputBg = SKSpriteNode(id: .FillColorBox(size: CGSize(screenSize.width, Size.formulaBgHeight), color: 0x0))
         outputBg.position = CGPoint(y: screenSize.height / 2 - 40)
         outputBg.z = .Above
         self << outputBg
@@ -128,7 +130,7 @@ class Mainframe: World {
         let topNode = self.topNode
         topNode.fixedPosition = .Top(x: 0, y: -160)
         tree << topNode
-        Size.TreeOffset = topNode.position.y
+        Size.treeOffset = topNode.position.y
         topNode.onUpdate(self.updateCalc)
 
         addButton.fixedPosition = .TopLeft(x: 5 + addButton.size.width / 2, y: -95)
@@ -146,8 +148,8 @@ class Mainframe: World {
             for (text, button) in tabbarButtons {
                 button.z = .Above
                 button.text = text
-                button.style = .RectSized(buttonWidth, Size.TabbarHeight)
-                button.fixedPosition = .Bottom(x: x, y: Size.TabbarHeight / 2)
+                button.style = .RectSized(buttonWidth, Size.tabbarHeight)
+                button.fixedPosition = .Bottom(x: x, y: Size.tabbarHeight / 2)
                 x += buttonWidth
                 self << button
             }
@@ -205,11 +207,11 @@ class Mainframe: World {
 
         if outputCalc.textSize.width > self.screenSize.width {
             outputCalc.alignment = .left
-            outputCalc.fixedPosition = .TopLeft(x: 0, y: Size.ButtonY)
+            outputCalc.fixedPosition = .TopLeft(x: 0, y: Size.buttonY)
         }
         else {
             outputCalc.alignment = .right
-            outputCalc.fixedPosition = .TopRight(x: 0, y: Size.ButtonY)
+            outputCalc.fixedPosition = .TopRight(x: 0, y: Size.buttonY)
         }
     }
 
@@ -223,6 +225,10 @@ class Mainframe: World {
         let panelButtonsEnabled = newValue != nil
         for panelItem in panelItems {
             panelItem.button.isEnabled = panelButtonsEnabled
+        }
+
+        if !panelButtonsEnabled, let panel = panel {
+            togglePanel(panel)
         }
 
         if let newOp = newValue {
@@ -254,9 +260,6 @@ class Mainframe: World {
 
             checkCameraLocation()
         }
-        else {
-            repositionTopNodes()
-        }
     }
 
     func addTopNode(_ node: MathNode, at specificPosition: CGPoint?) {
@@ -276,25 +279,25 @@ class Mainframe: World {
     }
 
     func createPanel(_ panel: Node, buttons: [[Operation]]) {
-        let totalHeight: CGFloat = CGFloat(buttons.count) * Size.ButtonHeight
-        panel.fixedPosition = .Bottom(x: 0, y: Size.TabbarHeight + totalHeight / 2)
-        var y = totalHeight / 2 - Size.ButtonHeight / 2
+        let totalHeight: CGFloat = CGFloat(buttons.count) * Size.tabbarHeight
+        panel.fixedPosition = .Bottom(x: 0, y: Size.tabbarHeight + totalHeight / 2)
+        var y = totalHeight / 2 - Size.tabbarHeight / 2
         for ops in buttons {
             let buttonWidth = screenSize.width / CGFloat(ops.count)
             var x = -screenSize.width / 2 + buttonWidth / 2
             for op in ops {
                 let button = op.asButton()
                 button.z = .Above
-                button.style = .RectSized(buttonWidth, Size.TabbarHeight)
+                button.style = .RectSized(buttonWidth, Size.tabbarHeight)
                 button.position = CGPoint(x, y)
                 button.onTapped {
-                    op.tapped(self, first: self.firstKeyPress)
+                    op.tapped(self, isFirst: self.firstKeyPress)
                     self.firstKeyPress = false
                 }
                 panel << button
                 x += buttonWidth
             }
-            y -= Size.ButtonHeight
+            y -= Size.tabbarHeight
         }
         panel.alpha = 0
         panel.size = CGSize(screenSize.width, totalHeight)
@@ -338,29 +341,55 @@ class Mainframe: World {
     func checkCameraLocation() {
         guard let currentOp = currentOp else { return }
 
-        let opBottom: CGFloat, opLeft: CGFloat, opRight: CGFloat
-        if let target = currentOp.moveToComponent?.target {
-            opLeft = convertPosition(currentOp).x - currentOp.size.width / 2 + (target - currentOp.position).x
-            opRight = convertPosition(currentOp).x + currentOp.size.width / 2 + (target - currentOp.position).x
-            opBottom = convertPosition(currentOp).y - currentOp.size.height / 2 + (target - currentOp.position).y
+        let currentPosition: CGPoint
+        if let target = currentOp.moveToComponent?.target, let currentParent = currentOp.parent {
+            currentPosition = convert(target, from: currentParent)
         }
-        else{
-            opLeft = convertPosition(currentOp).x - currentOp.size.width / 2
-            opRight = convertPosition(currentOp).x + currentOp.size.width / 2
-            opBottom = convertPosition(currentOp).y - currentOp.size.height / 2
+        else {
+            currentPosition = convertPosition(currentOp)
         }
 
-        var moveCamera = false
+        let currentSize = currentOp.button.size
+        let opLeft = currentPosition.x - currentSize.width / 2
+        let opRight = currentPosition.x + currentSize.width / 2
+        let opBottom = currentPosition.y - currentSize.height / 2
+        let opTop = currentPosition.y + currentSize.height / 2
+
+        var screenRect = CGRect(
+            x: -screenSize.width / 2,
+            y: -screenSize.height / 2 + Size.tabbarHeight,
+            width: screenSize.width,
+            height: screenSize.height - Size.tabbarHeight - Size.formulaBgHeight
+        )
+
+        var moveX: CGFloat?
+        var moveY: CGFloat?
+        let margin: CGFloat = 5
+
         if let panel = panel?.panel {
             let panelTop = panel.position.y + panel.size.height / 2
-            moveCamera ||= opBottom < panelTop
+            screenRect.origin.y = panelTop
+            screenRect.size.height -= panel.size.height
         }
-        moveCamera ||= opLeft < -screenSize.width / 2
-        moveCamera ||= opRight > screenSize.width / 2
 
-        if moveCamera {
-            let position = tree.convert(.zero, from: currentOp)
-            tree.moveTo(-1 * position + CGPoint(y: Size.TreeOffset), duration: 0.3)
+        if opBottom < screenRect.minY {
+            moveY = screenRect.minY - opBottom + margin
+        }
+        else if opTop > screenRect.maxY {
+            moveY = screenRect.maxY - opTop - margin
+        }
+
+        if opLeft < screenRect.minX {
+            moveX = screenRect.minX - opLeft + margin
+        }
+        else if opRight > screenRect.maxX {
+            moveX = screenRect.maxX - opRight - margin
+        }
+
+        if moveX != nil || moveY != nil {
+            let delta = CGPoint(x: moveX ?? 0, y: moveY ?? 0)
+            let position = tree.position + delta
+            tree.moveTo(position, duration: 0.3)
         }
     }
 
