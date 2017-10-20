@@ -155,8 +155,6 @@ extension World {
                 touchedNode.touchableComponent?.touchBegan(location)
             }
         }
-
-        touchedNode.map { touchedNode in print("touched node is \(touchedNode)") }
     }
 
     func worldTouchEnded(_ worldLocation: CGPoint) {
