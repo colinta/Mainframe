@@ -389,6 +389,10 @@ class Mainframe: World {
         }
     }
 
+    override func worldShook() {
+        repositionTopNodes()
+    }
+
     func repositionTopNodes() {
         var centerX: CGFloat = 0
         var isFirst = true
