@@ -11,6 +11,8 @@ class MathNode: Node {
         static let spacing: CGFloat = 15
     }
 
+    var mainframe: Mainframe? { return world as? Mainframe }
+
     var numberString = ""
     var prevOp: Operation = .NoOp
     var op: Operation = .NoOp {
@@ -46,7 +48,7 @@ class MathNode: Node {
     }
 
     let jiggle = JiggleComponent()
-    var moving = false
+    var isMoving = false
     var dragging: Bool { return dragDest != nil }
     var dragDest: CGPoint?
     let button = Button()
@@ -90,7 +92,7 @@ class MathNode: Node {
         button.addComponent(jiggle)
         button.style = .SquareSized(25)
         button.touchableComponent?.on(.Down) { _ in
-            self.moving = false
+            self.isMoving = false
             self.buttonTimer = 0.5
         }
         button.touchableComponent?.on(.Up) { _ in
@@ -100,12 +102,12 @@ class MathNode: Node {
                 let position = dragParent.convertPosition(self)
                 self.move(toParent: dragParent)
                 self.position = position
-                (self.world as? Mainframe)?.topNode = self.topMostParent
+                self.mainframe?.topNode = self.topMostParent
                 dragParent.updateMathNodes()
                 oldParent?.updateMathNodes()
             }
 
-            self.moving = false
+            self.isMoving = false
             self.buttonTimer = nil
             self.jiggle.enabled = false
             self.button.zRotation = 0
@@ -115,13 +117,13 @@ class MathNode: Node {
         }
 
         button.touchableComponent?.on(.DragBegan) { pt in
-            if !self.moving && !self.op.mustBeTop {
+            if !self.isMoving && !self.op.mustBeTop {
                 self.buttonTimer = nil
                 self.dragDest = pt
             }
         }
         button.touchableComponent?.on(.DragMoved) { pt in
-            if self.moving {
+            if self.isMoving {
                 self.position += pt
             }
             else if self.dragging {
@@ -129,7 +131,7 @@ class MathNode: Node {
             }
         }
         button.onTapped {
-            (self.world as? Mainframe)?.currentOp = self
+            self.mainframe?.currentOp = self
         }
 
         clearButton.isHidden = true
@@ -141,23 +143,23 @@ class MathNode: Node {
         clearButton.textScale = 0.75
         clearButton.position = CGPoint(x: 25)
         clearButton.onTapped {
-            guard let world = (self.world as? Mainframe) else { return }
+            guard let mainframe = self.mainframe else { return }
 
-            if self.op.isNoOp && self.topMostParent == self && world.hasManyTopNodes {
+            if self.op.isNoOp && self.topMostParent == self && mainframe.hasManyTopNodes {
                 self.removeFromParent()
-                world.updateTopNode()
+                mainframe.updateTopNode()
                 return
             }
 
             for node in self.mathChildren {
-                if world.currentOp == node {
-                    world.currentOp = self
+                if mainframe.currentOp == node {
+                    mainframe.currentOp = self
                 }
                 node.removeFromParent()
             }
 
             self._clearEnabled = false
-            self.op = world.currentOp == self ? .NoOpSelected : .NoOp
+            self.op = mainframe.currentOp == self ? .NoOpSelected : .NoOp
         }
 
         updateSize([])
@@ -210,7 +212,6 @@ class MathNode: Node {
             button.style = .RectToFit
         }
 
-        let mainframe = self.world as? Mainframe
         let isCurrentOp = mainframe?.currentOp == self
         let childIsCurrentOp = isCurrentOp || mainframe?.currentOp?.parent == self
 
@@ -330,16 +331,17 @@ class MathNode: Node {
             parentLine.zRotation = TAU_2 + position.angle
             parentLine.textureId(.ColorLine(length: position.length, color: 0xFFFFFF))
 
-            if let buttonTimer = buttonTimer, buttonTimer <= 0 {
-                if let mainframe = world as? Mainframe {
-                    let oldParent = self.parent as? MathNode
-                    let treePosition = mainframe.tree.convert(.zero, from: self)
-                    self.move(toParent: mainframe.tree)
-                    self.position = treePosition
-                    mainframe.topNode = self
-                    self.updateMathNodes()
-                    oldParent?.updateMathNodes()
-                }
+            if let buttonTimer = buttonTimer,
+                buttonTimer <= 0,
+                let mainframe = self.mainframe
+            {
+                let oldParent = self.parent as? MathNode
+                let treePosition = mainframe.tree.convert(.zero, from: self)
+                self.move(toParent: mainframe.tree)
+                self.position = treePosition
+                mainframe.topNode = self
+                self.updateMathNodes()
+                oldParent?.updateMathNodes()
             }
         }
         else {
@@ -347,7 +349,7 @@ class MathNode: Node {
 
             if let buttonTimer = buttonTimer, buttonTimer <= 0 {
                 self.buttonTimer = nil
-                self.moving = true
+                self.isMoving = true
                 self.jiggle.enabled = true
             }
 
