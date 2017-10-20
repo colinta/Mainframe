@@ -56,11 +56,11 @@ struct LogNOperation: OperationValue {
     var maxChildNodes: Int? { return 2 }
 
     func formula(_ nodes: [MathNode], isTop: Bool) -> String {
-        if let number = nodes.first, nodes.count == 1 {
-            return "logₒ(\(number.formula(isTop: true)))"
+        if let base = nodes.first, nodes.count == 1 {
+            return "log(◻) base \(base.formula(isTop: true))"
         }
         else if let base = nodes.first, let number = nodes.last, nodes.count == 2 {
-            return "log(\(number.formula(isTop: true)) base \(base.formula(isTop: true)))"
+            return "log(\(number.formula(isTop: false)) base \(base.formula(isTop: true)))"
         }
         return "logₒ(◻)"
     }
