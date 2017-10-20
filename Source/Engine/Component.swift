@@ -8,7 +8,7 @@
 
 @objc
 class Component: NSObject, NSCoding {
-    var enabled = true
+    var isEnabled = true
     weak var node: Node!
 
     func update(_ dt: CGFloat) {

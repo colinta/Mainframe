@@ -7,7 +7,7 @@
 //
 
 class SelectableComponent: Component {
-    var selected = false
+    var isSelected = false
     private var selecting = false
 
     typealias OnSelected = (Bool) -> Void
@@ -25,19 +25,17 @@ class SelectableComponent: Component {
         touchableComponent.on(.Up, onTouchEnded)
     }
 
-    func changeSelected(_ selected: Bool) {
-        self.selected = selected
-        for handler in _onSelected {
-            handler(selected)
-        }
+    func changeSelected(_ isSelected: Bool) {
+        self.isSelected = isSelected
+        selectedHandler(isSelected)
     }
 
     func onSelected(_ handler: @escaping SimpleOnSelected) {
-        _onSelected.append({ selected in handler(selected) })
+        _onSelected.append(handler)
     }
 
     func onTouchIn(location: CGPoint) {
-        guard enabled else { return }
+        guard isEnabled else { return }
 
         if node.world?.selectedNode != node {
             node.world?.selectNode(node)
@@ -46,7 +44,7 @@ class SelectableComponent: Component {
     }
 
     func onTouchPressed(location: CGPoint) {
-        guard enabled else { return }
+        guard isEnabled else { return }
 
         if !selecting {
             node.world?.unselectNode(node)
@@ -57,9 +55,9 @@ class SelectableComponent: Component {
         selecting = false
     }
 
-    func selectedHandler(selected: Bool) {
+    private func selectedHandler(_ isSelected: Bool) {
         for handler in _onSelected {
-            handler(selected)
+            handler(isSelected)
         }
     }
 

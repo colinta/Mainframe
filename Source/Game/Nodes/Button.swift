@@ -37,10 +37,10 @@ class Button: TextNode {
         didSet { updateButtonStyle() }
     }
     var preferredScale: CGFloat = 1
-    var background: Int? = 0x0 {
+    var backgroundColor: Int? = 0x0 {
         didSet { updateButtonStyle() }
     }
-    var border: Int? {
+    var borderColor: Int? {
         didSet { updateButtonStyle() }
     }
 
@@ -60,19 +60,19 @@ class Button: TextNode {
             alphaOverride = false
         }
     }
-    var enabled = true {
+    var isEnabled = true {
         didSet {
             if alphaOverride {
-                alpha = enabled ? 1 : 0.25
+                alpha = isEnabled ? 1 : 0.25
                 alphaOverride = true
             }
-            touchableComponent?.enabled = enabled
+            touchableComponent?.isEnabled = isEnabled
         }
     }
 
     func onTapped(behavior: ButtonBehavior) -> Self {
         onTapped {
-            self.touchableComponent?.enabled = false
+            self.touchableComponent?.isEnabled = false
         }
         return self
     }
@@ -172,16 +172,16 @@ class Button: TextNode {
         default:
             size = style.size
         }
-        buttonStyleNode.textureId(.Button(style: textureStyle, color: border ?? color))
+        buttonStyleNode.textureId(.Button(style: textureStyle, color: borderColor ?? color))
 
         var backgroundId: ImageIdentifier = .None
-        if let background = background {
+        if let backgroundColor = backgroundColor {
             switch style {
             case .None: break
             case .Circle, .CircleSized:
-                backgroundId = .FillColorCircle(size: size, color: background)
+                backgroundId = .FillColorCircle(size: size, color: backgroundColor)
             default:
-                backgroundId = .FillColorBox(size: size, color: background)
+                backgroundId = .FillColorBox(size: size, color: backgroundColor)
             }
         }
         buttonBackgroundNode.textureId(backgroundId)

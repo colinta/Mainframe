@@ -14,11 +14,11 @@ class Mainframe: World {
         let button = Button()
 
         func enable() {
-            button.enabled = true
+            button.isEnabled = true
         }
 
         func disabled() {
-            button.enabled = false
+            button.isEnabled = false
             panel.fadeTo(0, rate: 3.333)
         }
     }
@@ -79,7 +79,7 @@ class Mainframe: World {
         outputCalc.fixedPosition = .TopRight(x: 0, y: Size.ButtonY)
         outputCalc.alignment = .right
         outputCalc.style = .RectSized(screenSize.width, 60)
-        outputCalc.border = 0x0
+        outputCalc.borderColor = 0x0
         outputCalc.margins.top = 10
         outputCalc.margins.left = 10
         outputCalc.margins.right = 10
@@ -222,7 +222,7 @@ class Mainframe: World {
 
         let panelButtonsEnabled = newValue != nil
         for panelItem in panelItems {
-            panelItem.button.enabled = panelButtonsEnabled
+            panelItem.button.isEnabled = panelButtonsEnabled
         }
 
         if let newOp = newValue {
@@ -246,11 +246,11 @@ class Mainframe: World {
     }
 
     func didSetCurrentOp(_ oldValue: MathNode?) {
-        oldValue?.clearEnabled = false
+        oldValue?.isClearEnabled = false
         if let currentOp = currentOp {
             let clearableOp = !currentOp.op.isNoOp
             let isTopLevel = currentOp.topMostParent == currentOp
-            currentOp.clearEnabled = clearableOp || isTopLevel && hasManyTopNodes
+            currentOp.isClearEnabled = clearableOp || isTopLevel && hasManyTopNodes
 
             checkCameraLocation()
         }
@@ -308,8 +308,8 @@ class Mainframe: World {
 
         if let button = panel?.button {
             button.color = 0xFFFFFF
-            button.background = 0x0
-            button.border = 0xFFFFFF
+            button.backgroundColor = 0x0
+            button.borderColor = 0xFFFFFF
         }
 
         if panel == nextPanel {
@@ -320,12 +320,12 @@ class Mainframe: World {
 
             let button = nextPanel.button
             button.color = 0x0
-            button.background = 0xFFFFFF
-            button.border = 0xFFFFFF
+            button.backgroundColor = 0xFFFFFF
+            button.borderColor = 0xFFFFFF
 
             for node in nextPanel.panel.children {
                 if let button = node as? OperationButton {
-                    button.enabled = button.op.compatible(mainframe: self)
+                    button.isEnabled = button.op.compatible(mainframe: self)
                 }
             }
 

@@ -105,7 +105,7 @@ extension Node {
         guard world != nil else { return }
 
         for component in components {
-            if component.enabled {
+            if component.isEnabled {
                 component.update(dt)
             }
         }

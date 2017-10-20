@@ -200,7 +200,7 @@ extension World {
 
     private func touchableNodeAtLocation(_ worldLocation: CGPoint, inChildren children: [Node]) -> Node? {
         for node in children.reversed() {
-            if let touchableComponent = node.touchableComponent, touchableComponent.enabled, node.visible {
+            if let touchableComponent = node.touchableComponent, touchableComponent.isEnabled, node.isVisible {
                 let nodeLocation = convert(worldLocation, to: node)
                 if touchableComponent.containsTouch(at: nodeLocation) {
                     return node

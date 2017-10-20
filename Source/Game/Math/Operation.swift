@@ -121,7 +121,7 @@ extension Operation {
         return nil
     }
 
-    func tapped(_ mainframe: Mainframe, first: Bool) {
+    func tapped(_ mainframe: Mainframe, isFirst: Bool) {
         guard let currentOp = mainframe.currentOp else { return }
 
         switch self {
@@ -148,7 +148,7 @@ extension Operation {
             case .Num1, .Num2, .Num3, .Num4, .Num5,
                  .Num6, .Num7, .Num8, .Num9, .Num0,
                  .NumDot:
-                if first {
+                if isFirst {
                     currentOp.numberString = keyCode.string
                     currentOp.op = .Number(keyCode.string)
                 }

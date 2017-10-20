@@ -64,13 +64,13 @@ extension WorldScene {
             let worldLocation = touchSession.touch.location(in: world)
             touchSession.currentLocation = worldLocation
 
-            if touchSession.dragging {
+            if touchSession.isDragging {
                 world.worldDraggingMoved(touchSession.currentLocation)
             }
             else if touchSession.startedDragging {
                 world.worldDraggingBegan(touchSession.startingLocation)
 
-                touchSession.dragging = true
+                touchSession.isDragging = true
                 world.worldDraggingMoved(touchSession.currentLocation)
             }
         }
@@ -79,7 +79,7 @@ extension WorldScene {
     override func touchesEnded(_ touchesSet: Set<UITouch>, with event: UIEvent?) {
         if let touchSession = touchSession, touchesSet.contains(touchSession.touch)
         {
-            if touchSession.dragging {
+            if touchSession.isDragging {
                 world.worldDraggingEnded(touchSession.currentLocation)
             }
             else {
@@ -99,7 +99,7 @@ extension WorldScene {
         if let touchSession = touchSession, let touchesSet = touchesSet,
             touchesSet.contains(touchSession.touch)
         {
-            if touchSession.dragging {
+            if touchSession.isDragging {
                 world.worldDraggingEnded(touchSession.currentLocation)
             }
 

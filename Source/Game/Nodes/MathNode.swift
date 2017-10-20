@@ -49,22 +49,22 @@ class MathNode: Node {
 
     let jiggle = JiggleComponent()
     var isMoving = false
-    var dragging: Bool { return dragDest != nil }
+    var isDragging: Bool { return dragDest != nil }
     var dragDest: CGPoint?
     let button = Button()
     var buttonTimer: CGFloat?
     private let clearButton = Button()
-    private var _clearEnabled = false {
+    private var _isClearEnabled = false {
         didSet {
-            clearButton.isHidden = !_clearEnabled
+            clearButton.isHidden = !_isClearEnabled
         }
     }
-    var clearEnabled: Bool {
+    var isClearEnabled: Bool {
         set {
-            _clearEnabled = newValue
+            _isClearEnabled = newValue
             updateMathNodes()
         }
-        get { return _clearEnabled }
+        get { return _isClearEnabled }
     }
     var active = true
 
@@ -88,7 +88,7 @@ class MathNode: Node {
         self << dragLine
         self << clearButton
 
-        jiggle.enabled = false
+        jiggle.isEnabled = false
         button.addComponent(jiggle)
         button.style = .SquareSized(25)
         button.touchableComponent?.on(.Down) { _ in
@@ -109,7 +109,7 @@ class MathNode: Node {
 
             self.isMoving = false
             self.buttonTimer = nil
-            self.jiggle.enabled = false
+            self.jiggle.isEnabled = false
             self.button.zRotation = 0
             self.dragLine.isHidden = true
             self.dragDest = nil
@@ -126,7 +126,7 @@ class MathNode: Node {
             if self.isMoving {
                 self.position += pt
             }
-            else if self.dragging {
+            else if self.isDragging {
                 self.dragDest = pt
             }
         }
@@ -137,8 +137,8 @@ class MathNode: Node {
         clearButton.isHidden = true
         clearButton.style = .CircleSized(20)
         clearButton.color = 0x0
-        clearButton.border = 0xFFFFFF
-        clearButton.background = 0xFFFFFF
+        clearButton.borderColor = 0xFFFFFF
+        clearButton.backgroundColor = 0xFFFFFF
         clearButton.text = "×"
         clearButton.textScale = 0.75
         clearButton.position = CGPoint(x: 25)
@@ -158,7 +158,7 @@ class MathNode: Node {
                 node.removeFromParent()
             }
 
-            self._clearEnabled = false
+            self._isClearEnabled = false
             self.op = mainframe.currentOp == self ? .NoOpSelected : .NoOp
         }
 
@@ -265,7 +265,7 @@ class MathNode: Node {
         updateSize(visibleNodes)
 
         if visibleNodes.count > 0 {
-            let totalWidth = self.size.width - (Size.spacing + (clearEnabled ? 5 + clearButton.size.width : 0))
+            let totalWidth = self.size.width - (Size.spacing + (isClearEnabled ? 5 + clearButton.size.width : 0))
             var x = -totalWidth / 2
             let y: CGFloat = -60
             for node in visibleNodes {
@@ -300,7 +300,7 @@ class MathNode: Node {
     private func updateSize(_ visibleNodes: [Node]) {
         let totalWidth = visibleNodes.reduce(CGFloat(0)) { $0 + $1.size.width + Size.spacing }
         size = CGSize(
-            width: max(totalWidth, button.size.width) + (clearEnabled ? 5 + clearButton.size.width : 0),
+            width: max(totalWidth, button.size.width) + (isClearEnabled ? 5 + clearButton.size.width : 0),
             height: 50
         )
     }
@@ -350,7 +350,7 @@ class MathNode: Node {
             if let buttonTimer = buttonTimer, buttonTimer <= 0 {
                 self.buttonTimer = nil
                 self.isMoving = true
-                self.jiggle.enabled = true
+                self.jiggle.isEnabled = true
             }
 
             if let dragDest = dragDest {

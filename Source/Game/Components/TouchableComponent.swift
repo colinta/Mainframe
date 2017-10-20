@@ -126,7 +126,7 @@ extension TouchableComponent {
     }
 
     func touchBegan(_ location: CGPoint) {
-        isIgnoring = !self.enabled
+        isIgnoring = !self.isEnabled
         guard !isIgnoring else { return }
 
         isTouchingInside = false
@@ -265,7 +265,7 @@ extension TouchableComponent {
     }
 
     func containsTouch(at location: CGPoint) -> Bool {
-        guard enabled else { return false }
+        guard isEnabled else { return false }
         return containsTouchTest?(node, location) ?? false
     }
 

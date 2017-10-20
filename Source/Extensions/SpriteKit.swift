@@ -37,9 +37,9 @@ extension SKNode {
         get { return Z(rawValue: zPosition) ?? Z.Default }
     }
 
-    var visible: Bool {
+    var isVisible: Bool {
         get {
-            if let parent = parent, !parent.visible {
+            if let parent = parent, !parent.isVisible {
                 return false
             }
             return !isHidden && alpha > 0.1
