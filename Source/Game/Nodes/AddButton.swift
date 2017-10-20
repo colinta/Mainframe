@@ -53,18 +53,7 @@ class AddButton: Button {
     func addNode(at delta: CGPoint?) {
         guard let mainframe = world as? Mainframe else { return }
 
-        let node = MathNode()
-        let position: CGPoint
-        if let delta = delta {
-            position = mainframe.convert(self.position, to: mainframe.tree) + delta
-        }
-        else {
-            position = mainframe.topNode.position + CGPoint(x: 75)
-        }
-
-        node.position = position
-        mainframe.tree << node
-        mainframe.currentOp = node
+        mainframe.addTopNode(MathNode(), at: delta.map { position + $0 })
     }
 
 }

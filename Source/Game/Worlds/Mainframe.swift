@@ -39,8 +39,9 @@ class Mainframe: World {
     let outputFormula = TextNode()
 
     var hasManyTopNodes: Bool {
-        return tree.children.filter { $0 is MathNode }.count > 1
+        return topNodes.count > 1
     }
+    var topNodes: [MathNode] { return tree.children.flatMap { $0 as? MathNode } }
     var topNode = MathNode() {
         willSet {
             guard newValue != topNode else { return }
@@ -250,9 +251,28 @@ class Mainframe: World {
             let clearableOp = !currentOp.op.isNoOp
             let isTopLevel = currentOp.topMostParent == currentOp
             currentOp.clearEnabled = clearableOp || isTopLevel && hasManyTopNodes
+
+            checkCameraLocation()
+        }
+        else {
+            repositionTopNodes()
+        }
+    }
+
+    func addTopNode(_ node: MathNode, at specificPosition: CGPoint?) {
+        guard let lastTopNode = topNodes.last else { return }
+
+        let position: CGPoint
+        if let specificPosition = specificPosition {
+            position = convert(specificPosition, to: tree)
+        }
+        else {
+            position = lastTopNode.position + CGPoint(x: lastTopNode.size.width / 2 + MathNode.Size.spacing)
         }
 
-        checkCameraLocation()
+        node.position = position
+        tree << node
+        currentOp = node
     }
 
     func createPanel(_ panel: Node, buttons: [[Operation]]) {
@@ -344,8 +364,21 @@ class Mainframe: World {
         }
     }
 
-    override func worldShook() {
-        tree.moveTo(.zero, duration: 0.3)
+    func repositionTopNodes() {
+        var centerX: CGFloat = 0
+        var isFirst = true
+        let lastNode = topNodes.last
+        for node in topNodes {
+            if !isFirst {
+                centerX += node.size.width / 2
+            }
+            node.moveTo(CGPoint(x: centerX), duration: 0.3)
+            if node != lastNode {
+                centerX += node.size.width / 2 + MathNode.Size.spacing
+            }
+            isFirst = false
+        }
+        tree.moveTo(CGPoint(x: -centerX / 2), duration: 0.3)
         if let panel = panel {
             togglePanel(panel)
         }
