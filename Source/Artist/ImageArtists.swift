@@ -51,6 +51,8 @@ extension ImageIdentifier {
             let artist = CircleArtist(size, color)
             artist.drawingMode = .fill
             return artist
+        case .Expand:
+            return ExpandArtist()
         }
     }
 

@@ -11,4 +11,5 @@ enum ImageIdentifier {
     case Dot(color: Int)
     case FillColorBox(size: CGSize, color: Int)
     case FillColorCircle(size: CGSize, color: Int)
+    case Expand
 }

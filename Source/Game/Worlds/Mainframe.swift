@@ -24,6 +24,7 @@ class Mainframe: World {
         static let buttonY: CGFloat = -50
         static let formulaBgHeight: CGFloat = 80
         static let formulaHeight: CGFloat = 60
+        static let expandSize: CGFloat = 40
 
         static var treeOffset: CGFloat = 0
     }
@@ -32,9 +33,11 @@ class Mainframe: World {
         case Exact
         case Number
     }
+
     var outputStyle: OutputStyle = .Exact
     let outputCalc = Button()
     let outputFormula = TextNode()
+    let expandButton = Button()
 
     var hasManyTopNodes: Bool {
         return topNodes.count > 1
@@ -101,6 +104,18 @@ class Mainframe: World {
         outputFormula.textScale = 0.75
         outputFormula.alignment = .right
         self << outputFormula
+
+        let expandSprite = SKSpriteNode(id: .Expand)
+        expandSprite.z = .Above
+        expandButton << expandSprite
+        expandButton.style = .SquareSized(Size.expandSize)
+        expandButton.backgroundColor = 0x0
+        expandButton.borderColor = 0xFFFFFF
+        expandButton.fixedPosition = .BottomRight(x: -Size.expandSize / 2, y: Size.tabbarHeight + Size.expandSize / 2)
+        expandButton.onTapped {
+            self.expandToExtents()
+        }
+        self << expandButton
 
         let outputBg = SKSpriteNode(id: .FillColorBox(size: CGSize(screenSize.width, Size.formulaBgHeight), color: 0x0))
         outputBg.position = CGPoint(y: screenSize.height / 2 - 40)
@@ -387,6 +402,9 @@ class Mainframe: World {
             let position = tree.position + delta
             tree.moveTo(position, duration: 0.3)
         }
+    }
+
+    func expandToExtents() {
     }
 
     override func worldShook() {
