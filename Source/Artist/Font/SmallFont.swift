@@ -141,11 +141,11 @@ let l20 = Letter(style: .Line, size: defaultSize, points: [[
         CGPoint(x: 1.75, y: 5.25),
     ]])
 let l21 = Letter(style: .Line, size: defaultSize, points: [[
-        CGPoint(x: 0, y: 1),
-        CGPoint(x: 4, y: 5),
+        CGPoint(x: 0.5, y: 1.5),
+        CGPoint(x: 3.5, y: 4.5),
     ], [
-        CGPoint(x: 4, y: 1),
-        CGPoint(x: 0, y: 5),
+        CGPoint(x: 3.5, y: 1.5),
+        CGPoint(x: 0.5, y: 4.5),
     ]])
 let l22 = Letter(style: .Line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 2),
