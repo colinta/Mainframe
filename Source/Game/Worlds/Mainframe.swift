@@ -445,7 +445,7 @@ class Mainframe: World {
                 let touchableComponent = TouchableComponent()
                 touchableComponent.on(.UpInside) { location in
                     self.tree.scaleTo(1, duration: 0.2)
-                    self.tree.moveTo(location, duration: 0.2)
+                    self.tree.moveTo(CGPoint(x: -location.x / scale, y: -location.y / scale), duration: 0.2)
                     zoomButton.removeFromParent()
                 }
                 touchableComponent.containsTouchTest = TouchableComponent.defaultTouchTest()
@@ -459,19 +459,7 @@ class Mainframe: World {
     }
 
     override func worldShook() {
-         let positions = [
-             CGPoint(x: -screenSize.width / 2),
-             CGPoint(x: +screenSize.width / 2),
-             CGPoint(y: -screenSize.height / 2),
-             CGPoint(y: +screenSize.height / 2),
-         ]
-         for p in positions {
-             let node = MathNode()
-             node.position = p
-             tree << node
-         }
-         expandToExtents()
-         // repositionTopNodes()
+         repositionTopNodes()
     }
 
     func repositionTopNodes() {
