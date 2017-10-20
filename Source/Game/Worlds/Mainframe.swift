@@ -29,7 +29,7 @@ class Mainframe: World {
         static let formulaBgHeight: CGFloat = 80
         static let formulaHeight: CGFloat = 60
         static let expandSize: CGFloat = 40
-        static let newNodeSpacing: CGFloat = 75
+        static let newNodeSpacing: CGFloat = 50
 
         static var treeOffset: CGFloat = 0
     }
@@ -463,20 +463,24 @@ class Mainframe: World {
     }
 
     func repositionTopNodes() {
-        var centerX: CGFloat = 0
-        var isFirst = true
-        let lastNode = topNodes.last
-        for node in topNodes {
-            if !isFirst {
-                centerX += node.size.width / 2
-            }
-            node.moveTo(CGPoint(x: centerX), duration: 0.3)
-            if node != lastNode {
-                centerX += node.size.width / 2 + MathNode.Size.spacing
-            }
-            isFirst = false
+        let yCorrection = (Size.tabbarHeight - Size.formulaBgHeight) / 2
+        let totalWidth = (topNodes.reduce(CGFloat(0)) { memo, node in
+            let nodeSize = node.calculateAccumulatedFrame().size
+            return memo + nodeSize.width
+        }) + CGFloat(topNodes.count - 1) * Size.newNodeSpacing
+
+        var centerX = -totalWidth / 2
+        let sortedNodes = topNodes.sorted { a, b in
+            return a.position.x < b.position.x
         }
-        tree.moveTo(CGPoint(x: -centerX / 2), duration: 0.3)
+        for node in sortedNodes {
+            let nodeSize = node.calculateAccumulatedFrame().size
+            centerX += nodeSize.width / 2
+            node.moveTo(CGPoint(x: centerX), duration: 0.3)
+            centerX += nodeSize.width / 2 + Size.newNodeSpacing
+        }
+
+        tree.moveTo(CGPoint(x: 0, y: yCorrection), duration: 0.3)
         hidePanel()
     }
 
