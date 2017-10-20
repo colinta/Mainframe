@@ -15,6 +15,7 @@ class AddButton: Button {
         super.init()
         style = .CircleSized(20)
         text = "+"
+
         newNode.alpha = 0
         newNode.op = .NoOpSelected
         self << newNode
@@ -43,23 +44,19 @@ class AddButton: Button {
             self.dragBeginPoint = nil
             self.newNode.fadeTo(0, start: 0, rate: 3.333) // to cancel previous fade-in
         }
-
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func addNode(at delta: CGPoint? = nil) {
-        addNode(MathNode(), at: delta)
-    }
-
-    func addNode(node: MathNode, at delta: CGPoint? = nil) {
+    func addNode(at delta: CGPoint?) {
         guard let mainframe = world as? Mainframe else { return }
 
+        let node = MathNode()
         let position: CGPoint
         if let delta = delta {
-            position = mainframe.convertPoint(self.position, toNode: mainframe.tree) + delta
+            position = mainframe.convert(self.position, to: mainframe.tree) + delta
         }
         else {
             position = mainframe.topNode.position + CGPoint(x: 75)

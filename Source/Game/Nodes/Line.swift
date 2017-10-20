@@ -22,13 +22,13 @@ class Line: Node {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
-    
+
     required init() {
         fatalError("init() has not been implemented")
     }
 
-    override func encodeWithCoder(encoder: NSCoder) {
-        super.encodeWithCoder(encoder)
+    override func encode(with encoder: NSCoder) {
+        super.encode(with: encoder)
     }
 
 }

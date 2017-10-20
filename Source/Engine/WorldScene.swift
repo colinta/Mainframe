@@ -8,7 +8,7 @@
 
 class WorldScene: SKScene {
     var world: World
-    var prevTime: NSTimeInterval?
+    var prevTime: TimeInterval?
     var touchSession: TouchSession?
 
     required init(size: CGSize, world: World) {
@@ -26,7 +26,7 @@ class WorldScene: SKScene {
         super.init(coder: coder)
     }
 
-    override func update(currentTime: NSTimeInterval) {
+    override func update(_ currentTime: TimeInterval) {
         if let prevTime = prevTime {
             let dt = CGFloat(currentTime - prevTime)
             world.updateWorld(dt)
@@ -41,13 +41,13 @@ extension WorldScene {
         world.worldShook()
     }
 
-    override func touchesBegan(touchesSet: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touchesSet: Set<UITouch>, with event: UIEvent?) {
         guard touchSession == nil else {
             return
         }
 
         if let touch = touchesSet.first {
-            let worldLocation = touch.locationInNode(world)
+            let worldLocation = touch.location(in: world)
             let touchSession = TouchSession(
                 touch: touch,
                 location: worldLocation
@@ -58,11 +58,10 @@ extension WorldScene {
         }
     }
 
-    override func touchesMoved(touchesSet: Set<UITouch>, withEvent event: UIEvent?) {
-        if let touchSession = touchSession
-        where touchesSet.contains(touchSession.touch)
+    override func touchesMoved(_ touchesSet: Set<UITouch>, with event: UIEvent?) {
+        if let touchSession = touchSession, touchesSet.contains(touchSession.touch)
         {
-            let worldLocation = touchSession.touch.locationInNode(world)
+            let worldLocation = touchSession.touch.location(in: world)
             touchSession.currentLocation = worldLocation
 
             if touchSession.dragging {
@@ -77,9 +76,8 @@ extension WorldScene {
         }
     }
 
-    override func touchesEnded(touchesSet: Set<UITouch>, withEvent event: UIEvent?) {
-        if let touchSession = touchSession
-        where touchesSet.contains(touchSession.touch)
+    override func touchesEnded(_ touchesSet: Set<UITouch>, with event: UIEvent?) {
+        if let touchSession = touchSession, touchesSet.contains(touchSession.touch)
         {
             if touchSession.dragging {
                 world.worldDraggingEnded(touchSession.currentLocation)
@@ -97,9 +95,9 @@ extension WorldScene {
         }
     }
 
-    override func touchesCancelled(touchesSet: Set<UITouch>?, withEvent event: UIEvent?) {
-        if let touchSession = touchSession, touchesSet = touchesSet
-        where touchesSet.contains(touchSession.touch)
+    override func touchesCancelled(_ touchesSet: Set<UITouch>?, with event: UIEvent?) {
+        if let touchSession = touchSession, let touchesSet = touchesSet,
+            touchesSet.contains(touchSession.touch)
         {
             if touchSession.dragging {
                 world.worldDraggingEnded(touchSession.currentLocation)

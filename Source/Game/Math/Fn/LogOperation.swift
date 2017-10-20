@@ -12,32 +12,22 @@ struct LogOperation: OperationValue {
     var minChildNodes: Int? { return 1 }
     var maxChildNodes: Int? { return 1 }
 
-    func formula(nodes: [MathNode], isTop: Bool) -> String {
-        if let node = nodes.first where nodes.count == 1 {
+    func formula(_ nodes: [MathNode], isTop: Bool) -> String {
+        if let node = nodes.first, nodes.count == 1 {
             return "log(\(node.formula(isTop: true)))"
         }
         return "log(◻)"
     }
 
-    func calculate(nodes: [MathNode], vars: VariableLookup) -> OperationResult {
-        if let node = nodes.first where nodes.count == 1 {
-            let nodeVal = node.calculate(vars)
-            switch nodeVal {
-            case .NaN, .DivZero, .NeedsInput: return nodeVal
-            case let .Number(number, pi):
-                if number == 0 {
-                    switch (2 * pi.doubleValue) % 4 {
-                    case 1, 3:
-                        return .DivZero
-                    case 0, 2:
-                        return .Number(number: 0, pi: 0)
-                    default: break
-                    }
-                }
-                return .CheckNumber(number: NSDecimalNumber(double: log10((number + NSDecimalNumber.pi(pi)).doubleValue)), pi: 0)
-            }
+    func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
+        guard let node = nodes.first, nodes.count == 1 else { return .NeedsInput }
+
+        let nodeVal = node.calculate(vars)
+        switch nodeVal {
+        case .NaN, .DivZero, .NeedsInput: return nodeVal
+        case let .Number(number, numberPi):
+            return .CheckNumber(number: Decimal(log10((number + Decimal.pi(times: numberPi)).asDouble)), pi: 0)
         }
-        return .NeedsInput
     }
 }
 
@@ -47,32 +37,19 @@ struct LnOperation: OperationValue {
     var minChildNodes: Int? { return 1 }
     var maxChildNodes: Int? { return 1 }
 
-    func formula(nodes: [MathNode], isTop: Bool) -> String {
-        if let node = nodes.first where nodes.count == 1 {
-            return "ln(\(node.formula(isTop: true)))"
-        }
-        return "ln(◻)"
+    func formula(_ nodes: [MathNode], isTop: Bool) -> String {
+        guard let node = nodes.first, nodes.count == 1 else { return "ln(◻)" }
+        return "ln(\(node.formula(isTop: true)))"
     }
 
-    func calculate(nodes: [MathNode], vars: VariableLookup) -> OperationResult {
-        if let node = nodes.first where nodes.count == 1 {
-            let nodeVal = node.calculate(vars)
-            switch nodeVal {
-            case .NaN, .DivZero, .NeedsInput: return nodeVal
-            case let .Number(number, pi):
-                if number == 0 {
-                    switch (2 * pi.doubleValue) % 4 {
-                    case 1, 3:
-                        return .DivZero
-                    case 0, 2:
-                        return .Number(number: 0, pi: 0)
-                    default: break
-                    }
-                }
-                return .CheckNumber(number: NSDecimalNumber(double: log((number + NSDecimalNumber.pi(pi)).doubleValue)), pi: 0)
-            }
+    func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
+        guard let node = nodes.first, nodes.count == 1 else { return .NeedsInput }
+        let nodeVal = node.calculate(vars)
+        switch nodeVal {
+        case .NaN, .DivZero, .NeedsInput: return nodeVal
+        case let .Number(number, numberPi):
+            return .CheckNumber(number: Decimal(log((number + Decimal.pi(times: numberPi)).asDouble)), pi: 0)
         }
-        return .NeedsInput
     }
 }
 
@@ -82,30 +59,30 @@ struct LogNOperation: OperationValue {
     var minChildNodes: Int? { return 2 }
     var maxChildNodes: Int? { return 2 }
 
-    func formula(nodes: [MathNode], isTop: Bool) -> String {
-        if let number = nodes.first where nodes.count == 1 {
+    func formula(_ nodes: [MathNode], isTop: Bool) -> String {
+        if let number = nodes.first, nodes.count == 1 {
             return "logₒ(\(number.formula(isTop: true)))"
         }
-        else if let number = nodes.first, base = nodes.last where nodes.count == 2 {
+        else if let number = nodes.first, let base = nodes.last, nodes.count == 2 {
             return "log(\(number.formula(isTop: true)) b \(base.formula(isTop: true)))"
         }
         return "logₒ(◻)"
     }
 
-    func calculate(nodes: [MathNode], vars: VariableLookup) -> OperationResult {
-        if let number = nodes.first, base = nodes.last where nodes.count == 2 {
-            let baseVal = base.calculate(vars)
-            let numberVal = number.calculate(vars)
-            switch (numberVal, baseVal) {
-            case (.NaN, _), (.DivZero, _), (.NeedsInput, _): return numberVal
-            case (_, .NaN), (_, .DivZero), (_, .NeedsInput): return baseVal
-            case let (.Number(number: numberNumber, pi: numberPi), .Number(baseNumber, basePi)):
-                let numberActual = numberNumber + NSDecimalNumber.pi(numberPi)
-                let baseActual = baseNumber + NSDecimalNumber.pi(basePi)
-                return .CheckNumber(number: NSDecimalNumber(double: log(numberActual.doubleValue) / log(baseActual.doubleValue)), pi: 0)
-            default: break
-            }
+    func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
+        guard let number = nodes.first, let base = nodes.last, nodes.count == 2 else { return .NeedsInput }
+
+        let baseVal = base.calculate(vars)
+        let numberVal = number.calculate(vars)
+        switch (numberVal, baseVal) {
+        case (.NaN, _), (.DivZero, _), (.NeedsInput, _): return numberVal
+        case (_, .NaN), (_, .DivZero), (_, .NeedsInput): return baseVal
+        case let (.Number(number: numberNumber, pi: numberPi), .Number(baseNumber, basePi)):
+            let numberActual = numberNumber + Decimal.pi(times: numberPi)
+            let baseActual = baseNumber + Decimal.pi(times: basePi)
+            return .CheckNumber(number: Decimal(log(numberActual.asDouble) / log(baseActual.asDouble)), pi: 0)
+        default:
+            return .NeedsInput
         }
-        return .NeedsInput
-    }
+}
 }

@@ -10,23 +10,23 @@ class WorldController: UIViewController {
     var worldView: WorldView?
 
     override func loadView() {
-        let view = WorldView(frame: UIScreen.mainScreen().bounds)
+        let view = WorldView(frame: UIScreen.main.bounds)
         self.worldView = view
         self.view = worldView
 
         view.presentWorld(Mainframe())
     }
 
-    override func shouldAutorotate() -> Bool {
+    override var shouldAutorotate: Bool {
         return true
     }
 
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return .Portrait
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
     }
 
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
 
 }

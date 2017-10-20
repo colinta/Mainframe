@@ -12,7 +12,7 @@ struct Segment {
 
     var length: CGFloat { return p1.distanceTo(p2) }
 
-    func intersection(segment: Segment) -> CGPoint? {
+    func intersection(_ segment: Segment) -> CGPoint? {
         let (x1, y1) = (p1.x, p1.y)
         let (x2, y2) = (p2.x, p2.y)
         let (x3, y3) = (segment.p1.x, segment.p1.y)
@@ -26,7 +26,7 @@ struct Segment {
         return CGPoint(x, y)
     }
 
-    func intersects(segment: Segment) -> Bool {
+    func intersects(_ segment: Segment) -> Bool {
         let p1 = self.p1
         let q1 = self.p2
         let p2 = segment.p1
@@ -34,10 +34,10 @@ struct Segment {
 
         // Find the four orientations needed for general and
         // special cases
-        let o1 = orientation(p1, q: q1, r: p2)
-        let o2 = orientation(p1, q: q1, r: q2)
-        let o3 = orientation(p2, q: q2, r: p1)
-        let o4 = orientation(p2, q: q2, r: q1)
+        let o1 = orientation(p: p1, q: q1, r: p2)
+        let o2 = orientation(p: p1, q: q1, r: q2)
+        let o3 = orientation(p: p2, q: q2, r: p1)
+        let o4 = orientation(p: p2, q: q2, r: q1)
 
         // General case
         if o1 != o2 && o3 != o4 {
@@ -46,22 +46,22 @@ struct Segment {
 
         // Special Cases
         // p1, q1 and p2 are colinear and p2 lies on segment p1q1
-        if o1 == .Colinear && onSegment(p1, q: p2, r: q1) {
+        if o1 == .Colinear && onSegment(p: p1, q: p2, r: q1) {
             return true
         }
 
         // p1, q1 and p2 are colinear and q2 lies on segment p1q1
-        if o2 == .Colinear && onSegment(p1, q: q2, r: q1) {
+        if o2 == .Colinear && onSegment(p: p1, q: q2, r: q1) {
             return true
         }
 
         // p2, q2 and p1 are colinear and p1 lies on segment p2q2
-        if o3 == .Colinear && onSegment(p2, q: p1, r: q2) {
+        if o3 == .Colinear && onSegment(p: p2, q: p1, r: q2) {
             return true
         }
 
          // p2, q2 and q1 are colinear and q1 lies on segment p2q2
-        if o4 == .Colinear && onSegment(p2, q: q1, r: q2) {
+        if o4 == .Colinear && onSegment(p: p2, q: q1, r: q2) {
             return true
         }
 

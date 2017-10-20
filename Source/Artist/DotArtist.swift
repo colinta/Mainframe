@@ -7,7 +7,7 @@
 //
 
 class DotArtist: Artist {
-    var color = UIColor.whiteColor()
+    var color: UIColor = .white
 
     required init() {
         super.init()
@@ -15,9 +15,9 @@ class DotArtist: Artist {
     }
 
     override func draw(context: CGContext) {
-        CGContextSetFillColorWithColor(context, color.CGColor)
-        CGContextAddEllipseInRect(context, CGRect(origin: .zero, size: size))
-        CGContextDrawPath(context, .Fill)
+        context.setFillColor(color.cgColor)
+        context.addEllipse(in: CGRect(origin: .zero, size: size))
+        context.drawPath(using: .fill)
     }
 
 }

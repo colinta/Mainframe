@@ -1,26 +1,9 @@
 public extension String {
-    func beginsWith(str: String) -> Bool {
-        if let range = self.rangeOfString(str) {
-            return range.startIndex == self.startIndex
-        }
-        return false
-    }
-
-    func endsWith(str: String) -> Bool {
-        if let range = self.rangeOfString(str, options: .BackwardsSearch) {
-            return range.endIndex == self.endIndex
-        }
-        return false
-    }
-
-    func contains(string: String) -> Bool {
-        return self.rangeOfString(string, options: .CaseInsensitiveSearch) != .None
-    }
 
     func withCommas() -> String {
-        guard NSDecimalNumber(string: self) != NSDecimalNumber.notANumber() else { return self }
+        guard Decimal(string: self) != nil else { return self }
 
-        if beginsWith(".") {
+        if hasPrefix(".") {
             var found = false
             let parts = characters.split {
                 if $0 == "." && !found {
@@ -49,14 +32,14 @@ public extension String {
         else {
             var retval = ""
             var count = 0
-            for c in characters.reverse() {
+            for c in characters.reversed() {
                 if count == 0 && retval != "" {
                     retval = "," + retval
                 }
                 count = (count + 1) % 3
                 retval = String(c) + retval
             }
-            return retval.stringByReplacingOccurrencesOfString("-,", withString: "-")
+            return retval.replacingOccurrences(of: "-,", with: "-")
         }
     }
 

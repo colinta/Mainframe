@@ -48,12 +48,12 @@ extension ImageIdentifier {
         case let .FillColorBox(size, color):
             let color = UIColor(hex: color)
             let artist = RectArtist(size, color)
-            artist.drawingMode = .Fill
+            artist.drawingMode = .fill
             return artist
         case let .FillColorCircle(size, color):
             let color = UIColor(hex: color)
             let artist = CircleArtist(size, color)
-            artist.drawingMode = .Fill
+            artist.drawingMode = .fill
             return artist
         }
     }

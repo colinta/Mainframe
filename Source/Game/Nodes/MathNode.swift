@@ -54,7 +54,7 @@ class MathNode: Node {
     private let clearButton = Button()
     private var _clearEnabled = false {
         didSet {
-            clearButton.hidden = !_clearEnabled
+            clearButton.isHidden = !_clearEnabled
         }
     }
     var clearEnabled: Bool {
@@ -68,8 +68,8 @@ class MathNode: Node {
 
     typealias OnUpdate = () -> Void
     var _onUpdate: [OnUpdate] = []
-    func onUpdate(handler: OnUpdate) {
-        _onUpdate << handler
+    func onUpdate(_ handler: @escaping OnUpdate) {
+        _onUpdate.append(handler)
         handler()
     }
 
@@ -78,7 +78,7 @@ class MathNode: Node {
 
         parentLine.anchorPoint = CGPoint(0, 0.5)
         parentLine.z = .Bottom
-        dragLine.hidden = true
+        dragLine.isHidden = true
         dragLine.anchorPoint = CGPoint(0, 0.5)
         dragLine.z = .Bottom
         self << button
@@ -94,12 +94,11 @@ class MathNode: Node {
             self.buttonTimer = 0.5
         }
         button.touchableComponent?.on(.Up) { _ in
-            if let dragParent = self.dragParent
-            where self.dragParent != self.parent
+            if let dragParent = self.dragParent, self.dragParent != self.parent
             {
                 let oldParent = self.parent as? MathNode
                 let position = dragParent.convertPosition(self)
-                self.moveToParent(dragParent)
+                self.move(toParent: dragParent)
                 self.position = position
                 (self.world as? Mainframe)?.topNode = self.topMostParent
                 dragParent.updateMathNodes()
@@ -110,7 +109,7 @@ class MathNode: Node {
             self.buttonTimer = nil
             self.jiggle.enabled = false
             self.button.zRotation = 0
-            self.dragLine.hidden = true
+            self.dragLine.isHidden = true
             self.dragDest = nil
             self.dragParent = nil
         }
@@ -133,7 +132,7 @@ class MathNode: Node {
             (self.world as? Mainframe)?.currentOp = self
         }
 
-        clearButton.hidden = true
+        clearButton.isHidden = true
         clearButton.style = .CircleSized(20)
         clearButton.color = 0x0
         clearButton.border = 0xFFFFFF
@@ -164,19 +163,18 @@ class MathNode: Node {
         updateSize([])
     }
 
-    override func insertChild(node: SKNode, atIndex index: Int) {
+    override func insertChild(_ node: SKNode, at index: Int) {
         var newIndex = index
-        if let node = node as? MathNode
-        where index == children.count && !node.op.isNoOp
+        if let node = node as? MathNode, index == children.count && !node.op.isNoOp
         {
             newIndex = 0
-            for (childIndex, child) in children.enumerate() {
-                if let child = child as? MathNode where !child.op.isNoOp {
+            for (childIndex, child) in children.enumerated() {
+                if let child = child as? MathNode, !child.op.isNoOp {
                     newIndex = childIndex + 1
                 }
             }
         }
-        super.insertChild(node, atIndex: newIndex)
+        super.insertChild(node, at: newIndex)
     }
 
     required init?(coder: NSCoder) {
@@ -188,15 +186,15 @@ class MathNode: Node {
         _onUpdate = []
     }
 
-    func formula(isTop isTop: Bool = false) -> String {
+    func formula(isTop: Bool = false) -> String {
         return op.formula(activeMathChildren, isTop: isTop)
     }
 
-    func calculate(vars: VariableLookup) -> OperationResult {
+    func calculate(_ vars: VariableLookup) -> OperationResult {
         return op.calculate(activeMathChildren, vars: vars)
     }
 
-    private func updateMathNodes(select select: Bool = false) {
+    private func updateMathNodes(select: Bool = false) {
         switch op {
         case .NoOp:
             button.text = ""
@@ -213,8 +211,8 @@ class MathNode: Node {
         }
 
         let mainframe = self.world as? Mainframe
-        let isCurrentOp = mainframe?.currentOp == self ?? false
-        let childIsCurrentOp = isCurrentOp || (mainframe?.currentOp?.parent == self ?? false)
+        let isCurrentOp = mainframe?.currentOp == self
+        let childIsCurrentOp = isCurrentOp || mainframe?.currentOp?.parent == self
 
         button.textScale = isCurrentOp ? 1.5 : 1
         clearButton.position = CGPoint(x: button.size.width / 2 + 5 + clearButton.size.width / 2)
@@ -254,7 +252,8 @@ class MathNode: Node {
                 }
             }
             else if !childIsCurrentOp {
-                for node in visibleNodes where node.op.isNoOp {
+                for node in visibleNodes {
+                    guard node.op.isNoOp else { continue }
                     node.fadeTo(0, duration: 0.3, removeNode: true)
                     node.active = false
                 }
@@ -291,14 +290,13 @@ class MathNode: Node {
             handler()
         }
 
-        if let selectNode = selectNode
-        where isCurrentOp && select
+        if let selectNode = selectNode, isCurrentOp && select
         {
             mainframe?.currentOp = selectNode
         }
     }
 
-    private func updateSize(visibleNodes: [Node]) {
+    private func updateSize(_ visibleNodes: [Node]) {
         let totalWidth = visibleNodes.reduce(CGFloat(0)) { $0 + $1.size.width + Size.spacing }
         size = CGSize(
             width: max(totalWidth, button.size.width) + (clearEnabled ? 5 + clearButton.size.width : 0),
@@ -322,21 +320,21 @@ class MathNode: Node {
         return node
     }
 
-    override func update(dt: CGFloat) {
+    override func update(_ dt: CGFloat) {
         if let buttonTimer = buttonTimer {
             self.buttonTimer = buttonTimer - dt
         }
 
         if parent is MathNode {
-            parentLine.hidden = false
+            parentLine.isHidden = false
             parentLine.zRotation = TAU_2 + position.angle
             parentLine.textureId(.ColorLine(length: position.length, color: 0xFFFFFF))
 
-            if let buttonTimer = buttonTimer where buttonTimer <= 0 {
+            if let buttonTimer = buttonTimer, buttonTimer <= 0 {
                 if let mainframe = world as? Mainframe {
                     let oldParent = self.parent as? MathNode
-                    let treePosition = mainframe.tree.convertPoint(.zero, fromNode: self)
-                    self.moveToParent(mainframe.tree)
+                    let treePosition = mainframe.tree.convert(.zero, from: self)
+                    self.move(toParent: mainframe.tree)
                     self.position = treePosition
                     mainframe.topNode = self
                     self.updateMathNodes()
@@ -345,24 +343,24 @@ class MathNode: Node {
             }
         }
         else {
-            parentLine.hidden = true
+            parentLine.isHidden = true
 
-            if let buttonTimer = buttonTimer where buttonTimer <= 0 {
+            if let buttonTimer = buttonTimer, buttonTimer <= 0 {
                 self.buttonTimer = nil
                 self.moving = true
                 self.jiggle.enabled = true
             }
 
             if let dragDest = dragDest {
-                dragLine.hidden = false
+                dragLine.isHidden = false
                 dragLine.zRotation = dragDest.angle
                 dragLine.textureId(.ColorLine(length: dragDest.length, color: 0xFFFFFF))
 
                 if let world = world {
-                    let worldPosition = world.convertPoint(dragDest, fromNode: self)
+                    let worldPosition = world.convert(dragDest, from: self)
                     if let button = world.touchableNodeAtLocation(worldPosition),
-                        mathNode = button.parent as? MathNode
-                    where mathNode != self && mathNode.canReceiveChildren
+                        let mathNode = button.parent as? MathNode,
+                        mathNode != self && mathNode.canReceiveChildren
                     {
                         dragParent = mathNode
                     }
@@ -372,7 +370,7 @@ class MathNode: Node {
                 }
             }
             else {
-                dragLine.hidden = true
+                dragLine.isHidden = true
             }
         }
     }

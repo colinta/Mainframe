@@ -7,8 +7,8 @@
 //
 
 extension SKTexture {
-    static func id(id: ImageIdentifier) -> SKTexture {
-        let texture = SKTexture(image: Artist.generate(id))
+    static func id(_ id: ImageIdentifier) -> SKTexture {
+        let texture = SKTexture(image: Artist.generate(id: id))
         return texture
     }
 }
@@ -21,7 +21,7 @@ extension SKSpriteNode {
         self.position = position
     }
 
-    func textureId(id: ImageIdentifier) {
+    func textureId(_ id: ImageIdentifier) {
         if self.texture == nil {
             setScale(0.5)
         }
@@ -39,29 +39,29 @@ extension SKNode {
 
     var visible: Bool {
         get {
-            if let parent = parent where !parent.visible {
+            if let parent = parent, !parent.visible {
                 return false
             }
-            return !hidden && alpha > 0.1
+            return !isHidden && alpha > 0.1
         }
-        set { hidden = !newValue }
+        set { isHidden = !newValue }
     }
 
     static func size(size: CGSize) -> SKNode {
         return SKSpriteNode(texture: nil, size: size)
     }
 
-    func isParentOf(child: SKNode) -> Bool {
+    func isParentOf(_ child: SKNode) -> Bool {
         return child.inParentHierarchy(self)
     }
 
-    func distanceTo(node: SKNode) -> CGFloat {
+    func distanceTo(_ node: SKNode) -> CGFloat {
         return sqrt(roughDistanceTo(node))
     }
 
-    func roughDistanceTo(node: SKNode) -> CGFloat {
+    func roughDistanceTo(_ node: SKNode) -> CGFloat {
         let world = (self as? Node)?.world ?? (node as? Node)?.world
-        if let world = world where world.isParentOf(self) && world.isParentOf(node) {
+        if let world = world, world.isParentOf(self), world.isParentOf(node) {
             let posSelf = world.convertPosition(self)
             let posNode = world.convertPosition(node)
             return posSelf.roughDistanceTo(posNode)
@@ -70,9 +70,9 @@ extension SKNode {
         return position.roughLength
     }
 
-    func distanceTo(node: SKNode, within radius: CGFloat) -> Bool {
+    func distanceTo(_ node: SKNode, within radius: CGFloat) -> Bool {
         let world = (self as? Node)?.world ?? (node as? Node)?.world
-        if let world = world where world.isParentOf(self) && world.isParentOf(node) {
+        if let world = world, world.isParentOf(self), world.isParentOf(node) {
             let posSelf = world.convertPosition(self)
             let posNode = world.convertPosition(node)
             return posSelf.distanceTo(posNode, within: radius)
@@ -81,9 +81,9 @@ extension SKNode {
         return position.lengthWithin(radius)
     }
 
-    func angleTo(node: SKNode) -> CGFloat {
+    func angleTo(_ node: SKNode) -> CGFloat {
         let world = (self as? Node)?.world ?? (node as? Node)?.world
-        if let world = world where world.isParentOf(self) && world.isParentOf(node) {
+        if let world = world, world.isParentOf(self), world.isParentOf(node) {
             let posSelf = world.convertPosition(self)
             let posNode = world.convertPosition(node)
             return (posNode - posSelf).angle
@@ -92,7 +92,7 @@ extension SKNode {
         return position.angle
     }
 
-    func convertPosition(node: SKNode) -> CGPoint {
+    func convertPosition(_ node: SKNode) -> CGPoint {
         if node.parent == nil || self.parent == nil {
             if self is World {
                 return node.position
@@ -105,10 +105,10 @@ extension SKNode {
             }
         }
         else if node.parent == self.parent {
-            return convertPoint(node.position, fromNode: node.parent!)
+            return convert(node.position, from: node.parent!)
         }
         else {
-            return convertPoint(.zero, fromNode: node)
+            return convert(.zero, from: node)
         }
     }
 

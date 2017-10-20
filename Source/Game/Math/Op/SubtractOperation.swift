@@ -11,10 +11,10 @@ struct SubtractOperation: OperationValue {
     var treeDescription: String { return "-" }
     var minChildNodes: Int? { return 2 }
 
-    func formula(nodes: [MathNode], isTop: Bool) -> String {
+    func formula(_ nodes: [MathNode], isTop: Bool) -> String {
         guard isTop else { return "(\(formula(nodes, isTop: true)))" }
 
-        if let node = nodes.first where nodes.count == 1 {
+        if let node = nodes.first, nodes.count == 1 {
             return node.formula() + "-◼"
         }
         else if nodes.count > 1 {
@@ -32,29 +32,28 @@ struct SubtractOperation: OperationValue {
         return "◻-◼"
     }
 
-    func calculate(nodes: [MathNode], vars: VariableLookup) -> OperationResult {
-        if nodes.count > 1 {
-            var result = NSDecimalNumber.zero()
-            var resultPi = NSDecimalNumber.zero()
-            var first = true
-            for node in nodes {
-                let nodeVal = node.calculate(vars)
-                switch nodeVal {
-                case .NaN, .DivZero, .NeedsInput: return nodeVal
-                case let .Number(number, pi):
-                    if first {
-                        result = number
-                        resultPi = pi
-                        first = false
-                    }
-                    else {
-                        result = result - number
-                        resultPi = resultPi - pi
-                    }
+    func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
+        guard nodes.count > 1 else { return .NeedsInput }
+
+        var result = Decimal(0)
+        var resultPi = Decimal(0)
+        var first = true
+        for node in nodes {
+            let nodeVal = node.calculate(vars)
+            switch nodeVal {
+            case .NaN, .DivZero, .NeedsInput: return nodeVal
+            case let .Number(number, pi):
+                if first {
+                    result = number
+                    resultPi = pi
+                    first = false
+                }
+                else {
+                    result = result - number
+                    resultPi = resultPi - pi
                 }
             }
-            return .Number(number: result, pi: resultPi)
         }
-        return .NeedsInput
+        return .Number(number: result, pi: resultPi)
     }
 }

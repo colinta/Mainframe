@@ -11,18 +11,18 @@ class ButtonArtist: Artist {
     var color = UIColor(hex: 0xFFFFFF)
 
     override func draw(context: CGContext) {
-        super.draw(context)
+        super.draw(context: context)
 
-        CGContextSetLineWidth(context, 1)
-        CGContextSetStrokeColorWithColor(context, color.CGColor)
+        context.setLineWidth(1)
+        context.setStrokeColor(color.cgColor)
 
         switch style {
         case .Square, .SquareSized, .RectSized:
-            CGContextAddRect(context, CGRect(origin: .zero, size: size))
-            CGContextDrawPath(context, .Stroke)
+            context.addRect(CGRect(origin: .zero, size: size))
+            context.drawPath(using: .stroke)
         case .Circle, .CircleSized:
-            CGContextAddEllipseInRect(context, CGRect(origin: .zero, size: size))
-            CGContextDrawPath(context, .Stroke)
+            context.addEllipse(in: CGRect(origin: .zero, size: size))
+            context.drawPath(using: .stroke)
         case .None, .RectToFit:
             break
         }

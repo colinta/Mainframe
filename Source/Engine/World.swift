@@ -24,8 +24,9 @@ class World: Node {
     var defaultNode: Node?
     var selectedNode: Node? {
         willSet {
-            if let selectedNode = selectedNode
-            where selectedNode != newValue {
+            if let selectedNode = selectedNode,
+                selectedNode != newValue
+            {
                 selectedNode.selectableComponent?.changeSelected(false)
             }
         }
@@ -36,8 +37,8 @@ class World: Node {
         }
     }
 
-    override func encodeWithCoder(encoder: NSCoder) {
-        super.encodeWithCoder(encoder)
+    override func encode(with encoder: NSCoder) {
+        super.encode(with: encoder)
     }
 
     private func _populateWorld() {
@@ -47,7 +48,10 @@ class World: Node {
     }
 
     func restartWorld() {
-        director?.presentWorld(self.dynamicType.init())
+        director?.presentWorld(type(of: self).init())
+    }
+
+    func worldShook() {
     }
 
 }
@@ -55,14 +59,14 @@ class World: Node {
 extension World {
 
     // also called by addChild
-    override func insertChild(node: SKNode, atIndex index: Int) {
-        super.insertChild(node, atIndex: index)
+    override func insertChild(_ node: SKNode, at index: Int) {
+        super.insertChild(node, at: index)
         if let node = node as? Node {
             processNewNode(node)
         }
     }
 
-    func processNewNode(node: Node) {
+    func processNewNode(_ node: Node) {
         let newNodes = [node] + node.allChildNodes()
         for node in newNodes {
             didAdd(node)
@@ -74,7 +78,7 @@ extension World {
         }
     }
 
-    func didAdd(node: Node) {
+    func didAdd(_ node: Node) {
     }
 
     func willRemove(nodes: [Node]) {
@@ -95,7 +99,7 @@ extension World {
 
 extension World {
 
-    func updateWorld(dt: CGFloat) {
+    func updateWorld(_ dt: CGFloat) {
         if !didPopulateWorld {
             _populateWorld()
             populateWorld()
@@ -109,11 +113,11 @@ extension World {
 
 extension World {
 
-    func selectNode(node: Node) {
+    func selectNode(_ node: Node) {
         selectedNode = node
     }
 
-    func unselectNode(node: Node) {
+    func unselectNode(_ node: Node) {
         if selectedNode == node {
             selectedNode = nil
         }
@@ -123,24 +127,21 @@ extension World {
 
 extension World {
 
-    func worldShook() {
-    }
-
-    func worldTapped(worldLocation: CGPoint) {
+    func worldTapped(_ worldLocation: CGPoint) {
         guard let touchedNode = touchedNode else { return }
 
-        let location = convertPoint(worldLocation, toNode: touchedNode)
+        let location = convert(worldLocation, to: touchedNode)
         touchedNode.touchableComponent?.tapped(location)
     }
 
-    func worldPressed(worldLocation: CGPoint) {
+    func worldPressed(_ worldLocation: CGPoint) {
         guard let touchedNode = touchedNode else { return }
 
-        let location = convertPoint(worldLocation, toNode: touchedNode)
+        let location = convert(worldLocation, to: touchedNode)
         touchedNode.touchableComponent?.pressed(location)
     }
 
-    func worldTouchBegan(worldLocation: CGPoint) {
+    func worldTouchBegan(_ worldLocation: CGPoint) {
         if let touchedNode = touchableNodeAtLocation(worldLocation) {
             self.touchedNode = touchedNode
         }
@@ -149,10 +150,9 @@ extension World {
         }
 
         if let touchedNode = self.touchedNode {
-            let location = convertPoint(worldLocation, toNode: touchedNode)
+            let location = convert(worldLocation, to: touchedNode)
 
-            if let shouldAcceptTest = touchedNode.touchableComponent?.shouldAcceptTouch(location)
-            where !shouldAcceptTest {
+            if let shouldAcceptTest = touchedNode.touchableComponent?.shouldAcceptTouch(at: location), !shouldAcceptTest {
                 self.touchedNode = nil
             }
             else {
@@ -161,49 +161,48 @@ extension World {
         }
     }
 
-    func worldTouchEnded(worldLocation: CGPoint) {
+    func worldTouchEnded(_ worldLocation: CGPoint) {
         guard let touchedNode = touchedNode else { return }
 
-        let location = convertPoint(worldLocation, toNode: touchedNode)
+        let location = convert(worldLocation, to: touchedNode)
         touchedNode.touchableComponent?.touchEnded(location)
 
         self.touchedNode = nil
     }
 
-    func worldDraggingBegan(worldLocation: CGPoint) {
+    func worldDraggingBegan(_ worldLocation: CGPoint) {
         guard let touchedNode = touchedNode else { return }
 
-        let location = convertPoint(worldLocation, toNode: touchedNode)
+        let location = convert(worldLocation, to: touchedNode)
         touchedNode.touchableComponent?.draggingBegan(location)
     }
 
-    func worldDraggingMoved(worldLocation: CGPoint) {
+    func worldDraggingMoved(_ worldLocation: CGPoint) {
         guard let touchedNode = touchedNode else { return }
 
-        let location = convertPoint(worldLocation, toNode: touchedNode)
+        let location = convert(worldLocation, to: touchedNode)
         touchedNode.touchableComponent?.draggingMoved(location)
     }
 
-    func worldDraggingEnded(worldLocation: CGPoint) {
+    func worldDraggingEnded(_ worldLocation: CGPoint) {
         guard let touchedNode = touchedNode else { return }
 
-        let location = convertPoint(worldLocation, toNode: touchedNode)
+        let location = convert(worldLocation, to: touchedNode)
         touchedNode.touchableComponent?.draggingEnded(location)
     }
 
 }
 
 extension World {
-    func touchableNodeAtLocation(worldLocation: CGPoint) -> Node? {
+    func touchableNodeAtLocation(_ worldLocation: CGPoint) -> Node? {
         return touchableNodeAtLocation(worldLocation, inChildren: allChildNodes())
     }
 
-    private func touchableNodeAtLocation(worldLocation: CGPoint, inChildren children: [Node]) -> Node? {
-        for node in children.reverse() {
-            if let touchableComponent = node.touchableComponent
-            where touchableComponent.enabled && node.visible {
-                let nodeLocation = convertPoint(worldLocation, toNode: node)
-                if touchableComponent.containsTouch(nodeLocation) {
+    private func touchableNodeAtLocation(_ worldLocation: CGPoint, inChildren children: [Node]) -> Node? {
+        for node in children.reversed() {
+            if let touchableComponent = node.touchableComponent, touchableComponent.enabled, node.visible {
+                let nodeLocation = convert(worldLocation, to: node)
+                if touchableComponent.containsTouch(at: nodeLocation) {
                     return node
                 }
             }
@@ -225,13 +224,13 @@ extension World {
         }
     }
 
-    func updateFixedNode(node: Node) {
-        if let fixedPosition = node.fixedPosition where screenSize != nil {
+    func updateFixedNode(_ node: Node) {
+        if let fixedPosition = node.fixedPosition, screenSize != nil {
             node.position = calculateFixedPosition(fixedPosition)
         }
     }
 
-    func calculateFixedPosition(position: Position) -> CGPoint {
+    func calculateFixedPosition(_ position: Position) -> CGPoint {
         return position.positionIn(screenSize: screenSize ?? CGSize.zero)
     }
 

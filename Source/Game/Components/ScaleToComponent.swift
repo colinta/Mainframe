@@ -57,8 +57,8 @@ class ScaleToComponent: ApplyToNodeComponent {
 
     typealias OnScaled = Block
     private var _onScaled: [OnScaled] = []
-    func onScaled(handler: OnScaled) {
-        _onScaled << handler
+    func onScaled(_ handler: @escaping OnScaled) {
+        _onScaled.append(handler)
     }
 
     override func defaultApplyTo() {
@@ -82,15 +82,14 @@ class ScaleToComponent: ApplyToNodeComponent {
         }
     }
 
-    override func update(dt: CGFloat) {
-        guard let target = target, currentScale = currentScale else { return }
+    override func update(_ dt: CGFloat) {
+        guard let target = target, let currentScale = currentScale else { return }
 
         let rate: CGFloat
         if let _rate = _rate {
             rate = _rate
         }
-        else if let duration = _duration
-        where duration > 0 {
+        else if let duration = _duration, duration > 0 {
             rate = (target - currentScale) / duration
             _rate = rate
         }

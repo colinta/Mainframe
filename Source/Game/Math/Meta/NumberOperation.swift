@@ -10,11 +10,10 @@ struct NumberOperation: OperationValue {
     var minChildNodes: Int? { return 0 }
     var maxChildNodes: Int? { return 0 }
     let description: String
-    let number: NSDecimalNumber?
+    let number: Decimal?
 
     init(_ numberString: String) {
-        let dec = NSDecimalNumber(string: numberString)
-        if dec != NSDecimalNumber.notANumber() {
+        if let dec = Decimal(string: numberString) {
             self.description = numberString.withCommas()
 
             self.number = dec
@@ -25,11 +24,11 @@ struct NumberOperation: OperationValue {
         }
     }
 
-    func formula(nodes: [MathNode], isTop: Bool) -> String {
+    func formula(_ nodes: [MathNode], isTop: Bool) -> String {
         return description
     }
 
-    func calculate(nodes: [MathNode], vars: VariableLookup) -> OperationResult {
+    func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
         if let number = number {
             return .Number(number: number, pi: 0)
         }

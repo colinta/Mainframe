@@ -47,32 +47,32 @@ class Artist {
     required init() {
     }
 
-    func drawInContext(context: CGContext, scale: Scale) {
-        CGContextSaveGState(context)
-        CGContextScaleCTM(context, self.scale, self.scale)
-        CGContextSetAlpha(context, alpha)
+    func drawIn(context: CGContext, scale: Scale) {
+        context.saveGState()
+        context.scaleBy(x: self.scale, y: self.scale)
+        context.setAlpha(alpha)
 
-        let offset = drawingOffset(scale)
-        CGContextTranslateCTM(context, offset.x, offset.y)
+        let offset = drawingOffset(scale: scale)
+        context.translateBy(x: offset.x, y: offset.y)
 
         if rotation != 0 {
-            CGContextTranslateCTM(context, size.width / 2, size.height / 2)
-            CGContextRotateCTM(context, rotation)
-            CGContextTranslateCTM(context, -size.width / 2, -size.height / 2)
+            context.translateBy(x: size.width / 2, y: size.height / 2)
+            context.rotate(by: rotation)
+            context.translateBy(x: -size.width / 2, y: -size.height / 2)
         }
-        draw(context, scale: scale)
-        CGContextRestoreGState(context)
+        draw(context: context, scale: scale)
+        context.restoreGState()
     }
 
     func draw(context: CGContext, scale: Scale) {
-        draw(context)
+        draw(context: context)
     }
 
     func draw(context: CGContext) {
     }
 
     func drawingOffset(scale: Scale) -> CGPoint {
-        if shadowed {
+        if shadowed.boolValue {
             let shadowSize = shadowed.floatValue
             switch scale {
             case .Small:
@@ -90,7 +90,7 @@ class Artist {
 
     func imageSize(scale: Scale) -> CGSize {
         var size = self.size
-        let offset = drawingOffset(scale)
+        let offset = drawingOffset(scale: scale)
         size += CGSize(
             width: offset.x * 2,
             height: offset.y * 2
@@ -101,15 +101,15 @@ class Artist {
     }
 }
 
-extension Artist.Shadowed: BooleanType {
+extension Artist.Shadowed {
     var boolValue: Bool {
         return floatValue > 0
     }
     var floatValue: CGFloat {
         switch self {
-        case False: return 0
-        case True: return 5
-        case let Size(size): return size
+        case .False: return 0
+        case .True: return 5
+        case let .Size(size): return size
         }
     }
 }
@@ -118,14 +118,14 @@ extension Artist {
     class func generate(id: ImageIdentifier, scale: Scale = .Normal) -> UIImage {
         let artist = id.artist
         artist.scale = scale.scale
-        let size = artist.imageSize(scale) * artist.scale
+        let size = artist.imageSize(scale: scale) * artist.scale
 
         UIGraphicsBeginImageContextWithOptions(size, false, 0)
         let context = UIGraphicsGetCurrentContext()!
-        artist.drawInContext(context, scale: scale)
+        artist.drawIn(context: context, scale: scale)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
-        return image
+        return image!
     }
 }

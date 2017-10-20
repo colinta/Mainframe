@@ -27,9 +27,16 @@ enum Operation {
         }
     }
 
-    func isVariable(name: String) -> Bool {
+    var isSelected: Bool {
         switch self {
-        case let Assign(varName):
+        case .NoOpSelected: return true
+        default: return false
+        }
+    }
+
+    func isVariable(_ name: String) -> Bool {
+        switch self {
+        case let .Assign(varName):
             return name == varName
         default:
             return false
@@ -38,9 +45,9 @@ enum Operation {
 
     func compatible(mainframe: Mainframe) -> Bool {
         switch self {
-        case Assign:
+        case .Assign:
             return mainframe.currentOp == mainframe.topNode
-        case let Variable(name):
+        case let .Variable(name):
             if var ancestor = mainframe.currentOp {
                 while let parent = ancestor.parent as? MathNode {
                     if parent.op.isVariable(name) { return false }
@@ -55,13 +62,13 @@ enum Operation {
 
     func panel(mainframe: Mainframe) -> Mainframe.PanelItem? {
         switch self {
-        case Operator:
+        case .Operator:
             return mainframe.operatorsItem
-        case Variable, Assign:
+        case .Variable, .Assign:
             return mainframe.variablesItem
-        case Number:
+        case .Number:
             return mainframe.numbersItem
-        case Function:
+        case .Function:
             return mainframe.functionsItem
         default:
             return nil
@@ -72,21 +79,21 @@ enum Operation {
 extension Operation {
     var opValue: OperationValue {
         switch self {
-        case let Key(key):      return KeyOperation(op: key)
-        case Next:              return NextOperation()
-        case let Number(num):   return NumberOperation(num)
-        case let Variable(num): return VariableOperation(num)
-        case let Assign(num):   return AssignOperation(num)
-        case let Operator(op):  return op
-        case let Function(fn):  return fn
+        case let .Key(key):      return KeyOperation(op: key)
+        case .Next:              return NextOperation()
+        case let .Number(num):   return NumberOperation(num)
+        case let .Variable(num): return VariableOperation(num)
+        case let .Assign(num):   return AssignOperation(num)
+        case let .Operator(op):  return op
+        case let .Function(fn):  return fn
         default:                return NoOperation()
         }
     }
 }
 
 extension Operation: OperationValue {
-    func formula(nodes: [MathNode], isTop: Bool) -> String { return opValue.formula(nodes, isTop: isTop) }
-    func calculate(nodes: [MathNode], vars: VariableLookup) -> OperationResult { return opValue.calculate(nodes, vars: vars) }
+    func formula(_ nodes: [MathNode], isTop: Bool) -> String { return opValue.formula(nodes, isTop: isTop) }
+    func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult { return opValue.calculate(nodes, vars: vars) }
     func newNode() -> MathNode { return opValue.newNode() }
     var mustBeTop: Bool { return opValue.mustBeTop }
     var minChildNodes: Int? { return opValue.minChildNodes }
@@ -96,7 +103,7 @@ extension Operation: OperationValue {
 }
 
 extension Operation {
-    private func findNextOp(currentOp: MathNode, mainframe: Mainframe, checkParent: Bool = true, skip: MathNode? = nil) -> MathNode? {
+    private func findNextOp(_ currentOp: MathNode, mainframe: Mainframe, checkParent: Bool = true, skip: MathNode? = nil) -> MathNode? {
         if currentOp.op.isNoOp && currentOp != skip {
             return currentOp
         }
@@ -108,25 +115,25 @@ extension Operation {
             }
         }
 
-        if let parent = currentOp.parent as? MathNode where checkParent {
+        if let parent = currentOp.parent as? MathNode, checkParent {
             return findNextOp(parent, mainframe: mainframe, skip: currentOp)
         }
         return nil
     }
 
-    func tapped(mainframe: Mainframe, first: Bool) {
+    func tapped(_ mainframe: Mainframe, first: Bool) {
         guard let currentOp = mainframe.currentOp else { return }
 
         switch self {
-        case Next:
+        case .Next:
             mainframe.currentOp = findNextOp(currentOp, mainframe: mainframe, skip: currentOp)
             mainframe.checkCameraLocation()
-        case let Key(keyCode):
+        case let .Key(keyCode):
             switch keyCode {
             case .Delete:
                 var string = currentOp.numberString
                 if string.characters.count > 0 {
-                    string = string[string.startIndex..<string.endIndex.predecessor()]
+                    string = String(string[string.startIndex..<string.index(before: string.endIndex)])
                 }
                 currentOp.numberString = string
                 if string == "" {
@@ -153,7 +160,7 @@ extension Operation {
                 var string = currentOp.numberString
                 if string.characters.count > 0 {
                     if string[string.startIndex] == "-" {
-                        string = string[string.startIndex.successor()..<string.endIndex]
+                        string = String(string[string.index(after: string.startIndex)..<string.endIndex])
                     }
                     else {
                         string = "-" + string

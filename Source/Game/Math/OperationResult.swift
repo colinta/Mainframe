@@ -10,10 +10,10 @@ enum OperationResult {
     case NaN
     case DivZero
     case NeedsInput
-    case Number(number: NSDecimalNumber, pi: NSDecimalNumber)
+    case Number(number: Decimal, pi: Decimal)
 
-    static func CheckNumber(number number: NSDecimalNumber, pi: NSDecimalNumber) -> OperationResult {
-        if number == NSDecimalNumber.notANumber() || pi == NSDecimalNumber.notANumber() {
+    static func CheckNumber(number: Decimal, pi: Decimal) -> OperationResult {
+        if number == Decimal.nan || pi == Decimal.nan {
             return .NaN
         }
         return .Number(number: number, pi: pi)
@@ -22,24 +22,24 @@ enum OperationResult {
     var number: String {
         switch self {
         case .NaN, .DivZero, .NeedsInput: return description
-        case let .Number(number, pi):
-            return (number + NSDecimalNumber.pi(pi)).description
+        case let .Number(number, numberPi):
+            return (number + Decimal.pi(times: numberPi)).description
         }
     }
 
-    private func numDesc(num: NSDecimalNumber) -> String {
+    private func numDesc(_ num: Decimal) -> String {
         if num > 100_000_000 {
-            let pow: Int = Int(floor(log10(num.doubleValue)))
-            let exp = num / (NSDecimalNumber(int: 10) ^ pow)
+            let power: Int = Int(floor(log10(num.asDouble)))
+            let exp: Decimal = num / pow(10, power)
             var expStr = exp.description
-            let powStr = pow.description
+            let powStr = power.description
             let charCount = expStr.characters.count + powStr.characters.count
             let maxCount = 17
             if charCount > maxCount {
                 let begin = expStr.startIndex
                 var end = expStr.startIndex
-                (maxCount - powStr.characters.count).times { end = end.successor() }
-                expStr = expStr[begin..<end]
+                (maxCount - powStr.characters.count).times { end = expStr.index(after: end) }
+                expStr = String(expStr[begin..<end])
             }
             return expStr.withCommas() + "𝚎" + powStr
         }
@@ -57,7 +57,7 @@ enum OperationResult {
             }
             else {
                 let piDesc = (pi == 1 ? "" : numDesc(pi)) + "π"
-                if number == NSDecimalNumber.zero() {
+                if number == Decimal(0) {
                     return piDesc
                 }
                 else {

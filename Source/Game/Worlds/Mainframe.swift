@@ -63,6 +63,7 @@ class Mainframe: World {
     let operatorsItem = PanelItem()
     let functionsItem = PanelItem()
     let variablesItem = PanelItem()
+    var panelItems: [PanelItem] { return [numbersItem, operatorsItem, functionsItem, variablesItem] }
 
     required init() {
         super.init()
@@ -75,7 +76,7 @@ class Mainframe: World {
     override func populateWorld() {
         outputCalc.z = .Top
         outputCalc.fixedPosition = .TopRight(x: 0, y: Size.ButtonY)
-        outputCalc.alignment = .Right
+        outputCalc.alignment = .right
         outputCalc.style = .RectSized(screenSize.width, 60)
         outputCalc.border = 0x0
         outputCalc.margins.top = 10
@@ -99,7 +100,7 @@ class Mainframe: World {
         outputFormula.margins.left = 10
         outputFormula.margins.right = 10
         outputFormula.textScale = 0.75
-        outputFormula.alignment = .Right
+        outputFormula.alignment = .right
         self << outputFormula
 
         let outputBg = SKSpriteNode(id: .FillColorBox(size: CGSize(screenSize.width, 80), color: 0x0))
@@ -202,43 +203,48 @@ class Mainframe: World {
         }
 
         if outputCalc.textSize.width > self.screenSize.width {
-            outputCalc.alignment = .Left
+            outputCalc.alignment = .left
             outputCalc.fixedPosition = .TopLeft(x: 0, y: Size.ButtonY)
         }
         else {
-            outputCalc.alignment = .Right
+            outputCalc.alignment = .right
             outputCalc.fixedPosition = .TopRight(x: 0, y: Size.ButtonY)
         }
     }
 
-    func willSetCurrentOp(newValue: MathNode?) {
+    func willSetCurrentOp(_ newValue: MathNode?) {
         guard currentOp != newValue else { return }
 
-        if let mathOp = newValue {
-            var topMost: MathNode = mathOp
+        if let currentOp = currentOp, currentOp.op.isSelected {
+            currentOp.op = .NoOp
+        }
+
+        let panelButtonsEnabled = newValue != nil
+        for panelItem in panelItems {
+            panelItem.button.enabled = panelButtonsEnabled
+        }
+
+        if let newOp = newValue {
+            var topMost: MathNode = newOp
             while let parent = topMost.parent as? MathNode {
                 topMost = parent
             }
             self.topNode = topMost
-        }
 
-        if let currentOp = currentOp where currentOp.op.isNoOp {
-            currentOp.op = .NoOp
-        }
+            if newOp.op.isNoOp {
+                newOp.op = .NoOpSelected
+                togglePanel(numbersItem, show: true)
+            }
 
-        if let mathOp = newValue where mathOp.op.isNoOp {
-            mathOp.op = .NoOpSelected
-            togglePanel(numbersItem, show: true)
-        }
-
-        if let mathOp = newValue, panel = mathOp.op.panel(self) {
-            togglePanel(panel, show: true)
+            if let panel = newOp.op.panel(mainframe: self) {
+                togglePanel(panel, show: true)
+            }
         }
 
         firstKeyPress = true
     }
 
-    func didSetCurrentOp(oldValue: MathNode?) {
+    func didSetCurrentOp(_ oldValue: MathNode?) {
         oldValue?.clearEnabled = false
         if let currentOp = currentOp {
             let clearableOp = !currentOp.op.isNoOp
@@ -249,7 +255,7 @@ class Mainframe: World {
         checkCameraLocation()
     }
 
-    func createPanel(panel: Node, buttons: [[Operation]]) {
+    func createPanel(_ panel: Node, buttons: [[Operation]]) {
         let totalHeight: CGFloat = CGFloat(buttons.count) * Size.ButtonHeight
         panel.fixedPosition = .Bottom(x: 0, y: Size.TabbarHeight + totalHeight / 2)
         var y = totalHeight / 2 - Size.ButtonHeight / 2
@@ -275,7 +281,7 @@ class Mainframe: World {
         self << panel
     }
 
-    func togglePanel(nextPanel: PanelItem, show: Bool? = nil) {
+    func togglePanel(_ nextPanel: PanelItem, show: Bool? = nil) {
         if show == true && panel == nextPanel { return }
 
         panel?.panel.fadeTo(0, duration: 0.3)
@@ -299,7 +305,7 @@ class Mainframe: World {
 
             for node in nextPanel.panel.children {
                 if let button = node as? OperationButton {
-                    button.enabled = button.op.compatible(self)
+                    button.enabled = button.op.compatible(mainframe: self)
                 }
             }
 
@@ -333,7 +339,7 @@ class Mainframe: World {
         moveCamera ||= opRight > screenSize.width / 2
 
         if moveCamera {
-            let position = tree.convertPoint(.zero, fromNode: currentOp)
+            let position = tree.convert(.zero, from: currentOp)
             tree.moveTo(-1 * position + CGPoint(y: Size.TreeOffset), duration: 0.3)
         }
     }
@@ -348,13 +354,13 @@ class Mainframe: World {
 }
 
 protocol VariableLookup {
-    func valueForVariable(name: String) -> OperationResult
+    func valueForVariable(_ name: String) -> OperationResult
 }
 
 extension Mainframe: VariableLookup {
-    func valueForVariable(name: String) -> OperationResult {
+    func valueForVariable(_ name: String) -> OperationResult {
         for child in tree.children {
-            if let child = child as? MathNode where child.op.isVariable(name) {
+            if let child = child as? MathNode, child.op.isVariable(name) {
                 return child.calculate(self)
             }
         }
@@ -366,20 +372,14 @@ func ==(lhs: Mainframe.PanelItem, rhs: Mainframe.PanelItem) -> Bool {
     return lhs.panel == rhs.panel
 }
 
-infix operator ||= {
-    associativity left
-    precedence 90
-}
+infix operator ||= : AssignmentPrecedence
 
-infix operator &&= {
-    associativity left
-    precedence 90
-}
+infix operator &&= : AssignmentPrecedence
 
-func ||=(inout lhs: Bool, rhs: Bool) {
+func ||=(lhs: inout Bool, rhs: Bool) {
     lhs = lhs || rhs
 }
 
-func &&=(inout lhs: Bool, rhs: Bool) {
+func &&=(lhs: inout Bool, rhs: Bool) {
     lhs = lhs && rhs
 }

@@ -19,21 +19,21 @@ class SelectableComponent: Component {
         _onSelected = []
     }
 
-    func bindTo(touchableComponent touchableComponent: TouchableComponent) {
+    func bindTo(touchableComponent: TouchableComponent) {
         touchableComponent.on(.DownInside, onTouchIn)
         touchableComponent.on(.Pressed, onTouchPressed)
         touchableComponent.on(.Up, onTouchEnded)
     }
 
-    func changeSelected(selected: Bool) {
+    func changeSelected(_ selected: Bool) {
         self.selected = selected
         for handler in _onSelected {
             handler(selected)
         }
     }
 
-    func onSelected(handler: SimpleOnSelected) {
-        _onSelected << { selected in handler(selected) }
+    func onSelected(_ handler: @escaping SimpleOnSelected) {
+        _onSelected.append({ selected in handler(selected) })
     }
 
     func onTouchIn(location: CGPoint) {

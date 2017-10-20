@@ -10,74 +10,70 @@ func rand() -> Bool {
     return arc4random_uniform(2) == 1
 }
 
-func rand(limit: Int) -> CGFloat {
+func rand(_ limit: Int) -> CGFloat {
     return CGFloat(drand48() * Double(limit))
 }
 
-func rand(limit: Float) -> CGFloat {
+func rand(_ limit: Float) -> CGFloat {
     return CGFloat(drand48() * Double(limit))
 }
 
-func rand(limit: Double) -> CGFloat {
+func rand(_ limit: Double) -> CGFloat {
     return CGFloat(drand48() * limit)
 }
 
-func rand(limit: CGFloat) -> CGFloat {
+func rand(_ limit: CGFloat) -> CGFloat {
     return CGFloat(drand48() * Double(limit))
 }
 
-func rand(limit: Int) -> Int {
+func rand(_ limit: Int) -> Int {
     return Int(arc4random_uniform(UInt32(limit)))
 }
 
-func rand(limit: Float) -> Int {
+func rand(_ limit: Float) -> Int {
     return Int(drand48() * Double(limit))
 }
 
-func rand(limit: Double) -> Int {
+func rand(_ limit: Double) -> Int {
     return Int(drand48() * limit)
 }
 
-func rand(limit: CGFloat) -> Int {
+func rand(_ limit: CGFloat) -> Int {
     return Int(drand48() * Double(limit))
 }
 
-func rand(range: Range<Int>) -> CGFloat {
-    let min = range.startIndex
-    let max = range.endIndex - 1
+func rand(_ range: Range<Int>) -> CGFloat {
+    let min = range.lowerBound
+    let max = range.upperBound - 1
     return rand(min: min, max: max)
 }
 
-func rand(min min: Int, max: Int) -> CGFloat {
+func rand(min: Int, max: Int) -> CGFloat {
     return CGFloat(Double(min) + drand48() * Double(max - min))
 }
 
-func rand(min min: Float, max: Float) -> CGFloat {
+func rand(min: Float, max: Float) -> CGFloat {
     return CGFloat(Double(min) + drand48() * Double(max - min))
 }
 
-func rand(min min: Double, max: Double) -> CGFloat {
+func rand(min: Double, max: Double) -> CGFloat {
     return CGFloat(Double(min) + drand48() * (max - min))
 }
 
-func rand(min min: CGFloat, max: CGFloat) -> CGFloat {
+func rand(min: CGFloat, max: CGFloat) -> CGFloat {
     return CGFloat(Double(min) + drand48() * Double(max - min))
 }
 
-func rand(range: Range<Int>) -> Int {
-    let min = range.startIndex
-    let max = range.endIndex - 1
+func rand(_ range: Range<Int>) -> Int {
+    let min = range.lowerBound
+    let max = range.upperBound - 1
     return min + Int(arc4random_uniform(UInt32(max - min)))
 }
 
-infix operator ± {
-    associativity left
-    precedence 140
-}
+infix operator ± : AdditionPrecedence
+prefix operator ±
 
-prefix operator ± {}
-
-prefix func ±(lhs: CGFloat) -> CGFloat {
+prefix func ± (lhs: CGFloat) -> CGFloat {
     if rand() {
         return lhs
     }
@@ -86,7 +82,7 @@ prefix func ±(lhs: CGFloat) -> CGFloat {
     }
 }
 
-func ±(lhs: CGFloat, rhs: CGFloat) -> CGFloat {
+func ± (lhs: CGFloat, rhs: CGFloat) -> CGFloat {
     if rand() {
         return lhs + rhs
     }

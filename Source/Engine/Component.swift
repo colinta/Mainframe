@@ -11,7 +11,7 @@ class Component: NSObject, NSCoding {
     var enabled = true
     weak var node: Node!
 
-    func update(dt: CGFloat) {
+    func update(_ dt: CGFloat) {
     }
 
     func reset() {
@@ -34,7 +34,7 @@ class Component: NSObject, NSCoding {
         super.init()
     }
 
-    func encodeWithCoder(encoder: NSCoder) {
+    func encode(with encoder: NSCoder) {
     }
 
 }

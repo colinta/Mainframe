@@ -26,7 +26,6 @@ class Node: SKNode {
     weak var fadeToComponent: FadeToComponent?
     weak var jiggleComponent: JiggleComponent?
     weak var moveToComponent: MoveToComponent?
-    weak var phaseComponent: PhaseComponent?
     weak var scaleToComponent: ScaleToComponent?
     weak var selectableComponent: SelectableComponent?
     weak var touchableComponent: TouchableComponent?
@@ -49,8 +48,8 @@ class Node: SKNode {
         super.init(coder: coder)
     }
 
-    override func encodeWithCoder(encoder: NSCoder) {
-        super.encodeWithCoder(encoder)
+    override func encode(with encoder: NSCoder) {
+        super.encode(with: encoder)
     }
 
     func reset() {
@@ -62,32 +61,32 @@ class Node: SKNode {
         }
     }
 
-    func update(dt: CGFloat) {
+    func update(_ dt: CGFloat) {
     }
 
     var dontReset = false
-    override func moveToParent(node: SKNode) {
+    override func move(toParent node: SKNode) {
         dontReset = true
-        super.moveToParent(node)
+        super.move(toParent: node)
         dontReset = false
     }
 
-    override func insertChild(node: SKNode, atIndex index: Int) {
-        super.insertChild(node, atIndex: index)
-        if let world = world, node = node as? Node where world != self {
+    override func insertChild(_ node: SKNode, at index: Int) {
+        super.insertChild(node, at: index)
+        if let world = world, let node = node as? Node, world != self {
             world.processNewNode(node)
         }
     }
 
     override func removeFromParent() {
-        if let world = world where !dontReset {
-            world.willRemove([self] + allChildNodes())
+        if let world = world, !dontReset {
+            world.willRemove(nodes: [self] + allChildNodes())
             reset()
         }
         super.removeFromParent()
     }
 
-    func allChildNodes(recursive recursive: Bool = true) -> [Node] {
+    func allChildNodes(recursive: Bool = true) -> [Node] {
         let nodes = children.filter { sknode in
             return sknode is Node
         } as! [Node]
@@ -102,7 +101,7 @@ class Node: SKNode {
 
 extension Node {
 
-    func updateNodes(dt: CGFloat) {
+    func updateNodes(_ dt: CGFloat) {
         guard world != nil else { return }
 
         for component in components {
@@ -124,14 +123,13 @@ extension Node {
 
 extension Node {
 
-    func addComponent(component: Component) {
+    func addComponent(_ component: Component) {
         component.node = self
         components << component
 
         if let component = component as? FadeToComponent { fadeToComponent = component }
         if let component = component as? JiggleComponent { jiggleComponent = component }
         if let component = component as? MoveToComponent { moveToComponent = component }
-        if let component = component as? PhaseComponent { phaseComponent = component }
         if let component = component as? ScaleToComponent { scaleToComponent = component }
         if let component = component as? SelectableComponent { selectableComponent = component }
         if let component = component as? TouchableComponent { touchableComponent = component }
@@ -139,18 +137,16 @@ extension Node {
         component.didAddToNode()
     }
 
-    func removeComponent(component: Component) {
-        if let index = components.indexOf(component) {
-            if component == fadeToComponent { fadeToComponent = nil }
-            if component == jiggleComponent { jiggleComponent = nil }
-            if component == moveToComponent { moveToComponent = nil }
-            if component == phaseComponent { phaseComponent = nil }
-            if component == scaleToComponent { scaleToComponent = nil }
-            if component == selectableComponent { selectableComponent = nil }
-            if component == touchableComponent { touchableComponent = nil }
+    func removeComponent(_ component: Component) {
+        guard let index = components.index(of: component) else { return }
+        if component == fadeToComponent { fadeToComponent = nil }
+        if component == jiggleComponent { jiggleComponent = nil }
+        if component == moveToComponent { moveToComponent = nil }
+        if component == scaleToComponent { scaleToComponent = nil }
+        if component == selectableComponent { selectableComponent = nil }
+        if component == touchableComponent { touchableComponent = nil }
 
-            components.removeAtIndex(index)
-        }
+        components.remove(at: index)
     }
 
 }

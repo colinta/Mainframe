@@ -17,17 +17,16 @@ struct AssignOperation: OperationValue {
         self.name = name
     }
 
-    func formula(nodes: [MathNode], isTop: Bool) -> String {
-        if let node = nodes.first where nodes.count == 1 {
+    func formula(_ nodes: [MathNode], isTop: Bool) -> String {
+        if let node = nodes.first, nodes.count == 1 {
             return "\(name)=\(node.formula(isTop: true))"
         }
         return "\(name)=◻"
     }
 
-    func calculate(nodes: [MathNode], vars: VariableLookup) -> OperationResult {
-        if let node = nodes.first where nodes.count == 1 {
-            return node.calculate(vars)
-        }
-        return .NeedsInput
+    func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
+        guard let node = nodes.first, nodes.count == 1 else { return .NeedsInput }
+
+        return node.calculate(vars)
     }
 }

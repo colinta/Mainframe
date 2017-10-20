@@ -79,10 +79,10 @@ class Button: TextNode {
 
     typealias OnTapped = Block
     var _onTapped: [OnTapped] = []
-    func onTapped(handler: OnTapped) { _onTapped  << handler }
+    func onTapped(_ handler: @escaping OnTapped) { _onTapped.append(handler) }
     func offTapped() { _onTapped = [] }
 
-    override func setScale(scale: CGFloat) {
+    override func setScale(_ scale: CGFloat) {
         preferredScale = scale
         super.setScale(scale)
     }
@@ -106,7 +106,7 @@ class Button: TextNode {
 
         let touchableComponent = TouchableComponent()
         touchableComponent.containsTouchTest = { [unowned self] (_, location) in
-            return self.containsTouchTest(location)
+            return self.containsTouchTest(at: location)
         }
         touchableComponent.on(.Enter) { _ in
             self.highlight()
@@ -131,7 +131,7 @@ class Button: TextNode {
         updateButtonStyle()
     }
 
-    func containsTouchTest(location: CGPoint) -> Bool {
+    func containsTouchTest(at location: CGPoint) -> Bool {
         let width = max(44, size.width)
         let height = max(44, size.height)
 
@@ -140,10 +140,10 @@ class Button: TextNode {
         var maxY = height / 2
 
         switch alignment {
-        case .Left:
+        case .left:
             minX = 0
             maxX = width
-        case .Right:
+        case .right:
             minX = -width
             maxX = 0
         default:
@@ -187,10 +187,10 @@ class Button: TextNode {
         buttonBackgroundNode.textureId(backgroundId)
 
         switch alignment {
-        case .Left:
+        case .left:
             buttonStyleNode.anchorPoint = CGPoint(0, 0.5)
             buttonBackgroundNode.anchorPoint = CGPoint(0, 0.5)
-        case .Right:
+        case .right:
             buttonStyleNode.anchorPoint = CGPoint(1, 0.5)
             buttonBackgroundNode.anchorPoint = CGPoint(1, 0.5)
         default:

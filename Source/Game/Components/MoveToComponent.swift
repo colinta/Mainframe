@@ -35,8 +35,8 @@ class MoveToComponent: ApplyToNodeComponent {
 
     typealias OnArrived = () -> Void
     private var _onArrived: [OnArrived] = []
-    func onArrived(handler: OnArrived) {
-        _onArrived << handler
+    func onArrived(_ handler: @escaping OnArrived) {
+        _onArrived.append(handler)
     }
 
     func removeComponentOnArrived() {
@@ -61,7 +61,7 @@ class MoveToComponent: ApplyToNodeComponent {
         _onArrived = []
     }
 
-    override func update(dt: CGFloat) {
+    override func update(_ dt: CGFloat) {
         guard let target = target else { return }
 
         let speed: CGFloat
@@ -101,8 +101,9 @@ class MoveToComponent: ApplyToNodeComponent {
 
 extension Node {
 
+    @discardableResult
     func moveTo(
-        dest: CGPoint,
+        _ dest: CGPoint,
         start: CGPoint? = nil,
         duration: CGFloat? = nil,
         speed: CGFloat? = nil

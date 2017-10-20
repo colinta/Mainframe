@@ -82,8 +82,8 @@ class TouchableComponent: Component {
         super.init()
     }
 
-    override func encodeWithCoder(encoder: NSCoder) {
-        super.encodeWithCoder(encoder)
+    override func encode(with encoder: NSCoder) {
+        super.encode(with: encoder)
     }
 
     override func reset() {
@@ -92,7 +92,7 @@ class TouchableComponent: Component {
         _onDragged = []
     }
 
-    override func update(dt: CGFloat) {
+    override func update(_ dt: CGFloat) {
         if isTouching {
             self.touchedFor = touchedFor + dt
         }
@@ -101,7 +101,7 @@ class TouchableComponent: Component {
 
 extension TouchableComponent {
 
-    func tapped(location: CGPoint) {
+    func tapped(_ location: CGPoint) {
         guard !isIgnoring else { return }
 
         trigger(.Tapped, location: location)
@@ -113,7 +113,7 @@ extension TouchableComponent {
         }
     }
 
-    func pressed(location: CGPoint) {
+    func pressed(_ location: CGPoint) {
         guard !isIgnoring else { return }
 
         trigger(.Pressed, location: location)
@@ -125,7 +125,7 @@ extension TouchableComponent {
         }
     }
 
-    func touchBegan(location: CGPoint) {
+    func touchBegan(_ location: CGPoint) {
         isIgnoring = !self.enabled
         guard !isIgnoring else { return }
 
@@ -149,7 +149,7 @@ extension TouchableComponent {
         prevLocation = location
     }
 
-    func touchEnded(location: CGPoint) {
+    func touchEnded(_ location: CGPoint) {
         if !isIgnoring {
             if isTouchingInside {
                 trigger(.Exit, location: location)
@@ -168,8 +168,8 @@ extension TouchableComponent {
         prevLocation = nil
     }
 
-    func touchUpdateInOut(location: CGPoint) {
-        let isInsideNow = containsTouch(location)
+    func touchUpdateInOut(_ location: CGPoint) {
+        let isInsideNow = containsTouch(at: location)
         if !isTouchingInside && isInsideNow {
             isTouchingInside = true
             trigger(.Enter, location: location)
@@ -180,7 +180,7 @@ extension TouchableComponent {
         }
     }
 
-    func draggingBegan(location: CGPoint) {
+    func draggingBegan(_ location: CGPoint) {
         guard !isIgnoring else { return }
 
         trigger(.DragBegan, location: location)
@@ -189,7 +189,7 @@ extension TouchableComponent {
         prevLocation = location
     }
 
-    func draggingMoved(location: CGPoint) {
+    func draggingMoved(_ location: CGPoint) {
         guard !isIgnoring else { return }
 
         trigger(.Moved, location: location)
@@ -212,7 +212,7 @@ extension TouchableComponent {
         prevLocation = location
     }
 
-    func draggingEnded(location: CGPoint) {
+    func draggingEnded(_ location: CGPoint) {
         guard !isIgnoring else { return }
         trigger(.DragEnded, location: location)
     }
@@ -221,20 +221,20 @@ extension TouchableComponent {
 
 extension TouchableComponent {
 
-    func onDragged(handler: OnDragged) {
-        _onDragged << handler
+    func onDragged(_ handler: @escaping OnDragged) {
+        _onDragged.append(handler)
     }
     func offDragged() {
         _onDragged = []
     }
 
-    func off(events: TouchEvent...) {
+    func off(_ events: TouchEvent...) {
         for event in events {
             touchEvents[event] = nil
         }
     }
 
-    func on(event: TouchEvent, _ handler: OnTouchEvent) {
+    func on(_ event: TouchEvent, _ handler: @escaping OnTouchEvent) {
         if touchEvents[event] == nil {
             touchEvents[event] = [handler]
         }
@@ -243,7 +243,7 @@ extension TouchableComponent {
         }
     }
 
-    func trigger(event: TouchEvent, location: CGPoint) {
+    func trigger(_ event: TouchEvent, location: CGPoint) {
         if let handlers = touchEvents[event] {
             for handler in handlers {
                 handler(location)
@@ -260,11 +260,11 @@ extension TouchableComponent {
     }
 
 
-    func shouldAcceptTouch(location: CGPoint) -> Bool {
+    func shouldAcceptTouch(at location: CGPoint) -> Bool {
         return shouldAcceptTouchTest?(node, location) ?? true
     }
 
-    func containsTouch(location: CGPoint) -> Bool {
+    func containsTouch(at location: CGPoint) -> Bool {
         guard enabled else { return false }
         return containsTouchTest?(node, location) ?? false
     }

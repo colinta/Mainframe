@@ -11,23 +11,22 @@ struct FactorialOperation: OperationValue {
     var minChildNodes: Int? { return 1 }
     var maxChildNodes: Int? { return 1 }
 
-    func formula(nodes: [MathNode], isTop: Bool) -> String {
-        if let node = nodes.first where nodes.count == 1 {
+    func formula(_ nodes: [MathNode], isTop: Bool) -> String {
+        if let node = nodes.first, nodes.count == 1 {
             return "\(node.formula())!"
         }
         return "◻!"
     }
 
-    func calculate(nodes: [MathNode], vars: VariableLookup) -> OperationResult {
-        if let node = nodes.first where nodes.count == 1 {
-            let nodeVal = node.calculate(vars)
-            switch nodeVal {
-            case .NaN, .DivZero, .NeedsInput: return nodeVal
-            case let .Number(number, pi):
-                let doubleValue = (number + NSDecimalNumber.pi(pi)).doubleValue
-                return .CheckNumber(number: NSDecimalNumber(double: tgamma(1 + doubleValue)), pi: 0)
-            }
+    func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
+        guard let node = nodes.first, nodes.count == 1 else { return .NeedsInput }
+
+        let nodeVal = node.calculate(vars)
+        switch nodeVal {
+        case .NaN, .DivZero, .NeedsInput: return nodeVal
+        case let .Number(number, numberPi):
+            let asDouble = (number + Decimal.pi(times: numberPi)).asDouble
+            return .CheckNumber(number: Decimal(tgamma(1 + asDouble)), pi: 0)
         }
-        return .NeedsInput
     }
 }

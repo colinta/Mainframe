@@ -12,31 +12,21 @@ struct TanOperation: OperationValue {
     var minChildNodes: Int? { return 1 }
     var maxChildNodes: Int? { return 1 }
 
-    func formula(nodes: [MathNode], isTop: Bool) -> String {
-        if let node = nodes.first where nodes.count == 1 {
+    func formula(_ nodes: [MathNode], isTop: Bool) -> String {
+        if let node = nodes.first, nodes.count == 1 {
             return "tan(\(node.formula(isTop: true)))"
         }
         return "tan(◻)"
     }
 
-    func calculate(nodes: [MathNode], vars: VariableLookup) -> OperationResult {
-        if let node = nodes.first where nodes.count == 1 {
-            let nodeVal = node.calculate(vars)
-            switch nodeVal {
-            case .NaN, .DivZero, .NeedsInput: return nodeVal
-            case let .Number(number, pi):
-                if number == 0 {
-                    switch (2 * pi.doubleValue) % 4 {
-                    case 1, 3:
-                        return .DivZero
-                    case 0, 2:
-                        return .Number(number: 0, pi: 0)
-                    default: break
-                    }
-                }
-                return .CheckNumber(number: NSDecimalNumber(double: tan((number + NSDecimalNumber.pi(pi)).doubleValue)), pi: 0)
-            }
+    func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
+        guard let node = nodes.first, nodes.count == 1 else { return .NeedsInput }
+
+        let nodeVal = node.calculate(vars)
+        switch nodeVal {
+        case .NaN, .DivZero, .NeedsInput: return nodeVal
+        case let .Number(number, numberPi):
+            return .CheckNumber(number: Decimal(tan((number + Decimal.pi(times: numberPi)).asDouble)), pi: 0)
         }
-        return .NeedsInput
     }
 }
