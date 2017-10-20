@@ -1,9 +1,5 @@
-//
-//  Mainframe.swift
-//  Untitled
-//
-//  Created by Colin Gray on 4/22/2016.
-//  Copyright (c) 2016 Untitled. All rights reserved.
+////
+/// Mainframe.swift
 //
 
 private var RestoreTreeDelay: CGFloat = 3

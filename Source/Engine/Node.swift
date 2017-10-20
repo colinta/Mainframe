@@ -1,9 +1,5 @@
-//
-//  Node.swift
-//  Mainframe
-//
-//  Created by Colin Gray on 12/21/2015.
-//  Copyright (c) 2015 Mainframe. All rights reserved.
+////
+/// Node.swift
 //
 
 class Node: SKNode {

@@ -1,9 +1,5 @@
-//
-//  ImageArtists.swift
-//  PlayWithSprites
-//
-//  Created by Colin Gray on 12/19/15.
-//  Copyright © 2015 colinta. All rights reserved.
+////
+/// ImageArtists.swift
 //
 
 extension ImageIdentifier {

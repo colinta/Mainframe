@@ -1,9 +1,5 @@
-//
-//  AppDelegate.swift
-//  Mainframe
-//
-//  Created by Colin Gray on 12/20/15.
-//  Copyright © 2015 colinta. All rights reserved.
+////
+/// AppDelegate.swift
 //
 
 import UIKit

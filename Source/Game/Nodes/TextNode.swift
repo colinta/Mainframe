@@ -1,9 +1,5 @@
-//
-//  TextNode.swift
-//  FlatoutWar
-//
-//  Created by Colin Gray on 8/2/2015.
-//  Copyright (c) 2015 FlatoutWar. All rights reserved.
+////
+/// TextNode.swift
 //
 
 class TextNode: Node {

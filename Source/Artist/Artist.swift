@@ -1,9 +1,5 @@
-//
-//  Artist.swift
-//  Mainframe
-//
-//  Created by Colin Gray on 7/23/15.
-//  Copyright © 2015 colinta. All rights reserved.
+////
+/// Artist.swift
 //
 
 private var generatedImages = [String: UIImage]()

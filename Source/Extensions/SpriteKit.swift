@@ -1,9 +1,5 @@
-//
-//  SpriteKit.swift
-//  AllTriangles
-//
-//  Created by Colin Gray on 12/17/2015.
-//  Copyright (c) 2015 AllTriangles. All rights reserved.
+////
+/// SpriteKit.swift
 //
 
 extension SKTexture {

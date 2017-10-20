@@ -1,9 +1,5 @@
-//
-//  ApplyToNodeComponent.swift
-//  FlatoutWar
-//
-//  Created by Colin Gray on 12/31/2015.
-//  Copyright (c) 2015 FlatoutWar. All rights reserved.
+////
+/// ApplyToNodeComponent.swift
 //
 
 class ApplyToNodeComponent: Component {

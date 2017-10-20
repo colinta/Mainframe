@@ -1,9 +1,5 @@
-//
-//  LogOperation.swift
-//  Mainframe
-//
-//  Created by Colin Gray on 4/29/2016.
-//  Copyright (c) 2016 Mainframe. All rights reserved.
+////
+/// LogOperation.swift
 //
 
 struct LogOperation: OperationValue {

@@ -1,9 +1,5 @@
-//
-//  VariableOperation.swift
-//  Mainframe
-//
-//  Created by Colin Gray on 4/25/2016.
-//  Copyright (c) 2016 Mainframe. All rights reserved.
+////
+/// VariableOperation.swift
 //
 
 struct VariableOperation: OperationValue {

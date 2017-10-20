@@ -1,9 +1,5 @@
-//
-//  ShapeArtists.swift
-//  Mainframe
-//
-//  Created by Colin Gray on 8/25/2015.
-//  Copyright (c) 2015 Mainframe. All rights reserved.
+////
+/// ShapeArtists.swift
 //
 
 class ShapeArtist: Artist {

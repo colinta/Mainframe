@@ -1,9 +1,5 @@
-//
-//  OperationButton.swift
-//  Mainframe
-//
-//  Created by Colin Gray on 4/30/2016.
-//  Copyright (c) 2016 Mainframe. All rights reserved.
+////
+/// OperationButton.swift
 //
 
 class OperationButton: Button {
@@ -17,7 +13,7 @@ class OperationButton: Button {
     convenience required init() {
         self.init(op: .NoOp)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

@@ -1,9 +1,5 @@
-//
-//  TouchSession.swift
-//  Mainframe
-//
-//  Created by Colin Gray on 12/22/2015.
-//  Copyright (c) 2015 Mainframe. All rights reserved.
+////
+/// TouchSession.swift
 //
 
 private let MinDraggingDistance: CGFloat = 4

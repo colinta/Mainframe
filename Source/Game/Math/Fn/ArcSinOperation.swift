@@ -1,9 +1,5 @@
-//
-//  ArcSinOperation.swift
-//  Mainframe
-//
-//  Created by Colin Gray on 4/29/2016.
-//  Copyright (c) 2016 Mainframe. All rights reserved.
+////
+/// ArcSinOperation.swift
 //
 
 struct ArcSinOperation: OperationValue {

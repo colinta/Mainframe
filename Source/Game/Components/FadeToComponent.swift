@@ -1,9 +1,5 @@
-//
-//  FadeToComponent.swift
-//  FlatoutWar
-//
-//  Created by Colin Gray on 12/29/15.
-//  Copyright © 2015 colinta. All rights reserved.
+////
+/// FadeToComponent.swift
 //
 
 class FadeToComponent: ApplyToNodeComponent {

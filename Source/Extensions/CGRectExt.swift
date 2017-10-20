@@ -1,9 +1,5 @@
-//
-//  CGRectExt.swift
-//  Mainframe
-//
-//  Created by Colin Gray on 7/18/2015.
-//  Copyright (c) 2015 Mainframe. All rights reserved.
+////
+/// CGRectExt.swift
 //
 
 //

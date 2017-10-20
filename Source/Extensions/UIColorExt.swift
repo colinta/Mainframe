@@ -1,9 +1,5 @@
-//
-//  UIColor.swift
-//  Mainframe
-//
-//  Created by Colin Gray on 7/15/2015.
-//  Copyright (c) 2015 Mainframe. All rights reserved.
+////
+/// UIColor.swift
 //
 
 extension UIColor {

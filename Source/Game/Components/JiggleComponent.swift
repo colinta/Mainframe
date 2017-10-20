@@ -1,9 +1,5 @@
-//
-//  JiggleComponent.swift
-//  Mainframe
-//
-//  Created by Colin Gray on 4/28/2016.
-//  Copyright (c) 2016 Mainframe. All rights reserved.
+////
+/// JiggleComponent.swift
 //
 
 class JiggleComponent: ApplyToNodeComponent {

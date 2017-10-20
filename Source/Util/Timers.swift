@@ -1,9 +1,5 @@
-//
-//  FreeMethods.swift
-//  FlatoutWar
-//
-//  Created by Colin Gray on 7/27/2015.
-//  Copyright (c) 2015 FlatoutWar. All rights reserved.
+////
+/// FreeMethods.swift
 //
 
 public func inBackground(_ block: @escaping Block) {
