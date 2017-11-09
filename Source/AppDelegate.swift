@@ -7,6 +7,7 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    let ctlr = WorldController()
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -15,7 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         window.makeKeyAndVisible()
 
-        let ctlr = WorldController()
         window.rootViewController = ctlr
 
         UIApplication.shared.statusBarStyle = .lightContent
