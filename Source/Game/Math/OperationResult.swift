@@ -45,7 +45,7 @@ enum OperationResult {
     var description: String {
         switch self {
         case .NaN: return "NaN"
-        case .DivZero: return "!/0"
+        case .DivZero: return "UNDEF"
         case .NeedsInput: return "..."
         case let .Number(number, pi):
             if pi == 0 {

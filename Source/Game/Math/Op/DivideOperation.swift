@@ -32,16 +32,26 @@ struct DivideOperation: OperationValue {
         guard nodes.count > 1 else { return .NeedsInput }
 
         var numbers: [(Decimal, pi: Decimal)] = []
+        var numerZero = false
         for node in nodes {
             let nodeVal = node.calculate(vars)
             switch nodeVal {
             case .NaN, .DivZero, .NeedsInput: return nodeVal
             case let .Number(number, pi):
                 if number == 0 && pi == 0 {
-                    return .Number(number: 0, pi: 0)
+                    if node == nodes.first {
+                        numerZero = true
+                    }
+                    else {
+                        return .DivZero
+                    }
                 }
                 numbers << (number, pi)
             }
+        }
+
+        if numerZero {
+            return .Number(number: 0, pi: 0)
         }
 
         // no denominator is zero,
