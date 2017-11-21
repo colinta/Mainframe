@@ -3,14 +3,26 @@
 //
 
 class WorldController: UIViewController {
-    var worldView: WorldView?
 
     override func loadView() {
-        let view = WorldView(frame: UIScreen.main.bounds)
-        self.worldView = view
-        self.view = worldView
+        let worldView = WorldView()
+        if isIphoneX() {
+            let view = UIView(frame: UIScreen.main.bounds)
+            view.backgroundColor = .black
+            let top: CGFloat = 24
+            let bottom: CGFloat = 20
+            worldView.frame = CGRect(x: 0, y: top, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - top - bottom)
+            worldView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            view.addSubview(worldView)
+            self.view = view
+        }
+        else {
+            worldView.frame = UIScreen.main.bounds
+            self.view = worldView
+        }
 
-        view.presentWorld(Mainframe())
+        self.view.isOpaque = true
+        worldView.presentWorld(Mainframe())
     }
 
     override var shouldAutorotate: Bool {
@@ -25,4 +37,8 @@ class WorldController: UIViewController {
         return .lightContent
     }
 
+}
+
+private func isIphoneX() -> Bool {
+    return UIScreen.main.bounds.size.height == 812
 }
