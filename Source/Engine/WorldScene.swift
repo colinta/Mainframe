@@ -3,7 +3,7 @@
 //
 
 class WorldScene: SKScene {
-    var world: World
+    let world: World
     var prevTime: TimeInterval?
     var touchSession: TouchSession?
 
