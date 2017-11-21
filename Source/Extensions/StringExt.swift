@@ -5,7 +5,7 @@ public extension String {
 
         if hasPrefix(".") {
             var found = false
-            let parts = characters.split {
+            let parts = split {
                 if $0 == "." && !found {
                     found = true
                     return true
@@ -18,7 +18,7 @@ public extension String {
         }
         else if contains(".") {
             var found = false
-            let parts = characters.split {
+            let parts = split {
                 if $0 == "." && !found {
                     found = true
                     return true
@@ -32,7 +32,7 @@ public extension String {
         else {
             var retval = ""
             var count = 0
-            for c in characters.reversed() {
+            for c in reversed() {
                 if count == 0 && retval != "" {
                     retval = "," + retval
                 }
@@ -46,7 +46,7 @@ public extension String {
     private func withSpaces() -> String {
         var retval = ""
         var count = 0
-        for c in characters {
+        for c in self {
             if count == 0 && retval != "" {
                 retval += "␠"
             }

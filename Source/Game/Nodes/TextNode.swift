@@ -51,7 +51,7 @@ class TextNode: Node {
         let letterSpace = font.space
         let heightOffset = 2 * font.scale
 
-        let sprites = text.characters.map { (char: Character) -> SKSpriteNode in
+        let sprites = text.map { (char: Character) -> SKSpriteNode in
             return SKSpriteNode(id: .Letter(String(char), color: color))
         }
         var first = true

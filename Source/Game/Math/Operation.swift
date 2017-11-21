@@ -128,7 +128,7 @@ extension Operation {
             switch keyCode {
             case .Delete:
                 var string = currentOp.numberString
-                if string.characters.count > 0 {
+                if !string.isEmpty {
                     string = String(string[string.startIndex..<string.index(before: string.endIndex)])
                 }
                 currentOp.numberString = string
@@ -154,7 +154,7 @@ extension Operation {
                 }
             case .SignSwitch:
                 var string = currentOp.numberString
-                if string.characters.count > 0 {
+                if !string.isEmpty {
                     if string[string.startIndex] == "-" {
                         string = String(string[string.index(after: string.startIndex)..<string.endIndex])
                     }

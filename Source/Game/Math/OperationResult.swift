@@ -29,12 +29,12 @@ enum OperationResult {
             let exp: Decimal = num / pow(10, power)
             var expStr = exp.description
             let powStr = power.description
-            let charCount = expStr.characters.count + powStr.characters.count
+            let charCount = expStr.count + powStr.count
             let maxCount = 17
             if charCount > maxCount {
                 let begin = expStr.startIndex
                 var end = expStr.startIndex
-                (maxCount - powStr.characters.count).times { end = expStr.index(after: end) }
+                (maxCount - powStr.count).times { end = expStr.index(after: end) }
                 expStr = String(expStr[begin..<end])
             }
             return expStr.withCommas() + "𝚎" + powStr

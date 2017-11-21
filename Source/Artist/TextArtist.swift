@@ -19,7 +19,7 @@ class TextArtist: Artist {
     func calculateSize() {
         var size = CGSize(width: 0, height: 0)
         var isFirst = true
-        for char in (text.characters.map { String($0) }) {
+        for char in (text.map { String($0) }) {
             let letter = font.art[char] ?? Letter(style: .Line, size: CGSize.zero, points: [])
             if !isFirst {
                 size.width += letterSpace
@@ -41,7 +41,7 @@ class TextArtist: Artist {
         context.saveGState()
         context.scaleBy(x: textScale, y: textScale)
         context.translateBy(x: (size.width - textSize.width) / 2, y: (size.height - textSize.height) / 2)
-        for char in (text.characters.map { String($0) }) {
+        for char in (text.map { String($0) }) {
             let letter = font.art[char] ?? Letter(style: .Line, size: CGSize.zero, points: [])
             for path in letter.points {
                 var firstPoint = true
