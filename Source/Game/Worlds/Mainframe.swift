@@ -49,7 +49,7 @@ class Mainframe: World {
     var hasManyTopNodes: Bool {
         return topNodes.count > 1
     }
-    var topNodes: [MathNode] { return tree.children.flatMap { $0 as? MathNode } }
+    var topNodes: [MathNode] { return tree.children.compactMap { $0 as? MathNode } }
     var topNode = MathNode() {
         willSet {
             guard newValue != topNode else { return }

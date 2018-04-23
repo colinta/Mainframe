@@ -5,28 +5,23 @@
 extension CGSize {
 
     init(_ size: CGFloat) {
-        width = size
-        height = size
+        self.init(width: size, height: size)
     }
 
     init(r: CGFloat) {
-        width = 2 * r
-        height = 2 * r
+        self.init(width: 2 * r, height: 2 * r)
     }
 
     init(_ width: CGFloat, _ height: CGFloat) {
-        self.width = width
-        self.height = height
+        self.init(width: width, height: height)
     }
 
     init(width: CGFloat) {
-        self.width = width
-        height = 0
+        self.init(width: width, height: 0)
     }
 
     init(height: CGFloat) {
-        width = 0
-        self.height = height
+        self.init(width: 0, height: height)
     }
 
     var angle: CGFloat {

@@ -5,28 +5,23 @@
 extension CGPoint {
 
     init(_ loc: CGFloat) {
-        x = loc
-        y = loc
+        self.init(x: loc, y: loc)
     }
 
     init(_ x: CGFloat, _ y: CGFloat) {
-        self.x = x
-        self.y = y
+        self.init(x: x, y: y)
     }
 
     init(x: CGFloat) {
-        self.x = x
-        y = 0
+        self.init(x: x, y: 0)
     }
 
     init(y: CGFloat) {
-        x = 0
-        self.y = y
+        self.init(x: 0, y: y)
     }
 
     init(r: CGFloat, a: CGFloat) {
-        x = r * cos(a)
-        y = r * sin(a)
+        self.init(x: r * cos(a), y: r * sin(a))
     }
 
     var length: CGFloat {

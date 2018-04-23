@@ -11,13 +11,11 @@ public extension CGRect {
 // MARK: convenience
 
     init(center: CGPoint, size: CGSize) {
-        origin = CGPoint(x: center.x - size.width / 2, y: center.y - size.height / 2)
-        self.size = size
+        self.init(origin: CGPoint(x: center.x - size.width / 2, y: center.y - size.height / 2), size: size)
     }
 
     init(x: CGFloat, y: CGFloat, right: CGFloat, bottom: CGFloat) {
-        origin = CGPoint(x: x, y: y)
-        size = CGSize(width: right - x, height: bottom - y)
+        self.init(origin: CGPoint(x: x, y: y), size: CGSize(width: right - x, height: bottom - y))
     }
 
     static func at(x: CGFloat, y: CGFloat) -> CGRect {
