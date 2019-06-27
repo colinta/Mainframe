@@ -7,7 +7,7 @@ class TextArtist: Artist {
     private var textSize: CGSize = .zero
 
     var color = UIColor(hex: 0xFFFFFF)
-    var font: Font = SmallFont {
+    var font: Font = DefaultFont {
         didSet {
             calculateSize()
         }

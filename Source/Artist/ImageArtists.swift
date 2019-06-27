@@ -19,7 +19,7 @@ extension ImageIdentifier {
         case let .Letter(letter, color):
             let artist = TextArtist()
             artist.text = letter
-            artist.font = SmallFont
+            artist.font = DefaultFont
             artist.color = UIColor(hex: color)
 
             return artist

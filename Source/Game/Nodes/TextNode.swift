@@ -7,7 +7,7 @@ class TextNode: Node {
     var text: String {
         didSet { updateTextNodes() }
     }
-    var font: Font = SmallFont {
+    var font: Font = DefaultFont {
         didSet { updateTextNodes() }
     }
     var textSprite: SKNode

@@ -14,13 +14,20 @@
 		151E7E6EBFBD033D3E3F2527 /* WorldController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB9F26C16C893E89D88F72A /* WorldController.swift */; };
 		1625B6A9D6C55A9983FEF4AC /* LogOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6EF1D10750C6277BBBF14A0 /* LogOperation.swift */; };
 		165860AA9BE85BDC72DF3F66 /* AddOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8A8B74006E0201876DA1F2 /* AddOperation.swift */; };
-		1A50890E1663046295260888 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C6EE1AB090344A7D41CABD /* Artist.swift */; };
 		1CD0FB332F309A8B658BB5E4 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D8A29F4313395D9598601A /* Line.swift */; };
-		1D0F58CA1F9A644F00AB48A0 /* ExpandArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0F58C91F9A644F00AB48A0 /* ExpandArtist.swift */; };
+		1D05679222C4FAF0001DF7B4 /* DefaultFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D05679122C4FAF0001DF7B4 /* DefaultFont.swift */; };
+		1D05679D22C4FAFA001DF7B4 /* ShapeArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D05679322C4FAF8001DF7B4 /* ShapeArtist.swift */; };
+		1D05679E22C4FAFA001DF7B4 /* TextArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D05679422C4FAF8001DF7B4 /* TextArtist.swift */; };
+		1D0567A022C4FAFA001DF7B4 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D05679622C4FAF9001DF7B4 /* Artist.swift */; };
+		1D0567A122C4FAFA001DF7B4 /* ButtonArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D05679722C4FAF9001DF7B4 /* ButtonArtist.swift */; };
+		1D0567A222C4FAFA001DF7B4 /* ImageArtists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D05679822C4FAF9001DF7B4 /* ImageArtists.swift */; };
+		1D0567A322C4FAFA001DF7B4 /* ImageIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D05679922C4FAF9001DF7B4 /* ImageIdentifier.swift */; };
+		1D0567A422C4FAFA001DF7B4 /* DotArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D05679A22C4FAF9001DF7B4 /* DotArtist.swift */; };
+		1D0567A522C4FAFA001DF7B4 /* ExpandArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D05679B22C4FAFA001DF7B4 /* ExpandArtist.swift */; };
+		1D0567A622C4FAFA001DF7B4 /* LetterAndFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D05679C22C4FAFA001DF7B4 /* LetterAndFont.swift */; };
 		1D0F58CC1F9A849000AB48A0 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D0F58CB1F9A849000AB48A0 /* Launch Screen.storyboard */; };
 		206DC25A72CECF5D670618E5 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93474894F34CE8463FA53F54 /* Component.swift */; };
 		211E6E89716C020F15327473 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = E889A19284B55A8D974AF14D /* Node.swift */; };
-		2338DCC121B777EB053589E4 /* TextArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36923D1103B7AB39AA36B555 /* TextArtist.swift */; };
 		28F0A928C3773BCF1F9027F9 /* Dot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BFE1C2EE3F1C77300012C1 /* Dot.swift */; };
 		2DC86B229F079604829A182B /* KeyOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCAE6E1D20941E3629BB7B3 /* KeyOperation.swift */; };
 		2E68184ACFBAAB02BDD7C080 /* MathNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D19EF7C3552E2FAC41432A /* MathNode.swift */; };
@@ -28,10 +35,8 @@
 		2FE99FB69EE881E5B639E65C /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D06B3BB0D6F7D3E7361481 /* Position.swift */; };
 		31C1911BDE12A317673E2AEF /* OperationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B972AB8B19FA8052786026 /* OperationResult.swift */; };
 		40928E68E540F55D888A2F2A /* SpriteKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A0F452BF4C031C40800851 /* SpriteKit.swift */; };
-		443E992612692088C1709D66 /* ImageArtists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47492FDADB84694DCBDDAFDC /* ImageArtists.swift */; };
 		452F3D41952B14C0E030D113 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BCA1F7CD0CD2307C8D5F9C5 /* Math.swift */; };
 		4857A7829680BD5581B04384 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B277ECCF0912BB4C0BA91055 /* UIKit.framework */; };
-		490E0A872869EE930ECBB00C /* ShapeArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A94214F12F21A4DC4385435 /* ShapeArtist.swift */; };
 		4BA8180FD96EDEC2E3C6CF36 /* NextOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D0082ED2160B75F395692A /* NextOperation.swift */; };
 		52352BF849237B3C7841D6ED /* CGPointExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5E21C7BBADFC1AE3902CBB /* CGPointExt.swift */; };
 		585CEAAA66428365237C8E8E /* ArrayExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB51185B25E83DF46251C1E /* ArrayExt.swift */; };
@@ -49,7 +54,6 @@
 		7104B8D4A4C97258B0C8ADA8 /* NSDecimalNumberExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4324D9CBFCE1625FA107DA /* NSDecimalNumberExt.swift */; };
 		71D30B713869FA70DBFEF915 /* WorldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEAE256C5B715AD60B632BD /* WorldView.swift */; };
 		73FDAE3932C1ABB5C472BF8C /* Mainframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFE2C0CE79AB207827F16D0 /* Mainframe.swift */; };
-		76FCDFB38D7B783C9A17AA61 /* LetterAndFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5A3459048594EEB322BF7D /* LetterAndFont.swift */; };
 		780C053E3BE4125E354E72E4 /* UIColorExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0EAAE5315F028FC37AE692 /* UIColorExt.swift */; };
 		78C4224F9E822FB94DDED683 /* WorldScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8AB2DABABAEA92D2E25412D /* WorldScene.swift */; };
 		798D5AFF7E5C3A5881BBACCF /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71059F6441B8CDA9B56D620 /* Operation.swift */; };
@@ -65,17 +69,13 @@
 		AA64FCD56A6EE98A5BB89A8B /* TouchSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE523456FB26C15C859029B /* TouchSession.swift */; };
 		B1E1D73A47AFC5B563EA1F3B /* VariableOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6B1CE514C363305C5441E /* VariableOperation.swift */; };
 		B55BF3E753AD1A23CA1B19A2 /* ArcCosOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42B5CC00FAD111C74AF9C57 /* ArcCosOperation.swift */; };
-		B5971AD58367DFF4E05B5E37 /* ImageIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067C3D192E65BA94954CF80E /* ImageIdentifier.swift */; };
-		B5B14C2FAAD175942227F72C /* DotArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95501DAC1ADDCB8314B0D636 /* DotArtist.swift */; };
 		B7493E4C566824C1EBFACA5A /* Timers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7748D790A924039140A64238 /* Timers.swift */; };
 		B9A6A272A584483335905E76 /* FadeToComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A500C5BA696119FC13D2B3 /* FadeToComponent.swift */; };
 		BCBAD7F6B53D5619991A263E /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9CCBEF8ADDEF01F2A211F0F /* Button.swift */; };
 		C0048354E8644C018A402634 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C9B94F3E4CE3CD40AB29072 /* Assets.xcassets */; };
-		C3FF8A5E3E6E2BDD58229AF1 /* SmallFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65749656182E7DE4E130CA8 /* SmallFont.swift */; };
 		C7C46A0951333971F41B7433 /* Easing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7BFD81433148601E346CEC /* Easing.swift */; };
 		C8A708756F0891C4BF02D8BB /* ArcSinOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB2D4F21CE096B82B929F3C /* ArcSinOperation.swift */; };
 		CF6264AF52CA8412A95338B7 /* SinOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89187568C8D8DE321D7DC981 /* SinOperation.swift */; };
-		D55F02E71F54B82A46DEE800 /* ButtonArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3BD527A82057D0FA568B3C /* ButtonArtist.swift */; };
 		D5D5643ABC1B796BFFF07A58 /* JiggleComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424452317EBBD79674446576 /* JiggleComponent.swift */; };
 		D8F2EE4712E9DFDBBA5508AF /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 596C8884BADBE3A30B0A815A /* Default-568h@2x.png */; };
 		DAD7ADE1C789916A4CA68C54 /* TouchableComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5408CA944597F902121CA045 /* TouchableComponent.swift */; };
@@ -90,87 +90,87 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		00B972AB8B19FA8052786026 /* OperationResult.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OperationResult.swift; path = Source/Game/Math/OperationResult.swift; sourceTree = "<group>"; };
-		01BFE1C2EE3F1C77300012C1 /* Dot.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Dot.swift; path = Source/Game/Nodes/Dot.swift; sourceTree = "<group>"; };
-		01D8A29F4313395D9598601A /* Line.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Line.swift; path = Source/Game/Nodes/Line.swift; sourceTree = "<group>"; };
-		02D06B3BB0D6F7D3E7361481 /* Position.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Position.swift; path = Source/Engine/Position.swift; sourceTree = "<group>"; };
-		067C3D192E65BA94954CF80E /* ImageIdentifier.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImageIdentifier.swift; path = Source/Artist/ImageIdentifier.swift; sourceTree = "<group>"; };
-		102C887523331D4CFDE83BF1 /* CosOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CosOperation.swift; path = Source/Game/Math/Fn/CosOperation.swift; sourceTree = "<group>"; };
-		1D0F58C91F9A644F00AB48A0 /* ExpandArtist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExpandArtist.swift; path = Source/Artist/ExpandArtist.swift; sourceTree = "<group>"; };
+		00B972AB8B19FA8052786026 /* OperationResult.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OperationResult.swift; sourceTree = "<group>"; };
+		01BFE1C2EE3F1C77300012C1 /* Dot.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Dot.swift; sourceTree = "<group>"; };
+		01D8A29F4313395D9598601A /* Line.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
+		02D06B3BB0D6F7D3E7361481 /* Position.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
+		102C887523331D4CFDE83BF1 /* CosOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CosOperation.swift; sourceTree = "<group>"; };
+		1D05679122C4FAF0001DF7B4 /* DefaultFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultFont.swift; sourceTree = "<group>"; };
+		1D05679322C4FAF8001DF7B4 /* ShapeArtist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShapeArtist.swift; sourceTree = "<group>"; };
+		1D05679422C4FAF8001DF7B4 /* TextArtist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextArtist.swift; sourceTree = "<group>"; };
+		1D05679622C4FAF9001DF7B4 /* Artist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
+		1D05679722C4FAF9001DF7B4 /* ButtonArtist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonArtist.swift; sourceTree = "<group>"; };
+		1D05679822C4FAF9001DF7B4 /* ImageArtists.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageArtists.swift; sourceTree = "<group>"; };
+		1D05679922C4FAF9001DF7B4 /* ImageIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageIdentifier.swift; sourceTree = "<group>"; };
+		1D05679A22C4FAF9001DF7B4 /* DotArtist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DotArtist.swift; sourceTree = "<group>"; };
+		1D05679B22C4FAFA001DF7B4 /* ExpandArtist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandArtist.swift; sourceTree = "<group>"; };
+		1D05679C22C4FAFA001DF7B4 /* LetterAndFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LetterAndFont.swift; sourceTree = "<group>"; };
 		1D0F58CB1F9A849000AB48A0 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "Launch Screen.storyboard"; path = "Resources/Launch Screen.storyboard"; sourceTree = "<group>"; };
-		1D7BFD81433148601E346CEC /* Easing.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Easing.swift; path = Source/Util/Easing.swift; sourceTree = "<group>"; };
-		1E3885DB38F015DE6ACCA142 /* TanOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TanOperation.swift; path = Source/Game/Math/Fn/TanOperation.swift; sourceTree = "<group>"; };
-		1F58AF12B89BF9E641D3A514 /* DivideOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DivideOperation.swift; path = Source/Game/Math/Op/DivideOperation.swift; sourceTree = "<group>"; };
-		22BBECC64D1D5C22AAE0550C /* ScaleToComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ScaleToComponent.swift; path = Source/Game/Components/ScaleToComponent.swift; sourceTree = "<group>"; };
-		24DF920677164F3A7A5AA414 /* ChevronExt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ChevronExt.swift; path = Source/Extensions/ChevronExt.swift; sourceTree = "<group>"; };
-		2AB51185B25E83DF46251C1E /* ArrayExt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ArrayExt.swift; path = Source/Extensions/ArrayExt.swift; sourceTree = "<group>"; };
-		2AE492BAE6B3256DB5AE4097 /* MultiplyOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MultiplyOperation.swift; path = Source/Game/Math/Op/MultiplyOperation.swift; sourceTree = "<group>"; };
-		2BE523456FB26C15C859029B /* TouchSession.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TouchSession.swift; path = Source/Engine/TouchSession.swift; sourceTree = "<group>"; };
-		2CCAE6E1D20941E3629BB7B3 /* KeyOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KeyOperation.swift; path = Source/Game/Math/Key/KeyOperation.swift; sourceTree = "<group>"; };
-		36923D1103B7AB39AA36B555 /* TextArtist.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TextArtist.swift; path = Source/Artist/TextArtist.swift; sourceTree = "<group>"; };
-		3C8748DA079715BBD89F7512 /* TextNode.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TextNode.swift; path = Source/Game/Nodes/TextNode.swift; sourceTree = "<group>"; };
-		3EFE2C0CE79AB207827F16D0 /* Mainframe.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Mainframe.swift; path = Source/Game/Worlds/Mainframe.swift; sourceTree = "<group>"; };
-		3F5A3459048594EEB322BF7D /* LetterAndFont.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LetterAndFont.swift; path = Source/Artist/LetterAndFont.swift; sourceTree = "<group>"; };
-		424452317EBBD79674446576 /* JiggleComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = JiggleComponent.swift; path = Source/Game/Components/JiggleComponent.swift; sourceTree = "<group>"; };
-		47492FDADB84694DCBDDAFDC /* ImageArtists.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImageArtists.swift; path = Source/Artist/ImageArtists.swift; sourceTree = "<group>"; };
-		49B6B1CE514C363305C5441E /* VariableOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = VariableOperation.swift; path = Source/Game/Math/Var/VariableOperation.swift; sourceTree = "<group>"; };
-		4A64B4289EA88ACAA949C059 /* OperationValue.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OperationValue.swift; path = Source/Game/Math/OperationValue.swift; sourceTree = "<group>"; };
-		4C0EAAE5315F028FC37AE692 /* UIColorExt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UIColorExt.swift; path = Source/Extensions/UIColorExt.swift; sourceTree = "<group>"; };
+		1D7BFD81433148601E346CEC /* Easing.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Easing.swift; sourceTree = "<group>"; };
+		1E3885DB38F015DE6ACCA142 /* TanOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TanOperation.swift; sourceTree = "<group>"; };
+		1F58AF12B89BF9E641D3A514 /* DivideOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DivideOperation.swift; sourceTree = "<group>"; };
+		22BBECC64D1D5C22AAE0550C /* ScaleToComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ScaleToComponent.swift; sourceTree = "<group>"; };
+		24DF920677164F3A7A5AA414 /* ChevronExt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ChevronExt.swift; sourceTree = "<group>"; };
+		2AB51185B25E83DF46251C1E /* ArrayExt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ArrayExt.swift; sourceTree = "<group>"; };
+		2AE492BAE6B3256DB5AE4097 /* MultiplyOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MultiplyOperation.swift; sourceTree = "<group>"; };
+		2BE523456FB26C15C859029B /* TouchSession.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TouchSession.swift; sourceTree = "<group>"; };
+		2CCAE6E1D20941E3629BB7B3 /* KeyOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = KeyOperation.swift; sourceTree = "<group>"; };
+		3C8748DA079715BBD89F7512 /* TextNode.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TextNode.swift; sourceTree = "<group>"; };
+		3EFE2C0CE79AB207827F16D0 /* Mainframe.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Mainframe.swift; sourceTree = "<group>"; };
+		424452317EBBD79674446576 /* JiggleComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JiggleComponent.swift; sourceTree = "<group>"; };
+		49B6B1CE514C363305C5441E /* VariableOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VariableOperation.swift; sourceTree = "<group>"; };
+		4A64B4289EA88ACAA949C059 /* OperationValue.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OperationValue.swift; sourceTree = "<group>"; };
+		4C0EAAE5315F028FC37AE692 /* UIColorExt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UIColorExt.swift; sourceTree = "<group>"; };
 		4C9B94F3E4CE3CD40AB29072 /* Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Resources/Assets.xcassets; sourceTree = "<group>"; };
-		5408CA944597F902121CA045 /* TouchableComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TouchableComponent.swift; path = Source/Game/Components/TouchableComponent.swift; sourceTree = "<group>"; };
-		595E310D354E117A9C376164 /* StringExt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StringExt.swift; path = Source/Extensions/StringExt.swift; sourceTree = "<group>"; };
+		5408CA944597F902121CA045 /* TouchableComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TouchableComponent.swift; sourceTree = "<group>"; };
+		595E310D354E117A9C376164 /* StringExt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StringExt.swift; sourceTree = "<group>"; };
 		596C8884BADBE3A30B0A815A /* Default-568h@2x.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Resources/Default-568h@2x.png"; sourceTree = "<group>"; };
-		5A94214F12F21A4DC4385435 /* ShapeArtist.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ShapeArtist.swift; path = Source/Artist/ShapeArtist.swift; sourceTree = "<group>"; };
-		5D5E21C7BBADFC1AE3902CBB /* CGPointExt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CGPointExt.swift; path = Source/Extensions/CGPointExt.swift; sourceTree = "<group>"; };
-		6BF28C56DA80059CC040DEE2 /* Rand.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Rand.swift; path = Source/Util/Rand.swift; sourceTree = "<group>"; };
-		72C6EE1AB090344A7D41CABD /* Artist.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Artist.swift; path = Source/Artist/Artist.swift; sourceTree = "<group>"; };
-		7748D790A924039140A64238 /* Timers.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Timers.swift; path = Source/Util/Timers.swift; sourceTree = "<group>"; };
-		7B3BD527A82057D0FA568B3C /* ButtonArtist.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ButtonArtist.swift; path = Source/Artist/ButtonArtist.swift; sourceTree = "<group>"; };
-		7CB2D4F21CE096B82B929F3C /* ArcSinOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ArcSinOperation.swift; path = Source/Game/Math/Fn/ArcSinOperation.swift; sourceTree = "<group>"; };
-		7D20F221527DB3EB3CF61B2B /* CGRectExt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CGRectExt.swift; path = Source/Extensions/CGRectExt.swift; sourceTree = "<group>"; };
-		807F84D631A606B3094CDDB1 /* ArcTanOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ArcTanOperation.swift; path = Source/Game/Math/Fn/ArcTanOperation.swift; sourceTree = "<group>"; };
-		86C808D8580909620C76D626 /* MoveToComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MoveToComponent.swift; path = Source/Game/Components/MoveToComponent.swift; sourceTree = "<group>"; };
-		88B1C0780CFEBC58F4920319 /* NumberOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NumberOperation.swift; path = Source/Game/Math/Meta/NumberOperation.swift; sourceTree = "<group>"; };
-		89187568C8D8DE321D7DC981 /* SinOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SinOperation.swift; path = Source/Game/Math/Fn/SinOperation.swift; sourceTree = "<group>"; };
-		89EC8FFEA79297D729D5E7B2 /* SquareRootOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SquareRootOperation.swift; path = Source/Game/Math/Op/SquareRootOperation.swift; sourceTree = "<group>"; };
-		8B4A72B4CA2A5DDE56A90BDB /* CloseButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CloseButton.swift; path = Source/Game/Nodes/CloseButton.swift; sourceTree = "<group>"; };
-		8BCA1F7CD0CD2307C8D5F9C5 /* Math.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Math.swift; path = Source/Util/Math.swift; sourceTree = "<group>"; };
-		8EB9F26C16C893E89D88F72A /* WorldController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WorldController.swift; path = Source/Engine/WorldController.swift; sourceTree = "<group>"; };
-		93474894F34CE8463FA53F54 /* Component.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Component.swift; path = Source/Engine/Component.swift; sourceTree = "<group>"; };
-		93867326C4599121D2C89F44 /* OperationButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OperationButton.swift; path = Source/Game/Nodes/OperationButton.swift; sourceTree = "<group>"; };
-		952D721961128AA20423757C /* World.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = World.swift; path = Source/Engine/World.swift; sourceTree = "<group>"; };
-		95501DAC1ADDCB8314B0D636 /* DotArtist.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DotArtist.swift; path = Source/Artist/DotArtist.swift; sourceTree = "<group>"; };
+		5D5E21C7BBADFC1AE3902CBB /* CGPointExt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CGPointExt.swift; sourceTree = "<group>"; };
+		6BF28C56DA80059CC040DEE2 /* Rand.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Rand.swift; sourceTree = "<group>"; };
+		7748D790A924039140A64238 /* Timers.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Timers.swift; sourceTree = "<group>"; };
+		7CB2D4F21CE096B82B929F3C /* ArcSinOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ArcSinOperation.swift; sourceTree = "<group>"; };
+		7D20F221527DB3EB3CF61B2B /* CGRectExt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CGRectExt.swift; sourceTree = "<group>"; };
+		807F84D631A606B3094CDDB1 /* ArcTanOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ArcTanOperation.swift; sourceTree = "<group>"; };
+		86C808D8580909620C76D626 /* MoveToComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MoveToComponent.swift; sourceTree = "<group>"; };
+		88B1C0780CFEBC58F4920319 /* NumberOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NumberOperation.swift; sourceTree = "<group>"; };
+		89187568C8D8DE321D7DC981 /* SinOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SinOperation.swift; sourceTree = "<group>"; };
+		89EC8FFEA79297D729D5E7B2 /* SquareRootOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SquareRootOperation.swift; sourceTree = "<group>"; };
+		8B4A72B4CA2A5DDE56A90BDB /* CloseButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CloseButton.swift; sourceTree = "<group>"; };
+		8BCA1F7CD0CD2307C8D5F9C5 /* Math.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
+		8EB9F26C16C893E89D88F72A /* WorldController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WorldController.swift; sourceTree = "<group>"; };
+		93474894F34CE8463FA53F54 /* Component.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
+		93867326C4599121D2C89F44 /* OperationButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OperationButton.swift; sourceTree = "<group>"; };
+		952D721961128AA20423757C /* World.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
 		95C289F27799322FAB19D5F4 /* Mainframe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mainframe.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		96A500C5BA696119FC13D2B3 /* FadeToComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FadeToComponent.swift; path = Source/Game/Components/FadeToComponent.swift; sourceTree = "<group>"; };
-		980885DD31E8C09765F8CDD4 /* AcceptButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AcceptButton.swift; path = Source/Game/Nodes/AcceptButton.swift; sourceTree = "<group>"; };
-		9C0CB9981162F93945D293E2 /* CGSizeExt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CGSizeExt.swift; path = Source/Extensions/CGSizeExt.swift; sourceTree = "<group>"; };
-		A0D19EF7C3552E2FAC41432A /* MathNode.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MathNode.swift; path = Source/Game/Nodes/MathNode.swift; sourceTree = "<group>"; };
-		A2BC15A48240522FE30B6E5D /* Z.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Z.swift; path = Source/Engine/Z.swift; sourceTree = "<group>"; };
-		A32B2D9BC149793DB472EA80 /* AddButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AddButton.swift; path = Source/Game/Nodes/AddButton.swift; sourceTree = "<group>"; };
-		A6EF1D10750C6277BBBF14A0 /* LogOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LogOperation.swift; path = Source/Game/Math/Fn/LogOperation.swift; sourceTree = "<group>"; };
-		A6EFE3C28339775C0BBB3E8D /* SubtractOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SubtractOperation.swift; path = Source/Game/Math/Op/SubtractOperation.swift; sourceTree = "<group>"; };
-		A71059F6441B8CDA9B56D620 /* Operation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Operation.swift; path = Source/Game/Math/Operation.swift; sourceTree = "<group>"; };
-		A9A0F452BF4C031C40800851 /* SpriteKit.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SpriteKit.swift; path = Source/Extensions/SpriteKit.swift; sourceTree = "<group>"; };
-		ACB38D18250D8F1AABBA9C1E /* SelectableComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SelectableComponent.swift; path = Source/Game/Components/SelectableComponent.swift; sourceTree = "<group>"; };
+		96A500C5BA696119FC13D2B3 /* FadeToComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FadeToComponent.swift; sourceTree = "<group>"; };
+		980885DD31E8C09765F8CDD4 /* AcceptButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AcceptButton.swift; sourceTree = "<group>"; };
+		9C0CB9981162F93945D293E2 /* CGSizeExt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CGSizeExt.swift; sourceTree = "<group>"; };
+		A0D19EF7C3552E2FAC41432A /* MathNode.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MathNode.swift; sourceTree = "<group>"; };
+		A2BC15A48240522FE30B6E5D /* Z.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Z.swift; sourceTree = "<group>"; };
+		A32B2D9BC149793DB472EA80 /* AddButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AddButton.swift; sourceTree = "<group>"; };
+		A6EF1D10750C6277BBBF14A0 /* LogOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LogOperation.swift; sourceTree = "<group>"; };
+		A6EFE3C28339775C0BBB3E8D /* SubtractOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SubtractOperation.swift; sourceTree = "<group>"; };
+		A71059F6441B8CDA9B56D620 /* Operation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
+		A9A0F452BF4C031C40800851 /* SpriteKit.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SpriteKit.swift; sourceTree = "<group>"; };
+		ACB38D18250D8F1AABBA9C1E /* SelectableComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SelectableComponent.swift; sourceTree = "<group>"; };
 		B277ECCF0912BB4C0BA91055 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		B350DCBF0C10F150830D1D24 /* Segment.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Segment.swift; path = Source/Util/Segment.swift; sourceTree = "<group>"; };
-		C5D0082ED2160B75F395692A /* NextOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NextOperation.swift; path = Source/Game/Math/Key/NextOperation.swift; sourceTree = "<group>"; };
-		C71E5175B29F6617FC83D1D7 /* AssignOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AssignOperation.swift; path = Source/Game/Math/Var/AssignOperation.swift; sourceTree = "<group>"; };
+		B350DCBF0C10F150830D1D24 /* Segment.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Segment.swift; sourceTree = "<group>"; };
+		C5D0082ED2160B75F395692A /* NextOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NextOperation.swift; sourceTree = "<group>"; };
+		C71E5175B29F6617FC83D1D7 /* AssignOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AssignOperation.swift; sourceTree = "<group>"; };
 		CB2C4B970002C522E2626C80 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		CBFDE6D33B2F436C0270A609 /* AppDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Source/AppDelegate.swift; sourceTree = "<group>"; };
-		CD8A8B74006E0201876DA1F2 /* AddOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AddOperation.swift; path = Source/Game/Math/Op/AddOperation.swift; sourceTree = "<group>"; };
-		CE4324D9CBFCE1625FA107DA /* NSDecimalNumberExt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NSDecimalNumberExt.swift; path = Source/Extensions/NSDecimalNumberExt.swift; sourceTree = "<group>"; };
-		D42B5CC00FAD111C74AF9C57 /* ArcCosOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ArcCosOperation.swift; path = Source/Game/Math/Fn/ArcCosOperation.swift; sourceTree = "<group>"; };
+		CBFDE6D33B2F436C0270A609 /* AppDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		CD8A8B74006E0201876DA1F2 /* AddOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AddOperation.swift; sourceTree = "<group>"; };
+		CE4324D9CBFCE1625FA107DA /* NSDecimalNumberExt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NSDecimalNumberExt.swift; sourceTree = "<group>"; };
+		D42B5CC00FAD111C74AF9C57 /* ArcCosOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ArcCosOperation.swift; sourceTree = "<group>"; };
 		D7ADB8A48D532538159D5242 /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/SpriteKit.framework; sourceTree = DEVELOPER_DIR; };
-		D9CCBEF8ADDEF01F2A211F0F /* Button.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Button.swift; path = Source/Game/Nodes/Button.swift; sourceTree = "<group>"; };
-		E846127BD008459329645C04 /* FactorialOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FactorialOperation.swift; path = Source/Game/Math/Op/FactorialOperation.swift; sourceTree = "<group>"; };
-		E889A19284B55A8D974AF14D /* Node.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Node.swift; path = Source/Engine/Node.swift; sourceTree = "<group>"; };
-		E8AB2DABABAEA92D2E25412D /* WorldScene.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WorldScene.swift; path = Source/Engine/WorldScene.swift; sourceTree = "<group>"; };
-		EE070BF96562D65FDC562441 /* NoOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NoOperation.swift; path = Source/Game/Math/Meta/NoOperation.swift; sourceTree = "<group>"; };
-		F5E13CD838F8740C602601F6 /* ApplyToNodeComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ApplyToNodeComponent.swift; path = Source/Engine/ApplyToNodeComponent.swift; sourceTree = "<group>"; };
-		F65749656182E7DE4E130CA8 /* SmallFont.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SmallFont.swift; path = Source/Artist/Font/SmallFont.swift; sourceTree = "<group>"; };
-		FAEAE256C5B715AD60B632BD /* WorldView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WorldView.swift; path = Source/Engine/WorldView.swift; sourceTree = "<group>"; };
-		FF31C7B5AE0665127DA11F1E /* NumberExt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NumberExt.swift; path = Source/Extensions/NumberExt.swift; sourceTree = "<group>"; };
+		D9CCBEF8ADDEF01F2A211F0F /* Button.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
+		E846127BD008459329645C04 /* FactorialOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FactorialOperation.swift; sourceTree = "<group>"; };
+		E889A19284B55A8D974AF14D /* Node.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
+		E8AB2DABABAEA92D2E25412D /* WorldScene.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WorldScene.swift; sourceTree = "<group>"; };
+		EE070BF96562D65FDC562441 /* NoOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NoOperation.swift; sourceTree = "<group>"; };
+		F5E13CD838F8740C602601F6 /* ApplyToNodeComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ApplyToNodeComponent.swift; sourceTree = "<group>"; };
+		FAEAE256C5B715AD60B632BD /* WorldView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WorldView.swift; sourceTree = "<group>"; };
+		FF31C7B5AE0665127DA11F1E /* NumberExt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NumberExt.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,6 +196,7 @@
 				DA40CA88E74D7C3C9C870AA6 /* Worlds */,
 			);
 			name = Game;
+			path = Game;
 			sourceTree = "<group>";
 		};
 		19161A9DAA2170DB7E3A7562 /* Engine */ = {
@@ -212,7 +213,7 @@
 				FAEAE256C5B715AD60B632BD /* WorldView.swift */,
 				A2BC15A48240522FE30B6E5D /* Z.swift */,
 			);
-			name = Engine;
+			path = Engine;
 			sourceTree = "<group>";
 		};
 		1FE57889F804ED407DFBD62D /* Frameworks */ = {
@@ -226,18 +227,18 @@
 		566F8CAAE631DA7D98BBBC6E /* Artist */ = {
 			isa = PBXGroup;
 			children = (
-				72C6EE1AB090344A7D41CABD /* Artist.swift */,
-				7B3BD527A82057D0FA568B3C /* ButtonArtist.swift */,
-				95501DAC1ADDCB8314B0D636 /* DotArtist.swift */,
-				1D0F58C91F9A644F00AB48A0 /* ExpandArtist.swift */,
+				1D05679622C4FAF9001DF7B4 /* Artist.swift */,
+				1D05679722C4FAF9001DF7B4 /* ButtonArtist.swift */,
+				1D05679A22C4FAF9001DF7B4 /* DotArtist.swift */,
+				1D05679B22C4FAFA001DF7B4 /* ExpandArtist.swift */,
 				E64947F8DE301B334F292CC8 /* Font */,
-				47492FDADB84694DCBDDAFDC /* ImageArtists.swift */,
-				067C3D192E65BA94954CF80E /* ImageIdentifier.swift */,
-				3F5A3459048594EEB322BF7D /* LetterAndFont.swift */,
-				5A94214F12F21A4DC4385435 /* ShapeArtist.swift */,
-				36923D1103B7AB39AA36B555 /* TextArtist.swift */,
+				1D05679822C4FAF9001DF7B4 /* ImageArtists.swift */,
+				1D05679922C4FAF9001DF7B4 /* ImageIdentifier.swift */,
+				1D05679C22C4FAFA001DF7B4 /* LetterAndFont.swift */,
+				1D05679322C4FAF8001DF7B4 /* ShapeArtist.swift */,
+				1D05679422C4FAF8001DF7B4 /* TextArtist.swift */,
 			);
-			name = Artist;
+			path = Artist;
 			sourceTree = "<group>";
 		};
 		5F40D2BCEFB52E748CD37003 /* Math */ = {
@@ -252,7 +253,7 @@
 				4A64B4289EA88ACAA949C059 /* OperationValue.swift */,
 				C41FC40E4B43DAC183E73F5D /* Var */,
 			);
-			name = Math;
+			path = Math;
 			sourceTree = "<group>";
 		};
 		754B5CABFDAE9A4BE8386FCB /* Nodes */ = {
@@ -268,7 +269,7 @@
 				93867326C4599121D2C89F44 /* OperationButton.swift */,
 				3C8748DA079715BBD89F7512 /* TextNode.swift */,
 			);
-			name = Nodes;
+			path = Nodes;
 			sourceTree = "<group>";
 		};
 		8FC182DF02BA5860917D5AAF /* Key */ = {
@@ -277,7 +278,7 @@
 				2CCAE6E1D20941E3629BB7B3 /* KeyOperation.swift */,
 				C5D0082ED2160B75F395692A /* NextOperation.swift */,
 			);
-			name = Key;
+			path = Key;
 			sourceTree = "<group>";
 		};
 		93603BC2B783AE7384CB937F /* iOS */ = {
@@ -304,7 +305,7 @@
 				595E310D354E117A9C376164 /* StringExt.swift */,
 				4C0EAAE5315F028FC37AE692 /* UIColorExt.swift */,
 			);
-			name = Extensions;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		9AD60655D7156D70DB7F6D3F /* Op */ = {
@@ -317,7 +318,7 @@
 				89EC8FFEA79297D729D5E7B2 /* SquareRootOperation.swift */,
 				A6EFE3C28339775C0BBB3E8D /* SubtractOperation.swift */,
 			);
-			name = Op;
+			path = Op;
 			sourceTree = "<group>";
 		};
 		9C5EFDCECD9475EFD7CB5564 /* Components */ = {
@@ -330,7 +331,7 @@
 				ACB38D18250D8F1AABBA9C1E /* SelectableComponent.swift */,
 				5408CA944597F902121CA045 /* TouchableComponent.swift */,
 			);
-			name = Components;
+			path = Components;
 			sourceTree = "<group>";
 		};
 		AD8F9E4E2FEDBFC8F6C09EA2 /* Util */ = {
@@ -342,7 +343,7 @@
 				B350DCBF0C10F150830D1D24 /* Segment.swift */,
 				7748D790A924039140A64238 /* Timers.swift */,
 			);
-			name = Util;
+			path = Util;
 			sourceTree = "<group>";
 		};
 		B4880BD0CD03CEC9C04A8B54 /* Meta */ = {
@@ -351,7 +352,7 @@
 				EE070BF96562D65FDC562441 /* NoOperation.swift */,
 				88B1C0780CFEBC58F4920319 /* NumberOperation.swift */,
 			);
-			name = Meta;
+			path = Meta;
 			sourceTree = "<group>";
 		};
 		C41FC40E4B43DAC183E73F5D /* Var */ = {
@@ -360,7 +361,7 @@
 				C71E5175B29F6617FC83D1D7 /* AssignOperation.swift */,
 				49B6B1CE514C363305C5441E /* VariableOperation.swift */,
 			);
-			name = Var;
+			path = Var;
 			sourceTree = "<group>";
 		};
 		C4427D33ABDC0EA03C687117 /* Fn */ = {
@@ -374,7 +375,7 @@
 				89187568C8D8DE321D7DC981 /* SinOperation.swift */,
 				1E3885DB38F015DE6ACCA142 /* TanOperation.swift */,
 			);
-			name = Fn;
+			path = Fn;
 			sourceTree = "<group>";
 		};
 		DA40CA88E74D7C3C9C870AA6 /* Worlds */ = {
@@ -382,7 +383,7 @@
 			children = (
 				3EFE2C0CE79AB207827F16D0 /* Mainframe.swift */,
 			);
-			name = Worlds;
+			path = Worlds;
 			sourceTree = "<group>";
 		};
 		E05537620BA306F00537E83B /* Source */ = {
@@ -395,15 +396,15 @@
 				16523DFCD09E9CE078719661 /* Game */,
 				AD8F9E4E2FEDBFC8F6C09EA2 /* Util */,
 			);
-			name = Source;
+			path = Source;
 			sourceTree = "<group>";
 		};
 		E64947F8DE301B334F292CC8 /* Font */ = {
 			isa = PBXGroup;
 			children = (
-				F65749656182E7DE4E130CA8 /* SmallFont.swift */,
+				1D05679122C4FAF0001DF7B4 /* DefaultFont.swift */,
 			);
-			name = Font;
+			path = Font;
 			sourceTree = "<group>";
 		};
 		E6C4EE896092D2A7CF2489B8 /* Products */ = {
@@ -462,11 +463,12 @@
 			attributes = {
 				CLASSPREFIX = MF;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = colinta;
 				TargetAttributes = {
 					9C54D86298D5702E1AEC0087 = {
 						DevelopmentTeam = 5QDS9Z456R;
+						LastSwiftMigration = 1100;
 					};
 				};
 			};
@@ -475,6 +477,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = F5C4C41E0906E6F5E8AA79DF;
@@ -506,15 +509,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9E4868D52618CD8271E1DA3C /* AppDelegate.swift in Sources */,
-				1A50890E1663046295260888 /* Artist.swift in Sources */,
-				D55F02E71F54B82A46DEE800 /* ButtonArtist.swift in Sources */,
-				B5B14C2FAAD175942227F72C /* DotArtist.swift in Sources */,
-				C3FF8A5E3E6E2BDD58229AF1 /* SmallFont.swift in Sources */,
-				443E992612692088C1709D66 /* ImageArtists.swift in Sources */,
-				B5971AD58367DFF4E05B5E37 /* ImageIdentifier.swift in Sources */,
-				76FCDFB38D7B783C9A17AA61 /* LetterAndFont.swift in Sources */,
-				490E0A872869EE930ECBB00C /* ShapeArtist.swift in Sources */,
-				2338DCC121B777EB053589E4 /* TextArtist.swift in Sources */,
 				EA0E7A221DDBAEFBD05DBF57 /* ApplyToNodeComponent.swift in Sources */,
 				206DC25A72CECF5D670618E5 /* Component.swift in Sources */,
 				211E6E89716C020F15327473 /* Node.swift in Sources */,
@@ -531,17 +525,21 @@
 				DD446FA78A949DE2F0A0D3DA /* CGSizeExt.swift in Sources */,
 				5B8753F1DF5E1772D777DC08 /* ChevronExt.swift in Sources */,
 				7104B8D4A4C97258B0C8ADA8 /* NSDecimalNumberExt.swift in Sources */,
+				1D0567A222C4FAFA001DF7B4 /* ImageArtists.swift in Sources */,
 				F333774C34FF98E1F8C822D9 /* NumberExt.swift in Sources */,
 				40928E68E540F55D888A2F2A /* SpriteKit.swift in Sources */,
+				1D0567A322C4FAFA001DF7B4 /* ImageIdentifier.swift in Sources */,
 				1252476BB2B2B803E2911B96 /* StringExt.swift in Sources */,
 				780C053E3BE4125E354E72E4 /* UIColorExt.swift in Sources */,
 				B9A6A272A584483335905E76 /* FadeToComponent.swift in Sources */,
 				D5D5643ABC1B796BFFF07A58 /* JiggleComponent.swift in Sources */,
 				EAC2508AFB22DF9765716351 /* MoveToComponent.swift in Sources */,
 				8A3197FB92525A16BA4307A8 /* ScaleToComponent.swift in Sources */,
+				1D0567A622C4FAFA001DF7B4 /* LetterAndFont.swift in Sources */,
+				1D05679E22C4FAFA001DF7B4 /* TextArtist.swift in Sources */,
 				5A011BC7DF26C97C9D4A0444 /* SelectableComponent.swift in Sources */,
+				1D0567A422C4FAFA001DF7B4 /* DotArtist.swift in Sources */,
 				DAD7ADE1C789916A4CA68C54 /* TouchableComponent.swift in Sources */,
-				1D0F58CA1F9A644F00AB48A0 /* ExpandArtist.swift in Sources */,
 				B55BF3E753AD1A23CA1B19A2 /* ArcCosOperation.swift in Sources */,
 				C8A708756F0891C4BF02D8BB /* ArcSinOperation.swift in Sources */,
 				F0EB4D81A0C22751288E40F7 /* ArcTanOperation.swift in Sources */,
@@ -560,10 +558,13 @@
 				2E847F3E06216C65D0045F28 /* SquareRootOperation.swift in Sources */,
 				A5C6C0838C2D882489715825 /* SubtractOperation.swift in Sources */,
 				798D5AFF7E5C3A5881BBACCF /* Operation.swift in Sources */,
+				1D0567A022C4FAFA001DF7B4 /* Artist.swift in Sources */,
 				31C1911BDE12A317673E2AEF /* OperationResult.swift in Sources */,
+				1D0567A522C4FAFA001DF7B4 /* ExpandArtist.swift in Sources */,
 				62B31D0D8D9CA99971A1BE74 /* OperationValue.swift in Sources */,
 				701DAC2FE19A96287DDE1B5F /* AssignOperation.swift in Sources */,
 				B1E1D73A47AFC5B563EA1F3B /* VariableOperation.swift in Sources */,
+				1D05679222C4FAF0001DF7B4 /* DefaultFont.swift in Sources */,
 				DF2E31707C1DA23FA4CD54F5 /* AcceptButton.swift in Sources */,
 				849B779CC61B733F2ED270E6 /* AddButton.swift in Sources */,
 				BCBAD7F6B53D5619991A263E /* Button.swift in Sources */,
@@ -572,8 +573,10 @@
 				1CD0FB332F309A8B658BB5E4 /* Line.swift in Sources */,
 				2E68184ACFBAAB02BDD7C080 /* MathNode.swift in Sources */,
 				66CF4E127B946962B06A4DEA /* OperationButton.swift in Sources */,
+				1D05679D22C4FAFA001DF7B4 /* ShapeArtist.swift in Sources */,
 				61E15BD6AB51954F8F20998F /* TextNode.swift in Sources */,
 				73FDAE3932C1ABB5C472BF8C /* Mainframe.swift in Sources */,
+				1D0567A122C4FAFA001DF7B4 /* ButtonArtist.swift in Sources */,
 				C7C46A0951333971F41B7433 /* Easing.swift in Sources */,
 				452F3D41952B14C0E030D113 /* Math.swift in Sources */,
 				5C9B434688AE0F9662B53C2B /* Rand.swift in Sources */,
@@ -589,6 +592,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -632,6 +636,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -695,7 +700,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = Support/BridgingHeader.h;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -717,7 +722,7 @@
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = Support/BridgingHeader.h;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
