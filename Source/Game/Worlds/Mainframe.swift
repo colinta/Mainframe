@@ -154,9 +154,9 @@ class Mainframe: World {
 
         let tabbarButtons = [
             ("123", numbersItem.button),
-            ("±≠", operatorsItem.button),
+            ("±", operatorsItem.button),
             ("𝑓(𝑥)", functionsItem.button),
-            ("𝑥𝑦𝑧", variablesItem.button),
+            ("𝑥𝑦𝑧=", variablesItem.button),
         ]
         do {
             let buttonWidth = remainingScreenSize.width / CGFloat(tabbarButtons.count)
@@ -188,7 +188,7 @@ class Mainframe: World {
             [.Function(ArcSinOperation()), .Function(ArcCosOperation()), .Function(ArcTanOperation())],
         ])
         createPanel(variablesItem.panel, buttons: [
-            [.Variable("𝑥"), .Assign("𝑥"), .Variable("𝑦"), .Assign("𝑦"), .Variable("𝑧"), .Assign("𝑧")],
+            [.Variable("𝑥"), .Assign("𝑥"), .Variable("𝑦"), .Assign("𝑦"), .Variable("𝑧"), .Assign("𝑧"), .Variable("n"), .Assign("n")],
             [.Variable("π"), .Variable("τ"), .Variable("𝑒")],
         ])
 
@@ -200,7 +200,7 @@ class Mainframe: World {
         currentOp = topNode
     }
 
-    func updateTopNode() {
+    func selectAnyTopNode() {
         for child in tree.children {
             if let child = child as? MathNode {
                 topNode = child

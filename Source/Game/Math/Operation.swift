@@ -90,7 +90,6 @@ extension Operation {
 extension Operation: OperationValue {
     func formula(_ nodes: [MathNode], isTop: Bool) -> String { return opValue.formula(nodes, isTop: isTop) }
     func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult { return opValue.calculate(nodes, vars: vars) }
-    func newNode() -> MathNode { return opValue.newNode() }
     var mustBeTop: Bool { return opValue.mustBeTop }
     var minChildNodes: Int? { return opValue.minChildNodes }
     var maxChildNodes: Int? { return opValue.maxChildNodes }

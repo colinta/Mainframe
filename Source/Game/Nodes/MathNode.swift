@@ -147,7 +147,7 @@ class MathNode: Node {
 
             if self.op.isNoOp && self.topMostParent == self && mainframe.hasManyTopNodes {
                 self.removeFromParent()
-                mainframe.updateTopNode()
+                mainframe.selectAnyTopNode()
                 return
             }
 
@@ -306,7 +306,7 @@ class MathNode: Node {
     }
 
     private func generateNode() -> MathNode {
-        let node = op.newNode()
+        let node = MathNode()
         node.alpha = 0
         if node.op.isNoOp {
             switch prevOp {
