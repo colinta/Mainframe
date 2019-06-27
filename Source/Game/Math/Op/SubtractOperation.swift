@@ -29,7 +29,7 @@ struct SubtractOperation: OperationValue {
     }
 
     func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
-        guard nodes.count > 1 else { return .NeedsInput }
+        guard nodes.count > 1 else { return .needsInput }
 
         var result = Decimal(0)
         var resultPi = Decimal(0)
@@ -37,8 +37,8 @@ struct SubtractOperation: OperationValue {
         for node in nodes {
             let nodeVal = node.calculate(vars)
             switch nodeVal {
-            case .NaN, .DivZero, .NeedsInput: return nodeVal
-            case let .Number(number, pi):
+            case .nan, .divZero, .needsInput: return nodeVal
+            case let .number(number, pi):
                 if first {
                     result = number
                     resultPi = pi
@@ -50,6 +50,6 @@ struct SubtractOperation: OperationValue {
                 }
             }
         }
-        return .Number(number: result, pi: resultPi)
+        return .number(number: result, pi: resultPi)
     }
 }

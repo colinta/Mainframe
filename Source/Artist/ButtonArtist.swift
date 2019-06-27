@@ -3,7 +3,7 @@
 //
 
 class ButtonArtist: Artist {
-    var style: ButtonStyle = .None
+    var style: ButtonStyle = .none
     var borderColor: UIColor?
 
     override func draw(context: CGContext) {
@@ -13,13 +13,13 @@ class ButtonArtist: Artist {
         context.setStrokeColor(borderColor.cgColor)
 
         switch style {
-        case .Square, .SquareSized, .RectSized:
+        case .squareSized, .rectSized:
             context.addRect(CGRect(origin: .zero, size: size))
             context.drawPath(using: .stroke)
-        case .Circle, .CircleSized:
+        case .circleSized:
             context.addEllipse(in: CGRect(origin: .zero, size: size))
             context.drawPath(using: .stroke)
-        case .None, .RectToFit:
+        case .none, .rectToFit:
             break
         }
     }

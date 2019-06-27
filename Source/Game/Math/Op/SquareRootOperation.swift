@@ -16,12 +16,12 @@ struct SquareRootOperation: OperationValue {
     }
 
     func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
-        guard let node = nodes.first, nodes.count == 1 else { return .NeedsInput }
+        guard let node = nodes.first, nodes.count == 1 else { return .needsInput }
 
         let nodeVal = node.calculate(vars)
         switch nodeVal {
-        case .NaN, .DivZero, .NeedsInput: return nodeVal
-        case let .Number(number, numberPi):
+        case .nan, .divZero, .needsInput: return nodeVal
+        case let .number(number, numberPi):
             return .checkNumber(number: Decimal(sqrt((number + Decimal.pi(times: numberPi)).asDouble)), pi: 0)
         }
     }

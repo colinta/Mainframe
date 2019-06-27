@@ -29,21 +29,21 @@ struct DivideOperation: OperationValue {
     }
 
     func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
-        guard nodes.count > 1 else { return .NeedsInput }
+        guard nodes.count > 1 else { return .needsInput }
 
         var numbers: [(Decimal, pi: Decimal)] = []
         var numerZero = false
         for node in nodes {
             let nodeVal = node.calculate(vars)
             switch nodeVal {
-            case .NaN, .DivZero, .NeedsInput: return nodeVal
-            case let .Number(number, pi):
+            case .nan, .divZero, .needsInput: return nodeVal
+            case let .number(number, pi):
                 if number == 0 && pi == 0 {
                     if node == nodes.first {
                         numerZero = true
                     }
                     else {
-                        return .DivZero
+                        return .divZero
                     }
                 }
                 numbers << (number, pi)
@@ -51,7 +51,7 @@ struct DivideOperation: OperationValue {
         }
 
         if numerZero {
-            return .Number(number: 0, pi: 0)
+            return .number(number: 0, pi: 0)
         }
 
         // no denominator is zero,
@@ -93,6 +93,6 @@ struct DivideOperation: OperationValue {
                 first = false
             }
         }
-        return .Number(number: result, pi: resultPi)
+        return .number(number: result, pi: resultPi)
     }
 }

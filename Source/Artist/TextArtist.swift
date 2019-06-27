@@ -20,7 +20,7 @@ class TextArtist: Artist {
         var size = CGSize(width: 0, height: 0)
         var isFirst = true
         for char in (text.map { String($0) }) {
-            let letter = font.art[char] ?? Letter(style: .Line, size: CGSize.zero, points: [])
+            let letter = font.art[char] ?? Letter(style: .line, size: CGSize.zero, points: [])
             if !isFirst {
                 size.width += letterSpace
             }
@@ -42,7 +42,7 @@ class TextArtist: Artist {
         context.scaleBy(x: textScale, y: textScale)
         context.translateBy(x: (size.width - textSize.width) / 2, y: (size.height - textSize.height) / 2)
         for char in (text.map { String($0) }) {
-            let letter = font.art[char] ?? Letter(style: .Line, size: CGSize.zero, points: [])
+            let letter = font.art[char] ?? Letter(style: .line, size: CGSize.zero, points: [])
             for path in letter.points {
                 var firstPoint = true
                 for pt in path {
@@ -55,12 +55,12 @@ class TextArtist: Artist {
                     }
                 }
 
-                if letter.style == .Loop || letter.style == .Fill {
+                if letter.style == .loop || letter.style == .fill {
                     context.closePath()
                 }
             }
 
-            if letter.style == .Fill {
+            if letter.style == .fill {
                 context.drawPath(using: .fill)
             }
             else {

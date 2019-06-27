@@ -16,12 +16,12 @@ struct LogOperation: OperationValue {
     }
 
     func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
-        guard let node = nodes.first, nodes.count == 1 else { return .NeedsInput }
+        guard let node = nodes.first, nodes.count == 1 else { return .needsInput }
 
         let nodeVal = node.calculate(vars)
         switch nodeVal {
-        case .NaN, .DivZero, .NeedsInput: return nodeVal
-        case let .Number(number, numberPi):
+        case .nan, .divZero, .needsInput: return nodeVal
+        case let .number(number, numberPi):
             return .checkNumber(number: Decimal(log10((number + Decimal.pi(times: numberPi)).asDouble)), pi: 0)
         }
     }
@@ -39,11 +39,11 @@ struct LnOperation: OperationValue {
     }
 
     func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
-        guard let node = nodes.first, nodes.count == 1 else { return .NeedsInput }
+        guard let node = nodes.first, nodes.count == 1 else { return .needsInput }
         let nodeVal = node.calculate(vars)
         switch nodeVal {
-        case .NaN, .DivZero, .NeedsInput: return nodeVal
-        case let .Number(number, numberPi):
+        case .nan, .divZero, .needsInput: return nodeVal
+        case let .number(number, numberPi):
             return .checkNumber(number: Decimal(log((number + Decimal.pi(times: numberPi)).asDouble)), pi: 0)
         }
     }
@@ -66,20 +66,20 @@ struct LogNOperation: OperationValue {
     }
 
     func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
-        guard let base = nodes.safe(0), let number = nodes.safe(1) else { return .NeedsInput }
+        guard let base = nodes.safe(0), let number = nodes.safe(1) else { return .needsInput }
 
         let baseVal = base.calculate(vars)
         let numberVal = number.calculate(vars)
 
         switch (numberVal, baseVal) {
-        case (.NaN, _), (.DivZero, _), (.NeedsInput, _): return numberVal
-        case (_, .NaN), (_, .DivZero), (_, .NeedsInput): return baseVal
-        case let (.Number(number: numberNumber, pi: numberPi), .Number(baseNumber, basePi)):
+        case (.nan, _), (.divZero, _), (.needsInput, _): return numberVal
+        case (_, .nan), (_, .divZero), (_, .needsInput): return baseVal
+        case let (.number(number: numberNumber, pi: numberPi), .number(baseNumber, basePi)):
             let numberActual = numberNumber + Decimal.pi(times: numberPi)
             let baseActual = baseNumber + Decimal.pi(times: basePi)
             return .checkNumber(number: Decimal(log(numberActual.asDouble) / log(baseActual.asDouble)), pi: 0)
         default:
-            return .NeedsInput
+            return .needsInput
         }
 }
 }

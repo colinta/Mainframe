@@ -3,13 +3,12 @@
 //
 
 enum ImageIdentifier {
-    case None
-    case ColorPath(path: UIBezierPath, color: Int)
-    case ColorLine(length: CGFloat, color: Int)
-    case Letter(String, color: Int)
-    case Button(style: ButtonStyle, borderColor: Int?)
-    case Dot(color: Int)
-    case FillColorBox(size: CGSize, color: Int)
-    case FillColorCircle(size: CGSize, color: Int)
-    case Expand
+    case none
+    case colorPath(path: UIBezierPath, color: Int)
+    case colorLine(length: CGFloat, color: Int)
+    case letter(String, color: Int)
+    case button(style: ButtonStyle, borderColor: Int?)
+    case fillColorBox(size: CGSize, color: Int)
+    case fillColorCircle(size: CGSize, color: Int)
+    case expand
 }

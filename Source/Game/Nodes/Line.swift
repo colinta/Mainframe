@@ -10,7 +10,7 @@ class Line: Node {
         position = p1
         zRotation = p1.angleTo(p2)
         let length = p1.distanceTo(p2)
-        sprite.textureId(.ColorLine(length: length, color: color))
+        sprite.textureId(.colorLine(length: length, color: color))
         sprite.anchorPoint = CGPoint(0, 0.5)
         self << sprite
     }

@@ -15,12 +15,12 @@ struct FactorialOperation: OperationValue {
     }
 
     func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
-        guard let node = nodes.first, nodes.count == 1 else { return .NeedsInput }
+        guard let node = nodes.first, nodes.count == 1 else { return .needsInput }
 
         let nodeVal = node.calculate(vars)
         switch nodeVal {
-        case .NaN, .DivZero, .NeedsInput: return nodeVal
-        case let .Number(number, numberPi):
+        case .nan, .divZero, .needsInput: return nodeVal
+        case let .number(number, numberPi):
             let asDouble = (number + Decimal.pi(times: numberPi)).asDouble
             return .checkNumber(number: Decimal(tgamma(1 + asDouble)), pi: 0)
         }

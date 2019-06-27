@@ -52,7 +52,7 @@ class TextNode: Node {
         let heightOffset = 2 * font.scale
 
         let sprites = text.map { (char: Character) -> SKSpriteNode in
-            return SKSpriteNode(id: .Letter(String(char), color: color))
+            return SKSpriteNode(id: .letter(String(char), color: color))
         }
         var first = true
         let size = sprites.reduce(CGSize.zero) { size, sprite in

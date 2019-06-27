@@ -30,7 +30,7 @@ extension SKSpriteNode {
 extension SKNode {
     var z: Z {
         set { zPosition = newValue.rawValue }
-        get { return Z(rawValue: zPosition) ?? Z.Default }
+        get { return Z(rawValue: zPosition) ?? Z.default }
     }
 
     var isVisible: Bool {

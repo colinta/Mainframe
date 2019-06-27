@@ -3,36 +3,35 @@
 //
 
 enum Operation {
-    case Next
-    case Key(KeyCode)
+    case nxttt
+    case key(KeyCode)
 
-    case Number(String)
-    case Variable(String)
-    case Assign(String)
+    case number(String)
+    case variable(String)
+    case assign(String)
 
-    case Operator(OperationValue)
-    case Function(OperationValue)
+    case `operator`(OperationValue)
+    case function(OperationValue)
 
-    case NoOp
-    case NoOpSelected
+    case noOp(isSelected: Bool)
 
     var isNoOp: Bool {
         switch self {
-        case .NoOp, .NoOpSelected: return true
+        case .noOp(_): return true
         default: return false
         }
     }
 
     var isSelected: Bool {
         switch self {
-        case .NoOpSelected: return true
+        case let .noOp(isSelected): return isSelected
         default: return false
         }
     }
 
     func isVariable(_ name: String) -> Bool {
         switch self {
-        case let .Assign(varName):
+        case let .assign(varName):
             return name == varName
         default:
             return false
@@ -41,9 +40,9 @@ enum Operation {
 
     func compatible(mainframe: Mainframe) -> Bool {
         switch self {
-        case .Assign:
+        case .assign:
             return mainframe.currentOp == mainframe.topNode
-        case let .Variable(name):
+        case let .variable(name):
             if var ancestor = mainframe.currentOp {
                 while let parent = ancestor.parent as? MathNode {
                     if parent.op.isVariable(name) { return false }
@@ -58,13 +57,13 @@ enum Operation {
 
     func panel(mainframe: Mainframe) -> Mainframe.PanelItem? {
         switch self {
-        case .Operator:
+        case .operator:
             return mainframe.operatorsItem
-        case .Variable, .Assign:
+        case .variable, .assign:
             return mainframe.variablesItem
-        case .Number:
+        case .number:
             return mainframe.numbersItem
-        case .Function:
+        case .function:
             return mainframe.functionsItem
         default:
             return nil
@@ -75,13 +74,13 @@ enum Operation {
 extension Operation {
     var opValue: OperationValue {
         switch self {
-        case let .Key(key):      return KeyOperation(op: key)
-        case .Next:              return NextOperation()
-        case let .Number(num):   return NumberOperation(num)
-        case let .Variable(num): return VariableOperation(num)
-        case let .Assign(num):   return AssignOperation(num)
-        case let .Operator(op):  return op
-        case let .Function(fn):  return fn
+        case let .key(key):      return KeyOperation(op: key)
+        case .nxttt:              return NextOperation()
+        case let .number(num):   return NumberOperation(num)
+        case let .variable(num): return VariableOperation(num)
+        case let .assign(num):   return AssignOperation(num)
+        case let .operator(op):  return op
+        case let .function(fn):  return fn
         default:                return NoOperation()
         }
     }
@@ -120,38 +119,38 @@ extension Operation {
         guard let currentOp = mainframe.currentOp else { return }
 
         switch self {
-        case .Next:
+        case .nxttt:
             mainframe.currentOp = findNextOp(currentOp, mainframe: mainframe, skip: currentOp)
             mainframe.checkCameraLocation()
-        case let .Key(keyCode):
+        case let .key(keyCode):
             switch keyCode {
-            case .Delete:
+            case .delete:
                 var string = currentOp.numberString
                 if !string.isEmpty {
                     string = String(string[string.startIndex..<string.index(before: string.endIndex)])
                 }
                 currentOp.numberString = string
                 if string == "" {
-                    currentOp.op = .NoOpSelected
+                    currentOp.op = .noOp(isSelected: true)
                 }
                 else {
-                    currentOp.op = .Number(string)
+                    currentOp.op = .number(string)
                 }
-            case .Clear:
+            case .clear:
                 currentOp.numberString = ""
-                currentOp.op = .NoOpSelected
-            case .Num1, .Num2, .Num3, .Num4, .Num5,
-                 .Num6, .Num7, .Num8, .Num9, .Num0,
-                 .NumDot:
+                currentOp.op = .noOp(isSelected: true)
+            case .num1, .num2, .num3, .num4, .num5,
+                 .num6, .num7, .num8, .num9, .num0,
+                 .dot:
                 if isFirst {
                     currentOp.numberString = keyCode.string
-                    currentOp.op = .Number(keyCode.string)
+                    currentOp.op = .number(keyCode.string)
                 }
                 else {
                     currentOp.numberString += keyCode.string
-                    currentOp.op = .Number(currentOp.numberString)
+                    currentOp.op = .number(currentOp.numberString)
                 }
-            case .SignSwitch:
+            case .sign:
                 var string = currentOp.numberString
                 if !string.isEmpty {
                     if string[string.startIndex] == "-" {
@@ -161,7 +160,7 @@ extension Operation {
                         string = "-" + string
                     }
                     currentOp.numberString = string
-                    currentOp.op = .Number(string)
+                    currentOp.op = .number(string)
                 }
             }
         default:

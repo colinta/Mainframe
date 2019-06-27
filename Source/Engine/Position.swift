@@ -3,83 +3,83 @@
 //
 
 enum Position {
-    case TopLeft(x: CGFloat, y: CGFloat)
-    case Top(x: CGFloat, y: CGFloat)
-    case TopRight(x: CGFloat, y: CGFloat)
-    case Left(x: CGFloat, y: CGFloat)
-    case Center(x: CGFloat, y: CGFloat)
-    case Right(x: CGFloat, y: CGFloat)
-    case BottomLeft(x: CGFloat, y: CGFloat)
-    case Bottom(x: CGFloat, y: CGFloat)
-    case BottomRight(x: CGFloat, y: CGFloat)
+    case topLeft(x: CGFloat, y: CGFloat)
+    case top(x: CGFloat, y: CGFloat)
+    case topRight(x: CGFloat, y: CGFloat)
+    case left(x: CGFloat, y: CGFloat)
+    case center(x: CGFloat, y: CGFloat)
+    case right(x: CGFloat, y: CGFloat)
+    case bottomLeft(x: CGFloat, y: CGFloat)
+    case bottom(x: CGFloat, y: CGFloat)
+    case bottomRight(x: CGFloat, y: CGFloat)
 
     func positionIn(screenSize size: CGSize) -> CGPoint {
         let half = size / 2
 
         switch self {
-        case let .TopLeft(x, y):
+        case let .topLeft(x, y):
             return CGPoint(x: -half.width + x, y: half.height + y)
-        case let .Top(x, y):
+        case let .top(x, y):
             return CGPoint(x: x, y: half.height + y)
-        case let .TopRight(x, y):
+        case let .topRight(x, y):
             return CGPoint(x: half.width + x, y: half.height + y)
-        case let .Left(x, y):
+        case let .left(x, y):
             return CGPoint(x: -half.width + x, y: y)
-        case let .Center(x, y):
+        case let .center(x, y):
             return CGPoint(x: x, y: y)
-        case let .Right(x, y):
+        case let .right(x, y):
             return CGPoint(x: half.width + x, y: y)
-        case let .BottomLeft(x, y):
+        case let .bottomLeft(x, y):
             return CGPoint(x: -half.width + x, y: -half.height + y)
-        case let .Bottom(x, y):
+        case let .bottom(x, y):
             return CGPoint(x: x, y: -half.height + y)
-        case let .BottomRight(x, y):
+        case let .bottomRight(x, y):
             return CGPoint(x: half.width + x, y: -half.height + y)
         }
     }
 
     var x: CGFloat {
         switch self {
-        case let .TopLeft(x, _):
+        case let .topLeft(x, _):
             return x
-        case let .Top(x, _):
+        case let .top(x, _):
             return x
-        case let .TopRight(x, _):
+        case let .topRight(x, _):
             return x
-        case let .Left(x, _):
+        case let .left(x, _):
             return x
-        case let .Center(x, _):
+        case let .center(x, _):
             return x
-        case let .Right(x, _):
+        case let .right(x, _):
             return x
-        case let .BottomLeft(x, _):
+        case let .bottomLeft(x, _):
             return x
-        case let .Bottom(x, _):
+        case let .bottom(x, _):
             return x
-        case let .BottomRight(x, _):
+        case let .bottomRight(x, _):
             return x
         }
     }
 
     var y: CGFloat {
         switch self {
-        case let .TopLeft(_, y):
+        case let .topLeft(_, y):
             return y
-        case let .Top(_, y):
+        case let .top(_, y):
             return y
-        case let .TopRight(_, y):
+        case let .topRight(_, y):
             return y
-        case let .Left(_, y):
+        case let .left(_, y):
             return y
-        case let .Center(_, y):
+        case let .center(_, y):
             return y
-        case let .Right(_, y):
+        case let .right(_, y):
             return y
-        case let .BottomLeft(_, y):
+        case let .bottomLeft(_, y):
             return y
-        case let .Bottom(_, y):
+        case let .bottom(_, y):
             return y
-        case let .BottomRight(_, y):
+        case let .bottomRight(_, y):
             return y
         }
     }
@@ -88,23 +88,23 @@ enum Position {
 
 func +(lhs: Position, rhs: CGPoint) -> Position {
     switch lhs {
-    case let .TopLeft(x, y):
-        return .TopLeft(x: x + rhs.x, y: y + rhs.y)
-    case let .Top(x, y):
-        return .Top(x: x + rhs.x, y: y + rhs.y)
-    case let .TopRight(x, y):
-        return .TopRight(x: x + rhs.x, y: y + rhs.y)
-    case let .Left(x, y):
-        return .Left(x: x + rhs.x, y: y + rhs.y)
-    case let .Center(x, y):
-        return .Center(x: x + rhs.x, y: y + rhs.y)
-    case let .Right(x, y):
-        return .Right(x: x + rhs.x, y: y + rhs.y)
-    case let .BottomLeft(x, y):
-        return .BottomLeft(x: x + rhs.x, y: y + rhs.y)
-    case let .Bottom(x, y):
-        return .Bottom(x: x + rhs.x, y: y + rhs.y)
-    case let .BottomRight(x, y):
-        return .BottomRight(x: x + rhs.x, y: y + rhs.y)
+    case let .topLeft(x, y):
+        return .topLeft(x: x + rhs.x, y: y + rhs.y)
+    case let .top(x, y):
+        return .top(x: x + rhs.x, y: y + rhs.y)
+    case let .topRight(x, y):
+        return .topRight(x: x + rhs.x, y: y + rhs.y)
+    case let .left(x, y):
+        return .left(x: x + rhs.x, y: y + rhs.y)
+    case let .center(x, y):
+        return .center(x: x + rhs.x, y: y + rhs.y)
+    case let .right(x, y):
+        return .right(x: x + rhs.x, y: y + rhs.y)
+    case let .bottomLeft(x, y):
+        return .bottomLeft(x: x + rhs.x, y: y + rhs.y)
+    case let .bottom(x, y):
+        return .bottom(x: x + rhs.x, y: y + rhs.y)
+    case let .bottomRight(x, y):
+        return .bottomRight(x: x + rhs.x, y: y + rhs.y)
     }
 }

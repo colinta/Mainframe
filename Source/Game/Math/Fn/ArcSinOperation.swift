@@ -16,19 +16,19 @@ struct ArcSinOperation: OperationValue {
     }
 
     func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
-        guard let node = nodes.first, nodes.count == 1 else { return .NeedsInput }
+        guard let node = nodes.first, nodes.count == 1 else { return .needsInput }
         let nodeVal = node.calculate(vars)
         switch nodeVal {
-        case .NaN, .DivZero, .NeedsInput: return nodeVal
-        case let .Number(number, numberPi):
+        case .nan, .divZero, .needsInput: return nodeVal
+        case let .number(number, numberPi):
             if numberPi == 0 {
                 switch number {
                 case -1:
-                    return .Number(number: 0, pi: -0.5)
+                    return .number(number: 0, pi: -0.5)
                 case 0:
-                    return .Number(number: 0, pi: 0)
+                    return .number(number: 0, pi: 0)
                 case 1:
-                    return .Number(number: 0, pi: 0.5)
+                    return .number(number: 0, pi: 0.5)
                 default: break
                 }
             }

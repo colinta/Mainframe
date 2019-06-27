@@ -3,10 +3,10 @@
 //
 
 enum Z: CGFloat {
-    case Top = 5
-    case BelowTop = 4
-    case Above = 2
-    case Default = 0
-    case Below = -2
-    case Bottom = -4
+    case top = 5
+    case belowTop = 4
+    case above = 2
+    case `default` = 0
+    case below = -2
+    case bottom = -4
 }

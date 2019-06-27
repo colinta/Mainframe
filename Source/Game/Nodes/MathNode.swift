@@ -10,8 +10,8 @@ class MathNode: Node {
     var mainframe: Mainframe? { return world as? Mainframe }
 
     var numberString = ""
-    private var prevOp: Operation = .NoOp
-    var op: Operation = .NoOp {
+    private var prevOp: Operation = .noOp(isSelected: false)
+    var op: Operation = .noOp(isSelected: false) {
         willSet { prevOp = op }
         didSet { updateMathNodes(select: true) }
     }
@@ -78,10 +78,10 @@ class MathNode: Node {
         super.init()
 
         parentLine.anchorPoint = CGPoint(0, 0.5)
-        parentLine.z = .Bottom
+        parentLine.z = .bottom
         dragLine.isHidden = true
         dragLine.anchorPoint = CGPoint(0, 0.5)
-        dragLine.z = .Bottom
+        dragLine.z = .bottom
         self << button
         self << parentLine
         self << dragLine
@@ -90,12 +90,12 @@ class MathNode: Node {
         jiggle.isEnabled = false
         button.borderColor = 0xffffff
         button.addComponent(jiggle)
-        button.style = .SquareSized(25)
-        button.touchableComponent?.on(.Down) { _ in
+        button.style = .squareSized(25)
+        button.touchableComponent?.on(.down) { _ in
             self.isMoving = false
             self.buttonTimer = 0.5
         }
-        button.touchableComponent?.on(.Up) { _ in
+        button.touchableComponent?.on(.up) { _ in
             if let dragParent = self.dragParent, self.dragParent != self.parent
             {
                 let oldParent = self.parent as? MathNode
@@ -116,13 +116,13 @@ class MathNode: Node {
             self.dragParent = nil
         }
 
-        button.touchableComponent?.on(.DragBegan) { pt in
+        button.touchableComponent?.on(.dragBegan) { pt in
             if !self.isMoving && !self.op.mustBeTop {
                 self.buttonTimer = nil
                 self.dragDest = pt
             }
         }
-        button.touchableComponent?.on(.DragMoved) { pt in
+        button.touchableComponent?.on(.dragMoved) { pt in
             if self.isMoving {
                 self.position += pt
             }
@@ -135,7 +135,7 @@ class MathNode: Node {
         }
 
         clearButton.isHidden = true
-        clearButton.style = .CircleSized(20)
+        clearButton.style = .circleSized(20)
         clearButton.color = 0x0
         clearButton.borderColor = 0xFFFFFF
         clearButton.backgroundColor = 0xFFFFFF
@@ -159,7 +159,7 @@ class MathNode: Node {
             }
 
             self._isClearEnabled = false
-            self.op = mainframe.currentOp == self ? .NoOpSelected : .NoOp
+            self.op = mainframe.currentOp == self ? .noOp(isSelected: true) : .noOp(isSelected: false)
         }
 
         updateSize([])
@@ -198,18 +198,15 @@ class MathNode: Node {
 
     private func updateMathNodes(select: Bool = false) {
         switch op {
-        case .NoOp:
+        case let .noOp(isSelected):
             button.text = ""
-            button.style = .SquareSized(25)
-        case .NoOpSelected:
-            button.text = ""
-            button.style = .SquareSized(50)
-        case .Number:
+            button.style = .squareSized(isSelected ? 50 : 25)
+        case .number:
             button.text = op.description
-            button.style = .RectToFit
+            button.style = .rectToFit
         default:
             button.text = op.treeDescription
-            button.style = .RectToFit
+            button.style = .rectToFit
         }
 
         let isCurrentOp = mainframe?.currentOp == self
@@ -281,7 +278,7 @@ class MathNode: Node {
         }
 
         switch op {
-        case .Number: break
+        case .number: break
         default: numberString = ""
         }
 
@@ -310,12 +307,12 @@ class MathNode: Node {
         node.alpha = 0
         if node.op.isNoOp {
             switch prevOp {
-            case .Number, .Variable:
+            case .number, .variable:
                 node.numberString = numberString
                 node.op = prevOp
             default: break
             }
-            prevOp = .NoOp
+            prevOp = .noOp(isSelected: false)
             numberString = ""
         }
         return node
@@ -329,7 +326,7 @@ class MathNode: Node {
         if parent is MathNode {
             parentLine.isHidden = false
             parentLine.zRotation = TAU_2 + position.angle
-            parentLine.textureId(.ColorLine(length: position.length, color: 0xFFFFFF))
+            parentLine.textureId(.colorLine(length: position.length, color: 0xFFFFFF))
 
             if let buttonTimer = buttonTimer,
                 buttonTimer <= 0,
@@ -356,7 +353,7 @@ class MathNode: Node {
             if let dragDest = dragDest {
                 dragLine.isHidden = false
                 dragLine.zRotation = dragDest.angle
-                dragLine.textureId(.ColorLine(length: dragDest.length, color: 0xFFFFFF))
+                dragLine.textureId(.colorLine(length: dragDest.length, color: 0xFFFFFF))
 
                 if let world = world {
                     let worldPosition = world.convert(dragDest, from: self)

@@ -3,21 +3,20 @@
 //
 
 enum ButtonStyle {
-    case Square
-    case SquareSized(CGFloat)
-    case RectSized(CGFloat, CGFloat)
-    case Circle
-    case CircleSized(CGFloat)
-    case RectToFit
-    case None
+    case squareSized(CGFloat)
+    case rectSized(CGFloat, CGFloat)
+    case circleSized(CGFloat)
+    case rectToFit
+    case none
+
+    static var square: ButtonStyle = .squareSized(50)
+    static var circle: ButtonStyle = .circleSized(60)
 
     var size: CGSize {
         switch self {
-        case .Square: return CGSize(50)
-        case .Circle: return CGSize(60)
-        case let .SquareSized(size): return CGSize(size)
-        case let .RectSized(width, height): return CGSize(width, height)
-        case let .CircleSized(size): return CGSize(size)
+        case let .squareSized(size): return CGSize(size)
+        case let .rectSized(width, height): return CGSize(width, height)
+        case let .circleSized(size): return CGSize(size)
         default: return .zero
         }
     }
@@ -29,7 +28,7 @@ class Button: TextNode {
         case Disable
     }
 
-    var style: ButtonStyle = .None {
+    var style: ButtonStyle = .none {
         didSet { updateButtonStyle() }
     }
     var preferredScale: CGFloat = 1
@@ -48,8 +47,8 @@ class Button: TextNode {
         }
     }
 
-    private var buttonStyleNode = SKSpriteNode(id: .None)
-    private var buttonBackgroundNode = SKSpriteNode(id: .None)
+    private var buttonStyleNode = SKSpriteNode(id: .none)
+    private var buttonBackgroundNode = SKSpriteNode(id: .none)
     private var alphaOverride = true
     override var alpha: CGFloat {
         didSet {
@@ -101,13 +100,13 @@ class Button: TextNode {
         touchableComponent.containsTouchTest = { [unowned self] (_, location) in
             return self.containsTouchTest(at: location)
         }
-        touchableComponent.on(.Enter) { _ in
+        touchableComponent.on(.enter) { _ in
             self.highlight()
         }
-        touchableComponent.on(.Exit) { _ in
+        touchableComponent.on(.exit) { _ in
             self.unhighlight()
         }
-        touchableComponent.on(.UpInside) { _ in
+        touchableComponent.on(.upInside) { _ in
             for handler in self._onTapped {
                 handler()
             }
@@ -156,25 +155,25 @@ class Button: TextNode {
         var textureStyle = style
 
         switch style {
-        case .None:
+        case .none:
             break
-        case .RectToFit:
+        case .rectToFit:
             let margin: CGFloat = 10
             size = CGSize(CGFloat(ceil(textSize.width)) + margin, CGFloat(ceil(textSize.height)) + margin)
-            textureStyle = .RectSized(size.width, size.height)
+            textureStyle = .rectSized(size.width, size.height)
         default:
             size = style.size
         }
-        buttonStyleNode.textureId(.Button(style: textureStyle, borderColor: borderColor))
+        buttonStyleNode.textureId(.button(style: textureStyle, borderColor: borderColor))
 
-        var backgroundId: ImageIdentifier = .None
+        var backgroundId: ImageIdentifier = .none
         if let backgroundColor = backgroundColor {
             switch style {
-            case .None: break
-            case .Circle, .CircleSized:
-                backgroundId = .FillColorCircle(size: size, color: backgroundColor)
+            case .none: break
+            case .circleSized:
+                backgroundId = .fillColorCircle(size: size, color: backgroundColor)
             default:
-                backgroundId = .FillColorBox(size: size, color: backgroundColor)
+                backgroundId = .fillColorBox(size: size, color: backgroundColor)
             }
         }
         buttonBackgroundNode.textureId(backgroundId)

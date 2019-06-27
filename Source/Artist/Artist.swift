@@ -6,15 +6,13 @@ private var generatedImages = [String: UIImage]()
 
 class Artist {
     enum Scale {
-        case Small
-        case Normal
-        case Zoomed
+        case small
+        case normal
 
         var scale: CGFloat {
             switch self {
-            case .Small: return 1
-            case .Normal: return 2
-            case .Zoomed: return 4
+            case .small: return 1
+            case .normal: return 2
             }
         }
 
@@ -31,14 +29,6 @@ class Artist {
     var scale: CGFloat = 1
     var rotation: CGFloat = 0
     var alpha: CGFloat = 1
-
-    enum Shadowed {
-        case False
-        case True
-        case Size(CGFloat)
-    }
-
-    var shadowed = Shadowed.False
 
     required init() {
     }
@@ -68,20 +58,7 @@ class Artist {
     }
 
     func drawingOffset(scale: Scale) -> CGPoint {
-        if shadowed.boolValue {
-            let shadowSize = shadowed.floatValue
-            switch scale {
-            case .Small:
-                return CGPoint(shadowSize - 1)
-            case .Normal:
-                return CGPoint(shadowSize)
-            case .Zoomed:
-                return CGPoint(shadowSize - 2)
-            }
-        }
-        else {
-            return CGPoint(1)
-        }
+        return CGPoint(1)
     }
 
     func imageSize(scale: Scale) -> CGSize {
@@ -97,21 +74,8 @@ class Artist {
     }
 }
 
-extension Artist.Shadowed {
-    var boolValue: Bool {
-        return floatValue > 0
-    }
-    var floatValue: CGFloat {
-        switch self {
-        case .False: return 0
-        case .True: return 5
-        case let .Size(size): return size
-        }
-    }
-}
-
 extension Artist {
-    class func generate(id: ImageIdentifier, scale: Scale = .Normal) -> UIImage {
+    class func generate(id: ImageIdentifier, scale: Scale = .normal) -> UIImage {
         let artist = id.artist
         artist.scale = scale.scale
         let size = artist.imageSize(scale: scale) * artist.scale

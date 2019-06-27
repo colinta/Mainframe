@@ -3,22 +3,22 @@
 //
 
 enum OperationResult {
-    case NaN
-    case DivZero
-    case NeedsInput
-    case Number(number: Decimal, pi: Decimal)
+    case nan
+    case divZero
+    case needsInput
+    case number(number: Decimal, pi: Decimal)
 
     static func checkNumber(number: Decimal, pi: Decimal) -> OperationResult {
         if number == Decimal.nan || pi == Decimal.nan {
-            return .NaN
+            return .nan
         }
-        return .Number(number: number, pi: pi)
+        return .number(number: number, pi: pi)
     }
 
     var number: String {
         switch self {
-        case .NaN, .DivZero, .NeedsInput: return description
-        case let .Number(number, numberPi):
+        case .nan, .divZero, .needsInput: return description
+        case let .number(number, numberPi):
             return (number + Decimal.pi(times: numberPi)).description
         }
     }
@@ -44,10 +44,10 @@ enum OperationResult {
 
     var description: String {
         switch self {
-        case .NaN: return "NaN"
-        case .DivZero: return "UNDEF"
-        case .NeedsInput: return "..."
-        case let .Number(number, pi):
+        case .nan: return "NaN"
+        case .divZero: return "UNDEF"
+        case .needsInput: return "..."
+        case let .number(number, pi):
             if pi == 0 {
                 return numDesc(number)
             }

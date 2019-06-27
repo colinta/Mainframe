@@ -26,8 +26,8 @@ struct NumberOperation: OperationValue {
 
     func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
         if let number = number {
-            return .Number(number: number, pi: 0)
+            return .number(number: number, pi: 0)
         }
-        return .NeedsInput
+        return .needsInput
     }
 }

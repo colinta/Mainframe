@@ -15,7 +15,7 @@ protocol OperationValue {
 
 extension OperationValue {
     func formula(_ nodes: [MathNode], isTop: Bool) -> String { return "..." }
-    func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult { return .NeedsInput }
+    func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult { return .needsInput }
     var mustBeTop: Bool { return false }
     var minChildNodes: Int? { return nil }
     var maxChildNodes: Int? { return nil }

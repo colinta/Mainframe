@@ -21,7 +21,7 @@ struct AssignOperation: OperationValue {
     }
 
     func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
-        guard let node = nodes.first, nodes.count == 1 else { return .NeedsInput }
+        guard let node = nodes.first, nodes.count == 1 else { return .needsInput }
 
         return node.calculate(vars)
     }

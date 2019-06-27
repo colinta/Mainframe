@@ -16,9 +16,9 @@ class SelectableComponent: Component {
     }
 
     func bindTo(touchableComponent: TouchableComponent) {
-        touchableComponent.on(.DownInside, onTouchIn)
-        touchableComponent.on(.Pressed, onTouchPressed)
-        touchableComponent.on(.Up, onTouchEnded)
+        touchableComponent.on(.downInside, onTouchIn)
+        touchableComponent.on(.pressed, onTouchPressed)
+        touchableComponent.on(.up, onTouchEnded)
     }
 
     func changeSelected(_ isSelected: Bool) {

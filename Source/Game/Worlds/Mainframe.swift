@@ -35,13 +35,13 @@ class Mainframe: World {
     }
 
     enum OutputStyle {
-        case Exact
-        case Number
+        case exact
+        case number
     }
 
     var remainingScreenSize: CGSize { return CGSize(width: screenSize.width, height: screenSize.height - Size.formulaBgHeight - Size.tabbarHeight) }
 
-    var outputStyle: OutputStyle = .Exact
+    var outputStyle: OutputStyle = .exact
     let outputCalc = Button()
     let outputFormula = TextNode()
     let expandButton = Button()
@@ -84,72 +84,72 @@ class Mainframe: World {
 
     override func populateWorld() {
         let treeDrag = TouchableComponent()
-        treeDrag.on(.Down) { _ in
+        treeDrag.on(.down) { _ in
             self.hidePanel()
         }
         treeDrag.onDragged { p1, p2 in
             self.tree.position += p2 - p1
         }
-        treeDrag.on(.Tapped) { _ in
+        treeDrag.on(.tapped) { _ in
             self.currentOp = nil
         }
         self.addComponent(treeDrag)
         defaultNode = self
 
-        outputCalc.z = .Top
-        outputCalc.fixedPosition = .TopRight(x: 0, y: Size.buttonY)
+        outputCalc.z = .top
+        outputCalc.fixedPosition = .topRight(x: 0, y: Size.buttonY)
         outputCalc.alignment = .right
-        outputCalc.style = .RectSized(remainingScreenSize.width, Size.formulaHeight)
+        outputCalc.style = .rectSized(remainingScreenSize.width, Size.formulaHeight)
         outputCalc.borderColor = 0x0
         outputCalc.margins.top = 10
         outputCalc.margins.left = 10
         outputCalc.margins.right = 10
-        outputCalc.touchableComponent?.off(.Enter, .Exit)
+        outputCalc.touchableComponent?.off(.enter, .exit)
         outputCalc.onTapped {
             switch self.outputStyle {
-            case .Exact:
-                self.outputStyle = .Number
-            case .Number:
-                self.outputStyle = .Exact
+            case .exact:
+                self.outputStyle = .number
+            case .number:
+                self.outputStyle = .exact
             }
             self.updateCalc()
         }
         self << outputCalc
 
-        outputFormula.z = .Top
-        outputFormula.fixedPosition = .TopRight(x: 0, y: -30)
+        outputFormula.z = .top
+        outputFormula.fixedPosition = .topRight(x: 0, y: -30)
         outputFormula.margins.left = 10
         outputFormula.margins.right = 10
         outputFormula.textScale = 0.75
         outputFormula.alignment = .right
         self << outputFormula
 
-        let expandSprite = SKSpriteNode(id: .Expand)
-        expandSprite.z = .Above
+        let expandSprite = SKSpriteNode(id: .expand)
+        expandSprite.z = .above
         expandButton << expandSprite
-        expandButton.style = .SquareSized(Size.expandSize)
+        expandButton.style = .squareSized(Size.expandSize)
         expandButton.backgroundColor = 0x0
         expandButton.borderColor = 0xFFFFFF
-        expandButton.fixedPosition = .BottomRight(x: -Size.expandSize / 2, y: Size.tabbarHeight + Size.expandSize / 2)
+        expandButton.fixedPosition = .bottomRight(x: -Size.expandSize / 2, y: Size.tabbarHeight + Size.expandSize / 2)
         expandButton.onTapped {
             self.expandToExtents()
         }
         self << expandButton
 
-        let outputBg = SKSpriteNode(id: .FillColorBox(size: CGSize(remainingScreenSize.width, Size.formulaBgHeight), color: 0x0))
+        let outputBg = SKSpriteNode(id: .fillColorBox(size: CGSize(remainingScreenSize.width, Size.formulaBgHeight), color: 0x0))
         outputBg.position = CGPoint(y: screenSize.height / 2 - 40)
-        outputBg.z = .Above
+        outputBg.z = .above
         self << outputBg
 
         self << tree
 
-        topNode.fixedPosition = .Top(x: 0, y: -160)
+        topNode.fixedPosition = .top(x: 0, y: -160)
         tree << topNode
 
         Size.treeOffset = topNode.position.y
         topNode.onUpdate(self.updateCalc)
 
-        addButton.fixedPosition = .TopLeft(x: 5 + addButton.size.width / 2, y: -95)
+        addButton.fixedPosition = .topLeft(x: 5 + addButton.size.width / 2, y: -95)
         self << addButton
 
         let tabbarButtons = [
@@ -162,34 +162,34 @@ class Mainframe: World {
             let buttonWidth = remainingScreenSize.width / CGFloat(tabbarButtons.count)
             var x: CGFloat = -remainingScreenSize.width / 2 + buttonWidth / 2
             for (text, button) in tabbarButtons {
-                button.z = .Above
+                button.z = .above
                 button.text = text
-                button.style = .RectSized(buttonWidth, Size.tabbarHeight)
-                button.fixedPosition = .Bottom(x: x, y: Size.tabbarHeight / 2)
+                button.style = .rectSized(buttonWidth, Size.tabbarHeight)
+                button.fixedPosition = .bottom(x: x, y: Size.tabbarHeight / 2)
                 x += buttonWidth
                 self << button
             }
         }
 
         createPanel(numbersItem.panel, buttons: [
-            [.Key(.Delete), .Key(.Clear), .Next],
-            [.Key(.Num1), .Key(.Num2), .Key(.Num3)],
-            [.Key(.Num4), .Key(.Num5), .Key(.Num6)],
-            [.Key(.Num7), .Key(.Num8), .Key(.Num9)],
-            [.Key(.NumDot), .Key(.Num0), .Key(.SignSwitch)]
+            [.key(.delete), .key(.clear), .nxttt],
+            [.key(.num1), .key(.num2), .key(.num3)],
+            [.key(.num4), .key(.num5), .key(.num6)],
+            [.key(.num7), .key(.num8), .key(.num9)],
+            [.key(.dot), .key(.num0), .key(.sign)]
         ])
         createPanel(operatorsItem.panel, buttons: [
-            [.Operator(AddOperation()), .Operator(SubtractOperation()), .Operator(DivideOperation()), .Operator(MultiplyOperation())],
-            [.Operator(SquareRootOperation()), .Operator(NRootOperation()), .Operator(ExponentOperation()), .Operator(FactorialOperation())],
+            [.operator(AddOperation()), .operator(SubtractOperation()), .operator(DivideOperation()), .operator(MultiplyOperation())],
+            [.operator(SquareRootOperation()), .operator(NRootOperation()), .operator(ExponentOperation()), .operator(FactorialOperation())],
         ])
         createPanel(functionsItem.panel, buttons: [
-            [.Function(LogOperation()), .Function(LnOperation()), .Function(LogNOperation())],
-            [.Function(SinOperation()), .Function(CosOperation()), .Function(TanOperation())],
-            [.Function(ArcSinOperation()), .Function(ArcCosOperation()), .Function(ArcTanOperation())],
+            [.function(LogOperation()), .function(LnOperation()), .function(LogNOperation())],
+            [.function(SinOperation()), .function(CosOperation()), .function(TanOperation())],
+            [.function(ArcSinOperation()), .function(ArcCosOperation()), .function(ArcTanOperation())],
         ])
         createPanel(variablesItem.panel, buttons: [
-            [.Variable("𝑥"), .Assign("𝑥"), .Variable("𝑦"), .Assign("𝑦"), .Variable("𝑧"), .Assign("𝑧"), .Variable("n"), .Assign("n")],
-            [.Variable("π"), .Variable("τ"), .Variable("𝑒")],
+            [.variable("𝑥"), .assign("𝑥"), .variable("𝑦"), .assign("𝑦"), .variable("𝑧"), .assign("𝑧"), .variable("n"), .assign("n")],
+            [.variable("π"), .variable("τ"), .variable("𝑒")],
         ])
 
         numbersItem.button.onTapped { self.togglePanel(self.numbersItem) }
@@ -211,9 +211,9 @@ class Mainframe: World {
 
     func updateCalc() {
         switch outputStyle {
-        case .Exact:
+        case .exact:
             outputCalc.text = topNode.calculate(self).description
-        case .Number:
+        case .number:
             outputCalc.text = topNode.calculate(self).number
         }
         outputFormula.text = topNode.formula(isTop: true)
@@ -223,11 +223,11 @@ class Mainframe: World {
 
         if outputCalc.textSize.width > self.remainingScreenSize.width {
             outputCalc.alignment = .left
-            outputCalc.fixedPosition = .TopLeft(x: 0, y: Size.buttonY)
+            outputCalc.fixedPosition = .topLeft(x: 0, y: Size.buttonY)
         }
         else {
             outputCalc.alignment = .right
-            outputCalc.fixedPosition = .TopRight(x: 0, y: Size.buttonY)
+            outputCalc.fixedPosition = .topRight(x: 0, y: Size.buttonY)
         }
     }
 
@@ -235,7 +235,7 @@ class Mainframe: World {
         guard currentOp != newValue else { return }
 
         if let currentOp = currentOp, currentOp.op.isSelected {
-            currentOp.op = .NoOp
+            currentOp.op = .noOp(isSelected: false)
         }
 
         let panelButtonsEnabled = newValue != nil
@@ -260,7 +260,7 @@ class Mainframe: World {
             self.topNode = topMost
 
             if currentOp.op.isNoOp {
-                currentOp.op = .NoOpSelected
+                currentOp.op = .noOp(isSelected: true)
                 togglePanel(numbersItem, show: true)
             }
 
@@ -294,15 +294,15 @@ class Mainframe: World {
 
     func createPanel(_ panel: Node, buttons: [[Operation]]) {
         let totalHeight: CGFloat = CGFloat(buttons.count) * Size.tabbarHeight
-        panel.fixedPosition = .Bottom(x: 0, y: Size.tabbarHeight + totalHeight / 2)
+        panel.fixedPosition = .bottom(x: 0, y: Size.tabbarHeight + totalHeight / 2)
         var y = totalHeight / 2 - Size.tabbarHeight / 2
         for ops in buttons {
             let buttonWidth = remainingScreenSize.width / CGFloat(ops.count)
             var x = -remainingScreenSize.width / 2 + buttonWidth / 2
             for op in ops {
                 let button = op.asButton()
-                button.z = .Above
-                button.style = .RectSized(buttonWidth, Size.tabbarHeight)
+                button.z = .above
+                button.style = .rectSized(buttonWidth, Size.tabbarHeight)
                 button.position = CGPoint(x, y)
                 button.onTapped {
                     op.tapped(self, isFirst: self.firstKeyPress)
@@ -442,7 +442,7 @@ class Mainframe: World {
             if scale < 1 {
                 let zoomButton = Node()
                 let touchableComponent = TouchableComponent()
-                touchableComponent.on(.UpInside) { location in
+                touchableComponent.on(.upInside) { location in
                     self.tree.scaleTo(1, duration: 0.2)
                     self.tree.moveTo(CGPoint(x: -location.x / scale, y: -location.y / scale), duration: 0.2)
                     zoomButton.removeFromParent()
@@ -450,7 +450,7 @@ class Mainframe: World {
                 touchableComponent.containsTouchTest = TouchableComponent.defaultTouchTest()
                 zoomButton.addComponent(touchableComponent)
                 zoomButton.size = CGSize(width: remainingScreenSize.width, height: remainingScreenSize.height)
-                zoomButton.z = .Top
+                zoomButton.z = .top
                 zoomButton.position.y = yCorrection
                 self << zoomButton
             }
@@ -496,7 +496,7 @@ extension Mainframe: VariableLookup {
                 return child.calculate(self)
             }
         }
-        return .NeedsInput
+        return .needsInput
     }
 }
 

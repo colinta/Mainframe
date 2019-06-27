@@ -4,9 +4,9 @@
 
 struct Letter: Equatable {
     enum Style {
-        case Loop
-        case Line
-        case Fill
+        case loop
+        case line
+        case fill
     }
 
     let style: Style
