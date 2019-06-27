@@ -8,7 +8,7 @@ enum OperationResult {
     case NeedsInput
     case Number(number: Decimal, pi: Decimal)
 
-    static func CheckNumber(number: Decimal, pi: Decimal) -> OperationResult {
+    static func checkNumber(number: Decimal, pi: Decimal) -> OperationResult {
         if number == Decimal.nan || pi == Decimal.nan {
             return .NaN
         }

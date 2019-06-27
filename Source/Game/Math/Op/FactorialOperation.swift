@@ -22,7 +22,7 @@ struct FactorialOperation: OperationValue {
         case .NaN, .DivZero, .NeedsInput: return nodeVal
         case let .Number(number, numberPi):
             let asDouble = (number + Decimal.pi(times: numberPi)).asDouble
-            return .CheckNumber(number: Decimal(tgamma(1 + asDouble)), pi: 0)
+            return .checkNumber(number: Decimal(tgamma(1 + asDouble)), pi: 0)
         }
     }
 }

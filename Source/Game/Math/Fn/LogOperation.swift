@@ -22,7 +22,7 @@ struct LogOperation: OperationValue {
         switch nodeVal {
         case .NaN, .DivZero, .NeedsInput: return nodeVal
         case let .Number(number, numberPi):
-            return .CheckNumber(number: Decimal(log10((number + Decimal.pi(times: numberPi)).asDouble)), pi: 0)
+            return .checkNumber(number: Decimal(log10((number + Decimal.pi(times: numberPi)).asDouble)), pi: 0)
         }
     }
 }
@@ -44,7 +44,7 @@ struct LnOperation: OperationValue {
         switch nodeVal {
         case .NaN, .DivZero, .NeedsInput: return nodeVal
         case let .Number(number, numberPi):
-            return .CheckNumber(number: Decimal(log((number + Decimal.pi(times: numberPi)).asDouble)), pi: 0)
+            return .checkNumber(number: Decimal(log((number + Decimal.pi(times: numberPi)).asDouble)), pi: 0)
         }
     }
 }
@@ -77,7 +77,7 @@ struct LogNOperation: OperationValue {
         case let (.Number(number: numberNumber, pi: numberPi), .Number(baseNumber, basePi)):
             let numberActual = numberNumber + Decimal.pi(times: numberPi)
             let baseActual = baseNumber + Decimal.pi(times: basePi)
-            return .CheckNumber(number: Decimal(log(numberActual.asDouble) / log(baseActual.asDouble)), pi: 0)
+            return .checkNumber(number: Decimal(log(numberActual.asDouble) / log(baseActual.asDouble)), pi: 0)
         default:
             return .NeedsInput
         }

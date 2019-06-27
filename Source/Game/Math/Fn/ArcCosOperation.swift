@@ -35,7 +35,7 @@ struct ArcCosOperation: OperationValue {
                 default: break
                 }
             }
-            return .CheckNumber(number: Decimal(acos((number + Decimal.pi(times: numberPi)).asDouble)), pi: 0)
+            return .checkNumber(number: Decimal(acos((number + Decimal.pi(times: numberPi)).asDouble)), pi: 0)
         }
     }
 }

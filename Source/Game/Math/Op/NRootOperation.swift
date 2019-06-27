@@ -40,7 +40,7 @@ struct NRootOperation: OperationValue {
         case let (.Number(number1, number1Pi), .Number(number2, number2Pi)):
             let root = number1 + Decimal.pi(times: number1Pi)
             let number = number2 + Decimal.pi(times: number2Pi)
-            return .CheckNumber(number: Decimal(pow(number.asDouble, 1/root.asDouble)), pi: 0)
+            return .checkNumber(number: Decimal(pow(number.asDouble, 1/root.asDouble)), pi: 0)
         default:
             return .NaN
         }

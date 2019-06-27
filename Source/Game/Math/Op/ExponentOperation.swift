@@ -32,7 +32,7 @@ struct ExponentOperation: OperationValue {
         case let (.Number(number1, number1Pi), .Number(number2, number2Pi)):
             let base = number1 + Decimal.pi(times: number1Pi)
             let power = number2 + Decimal.pi(times: number2Pi)
-            return .CheckNumber(number: Decimal(pow(base.asDouble, power.asDouble)), pi: 0)
+            return .checkNumber(number: Decimal(pow(base.asDouble, power.asDouble)), pi: 0)
         default:
             return .NaN
         }

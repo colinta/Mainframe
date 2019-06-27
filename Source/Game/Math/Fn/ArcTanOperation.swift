@@ -22,7 +22,7 @@ struct ArcTanOperation: OperationValue {
         switch nodeVal {
         case .NaN, .DivZero, .NeedsInput: return nodeVal
         case let .Number(number, numberPi):
-            return .CheckNumber(number: Decimal(atan((number + Decimal.pi(times: numberPi)).asDouble)), pi: 0)
+            return .checkNumber(number: Decimal(atan((number + Decimal.pi(times: numberPi)).asDouble)), pi: 0)
         }
     }
 }
