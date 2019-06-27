@@ -3,9 +3,9 @@
 //
 
 class AddButton: Button {
-    var dragBeginPoint: CGPoint?
-    var addToPoint: CGPoint?
-    var newNode = MathNode()
+    private var dragBeginPoint: CGPoint?
+    private var addToPoint: CGPoint?
+    private var newNode = MathNode()
 
     required init() {
         super.init()
@@ -39,7 +39,7 @@ class AddButton: Button {
             self.addToPoint = newPoint
         }
         touchableComponent?.on(.Up) { pt in
-            self.addNode(at: self.addToPoint)
+            self.addMainframeNode(at: self.addToPoint)
             self.newNode.fadeTo(0, start: 0, rate: 3.333) // to cancel previous fade-in
         }
     }
@@ -48,7 +48,7 @@ class AddButton: Button {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func addNode(at delta: CGPoint?) {
+    private func addMainframeNode(at delta: CGPoint?) {
         guard let mainframe = world as? Mainframe else { return }
 
         mainframe.addTopNode(MathNode(), at: delta.map { position + $0 })

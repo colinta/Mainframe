@@ -134,7 +134,7 @@ extension Node {
     }
 
     func removeComponent(_ component: Component) {
-        guard let index = components.index(of: component) else { return }
+        guard let index = components.firstIndex(of: component) else { return }
         if component == fadeToComponent { fadeToComponent = nil }
         if component == jiggleComponent { jiggleComponent = nil }
         if component == moveToComponent { moveToComponent = nil }

@@ -7,7 +7,7 @@ func <<(lhs: UIView, rhs: UIView) {
 }
 
 func <<(lhs: UIViewController, rhs: UIViewController) {
-    lhs.addChildViewController(rhs)
+    lhs.addChild(rhs)
 }
 
 func <<(lhs: SKNode, rhs: SKNode) {

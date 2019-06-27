@@ -12,7 +12,7 @@ struct SquareRootOperation: OperationValue {
         if let node = nodes.first, nodes.count == 1 {
             return "√(\(node.formula(isTop: true)))"
         }
-        return "√(◻)"
+        return "√◻"
     }
 
     func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {

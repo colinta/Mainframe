@@ -59,14 +59,14 @@ struct LogNOperation: OperationValue {
         if let base = nodes.first, nodes.count == 1 {
             return "log(◻) base \(base.formula(isTop: true))"
         }
-        else if let base = nodes.first, let number = nodes.last, nodes.count == 2 {
+        else if let base = nodes.safe(0), let number = nodes.safe(1) {
             return "log(\(number.formula(isTop: false)) base \(base.formula(isTop: true)))"
         }
         return "logₒ(◻)"
     }
 
     func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
-        guard let base = nodes.first, let number = nodes.last, nodes.count == 2 else { return .NeedsInput }
+        guard let base = nodes.safe(0), let number = nodes.safe(1) else { return .NeedsInput }
 
         let baseVal = base.calculate(vars)
         let numberVal = number.calculate(vars)

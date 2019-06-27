@@ -10,7 +10,7 @@ class MathNode: Node {
     var mainframe: Mainframe? { return world as? Mainframe }
 
     var numberString = ""
-    var prevOp: Operation = .NoOp
+    private var prevOp: Operation = .NoOp
     var op: Operation = .NoOp {
         willSet { prevOp = op }
         didSet { updateMathNodes(select: true) }

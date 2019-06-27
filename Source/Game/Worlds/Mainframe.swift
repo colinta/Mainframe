@@ -104,8 +104,7 @@ class Mainframe: World {
         outputCalc.margins.top = 10
         outputCalc.margins.left = 10
         outputCalc.margins.right = 10
-        outputCalc.touchableComponent?.off(.Enter)
-        outputCalc.touchableComponent?.off(.Exit)
+        outputCalc.touchableComponent?.off(.Enter, .Exit)
         outputCalc.onTapped {
             switch self.outputStyle {
             case .Exact:

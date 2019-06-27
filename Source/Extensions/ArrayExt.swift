@@ -65,7 +65,7 @@ extension Array {
 
 extension Array {
     mutating func removeMatches(test: (Element) -> Bool) {
-        while let index = self.index(where: test) {
+        while let index = self.firstIndex(where: test) {
             remove(at: index)
         }
     }
@@ -73,7 +73,7 @@ extension Array {
 
 extension Array where Element: Equatable {
     mutating func remove(item: Element) {
-        if let index = self.index(of: item) {
+        if let index = self.firstIndex(of: item) {
             remove(at: index)
         }
     }
