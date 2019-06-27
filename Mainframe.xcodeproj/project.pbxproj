@@ -15,6 +15,8 @@
 		1625B6A9D6C55A9983FEF4AC /* LogOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6EF1D10750C6277BBBF14A0 /* LogOperation.swift */; };
 		165860AA9BE85BDC72DF3F66 /* AddOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8A8B74006E0201876DA1F2 /* AddOperation.swift */; };
 		1CD0FB332F309A8B658BB5E4 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D8A29F4313395D9598601A /* Line.swift */; };
+		1D05678E22C41059001DF7B4 /* ExponentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D05678D22C41059001DF7B4 /* ExponentOperation.swift */; };
+		1D05679022C4FAC5001DF7B4 /* NRootOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D05678F22C4FAC5001DF7B4 /* NRootOperation.swift */; };
 		1D05679222C4FAF0001DF7B4 /* DefaultFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D05679122C4FAF0001DF7B4 /* DefaultFont.swift */; };
 		1D05679D22C4FAFA001DF7B4 /* ShapeArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D05679322C4FAF8001DF7B4 /* ShapeArtist.swift */; };
 		1D05679E22C4FAFA001DF7B4 /* TextArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D05679422C4FAF8001DF7B4 /* TextArtist.swift */; };
@@ -95,6 +97,8 @@
 		01D8A29F4313395D9598601A /* Line.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		02D06B3BB0D6F7D3E7361481 /* Position.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
 		102C887523331D4CFDE83BF1 /* CosOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CosOperation.swift; sourceTree = "<group>"; };
+		1D05678D22C41059001DF7B4 /* ExponentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExponentOperation.swift; sourceTree = "<group>"; };
+		1D05678F22C4FAC5001DF7B4 /* NRootOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NRootOperation.swift; sourceTree = "<group>"; };
 		1D05679122C4FAF0001DF7B4 /* DefaultFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultFont.swift; sourceTree = "<group>"; };
 		1D05679322C4FAF8001DF7B4 /* ShapeArtist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShapeArtist.swift; sourceTree = "<group>"; };
 		1D05679422C4FAF8001DF7B4 /* TextArtist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextArtist.swift; sourceTree = "<group>"; };
@@ -311,8 +315,10 @@
 		9AD60655D7156D70DB7F6D3F /* Op */ = {
 			isa = PBXGroup;
 			children = (
+				1D05678F22C4FAC5001DF7B4 /* NRootOperation.swift */,
 				CD8A8B74006E0201876DA1F2 /* AddOperation.swift */,
 				1F58AF12B89BF9E641D3A514 /* DivideOperation.swift */,
+				1D05678D22C41059001DF7B4 /* ExponentOperation.swift */,
 				E846127BD008459329645C04 /* FactorialOperation.swift */,
 				2AE492BAE6B3256DB5AE4097 /* MultiplyOperation.swift */,
 				89EC8FFEA79297D729D5E7B2 /* SquareRootOperation.swift */,
@@ -513,6 +519,7 @@
 				206DC25A72CECF5D670618E5 /* Component.swift in Sources */,
 				211E6E89716C020F15327473 /* Node.swift in Sources */,
 				2FE99FB69EE881E5B639E65C /* Position.swift in Sources */,
+				1D05679022C4FAC5001DF7B4 /* NRootOperation.swift in Sources */,
 				AA64FCD56A6EE98A5BB89A8B /* TouchSession.swift in Sources */,
 				0934E52B2452091E1CA89AC2 /* World.swift in Sources */,
 				151E7E6EBFBD033D3E3F2527 /* WorldController.swift in Sources */,
@@ -558,6 +565,7 @@
 				2E847F3E06216C65D0045F28 /* SquareRootOperation.swift in Sources */,
 				A5C6C0838C2D882489715825 /* SubtractOperation.swift in Sources */,
 				798D5AFF7E5C3A5881BBACCF /* Operation.swift in Sources */,
+				1D05678E22C41059001DF7B4 /* ExponentOperation.swift in Sources */,
 				1D0567A022C4FAFA001DF7B4 /* Artist.swift in Sources */,
 				31C1911BDE12A317673E2AEF /* OperationResult.swift in Sources */,
 				1D0567A522C4FAFA001DF7B4 /* ExpandArtist.swift in Sources */,

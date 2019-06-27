@@ -180,7 +180,7 @@ class Mainframe: World {
         ])
         createPanel(operatorsItem.panel, buttons: [
             [.Operator(AddOperation()), .Operator(SubtractOperation()), .Operator(DivideOperation()), .Operator(MultiplyOperation())],
-            [.Operator(SquareRootOperation()), .Operator(FactorialOperation())],
+            [.Operator(SquareRootOperation()), .Operator(NRootOperation()), .Operator(ExponentOperation()), .Operator(FactorialOperation())],
         ])
         createPanel(functionsItem.panel, buttons: [
             [.Function(LogOperation()), .Function(LnOperation()), .Function(LogNOperation())],
