@@ -172,7 +172,7 @@ class Mainframe: World {
         }
 
         createPanel(numbersItem.panel, buttons: [
-            [.key(.delete), .key(.clear), .nxttt],
+            [.key(.delete), .key(.clear), .nextBlankOp],
             [.key(.num1), .key(.num2), .key(.num3)],
             [.key(.num4), .key(.num5), .key(.num6)],
             [.key(.num7), .key(.num8), .key(.num9)],
@@ -210,12 +210,15 @@ class Mainframe: World {
     }
 
     func updateCalc() {
+        let calculation = topNode.calculate(vars: self, avoidRecursion: [])
+
         switch outputStyle {
         case .exact:
-            outputCalc.text = topNode.calculate(self).description
+            outputCalc.text = calculation.description
         case .number:
-            outputCalc.text = topNode.calculate(self).number
+            outputCalc.text = calculation.number
         }
+
         outputFormula.text = topNode.formula(isTop: true)
         if !outputFormula.text.contains("=") {
             outputFormula.text += "="
@@ -486,15 +489,17 @@ class Mainframe: World {
 }
 
 protocol VariableLookup {
-    func valueForVariable(_ name: String) -> OperationResult
+    func valueForVariable(_ name: String, avoidRecursion: [String]) -> OperationResult
 }
 
 extension Mainframe: VariableLookup {
-    func valueForVariable(_ name: String) -> OperationResult {
+    func valueForVariable(_ name: String, avoidRecursion: [String]) -> OperationResult {
         for child in tree.children {
-            if let child = child as? MathNode, child.op.isVariable(name) {
-                return child.calculate(self)
+            guard let child = child as? MathNode, child.op.isVariable(name) else { continue }
+            if avoidRecursion.contains(name) {
+                return .needsInput
             }
+            return child.calculate(vars: self, avoidRecursion: avoidRecursion + [name])
         }
         return .needsInput
     }

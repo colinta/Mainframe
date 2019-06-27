@@ -15,10 +15,10 @@ struct ArcTanOperation: OperationValue {
         return "arctan(◻)"
     }
 
-    func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
+    func calculate(_ nodes: [MathNode], vars: VariableLookup, avoidRecursion: [String]) -> OperationResult {
         guard let node = nodes.first, nodes.count == 1 else { return .needsInput }
 
-        let nodeVal = node.calculate(vars)
+        let nodeVal = node.calculate(vars: vars, avoidRecursion: avoidRecursion)
         switch nodeVal {
         case .nan, .divZero, .needsInput: return nodeVal
         case let .number(number, numberPi):

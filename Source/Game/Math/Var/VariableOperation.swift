@@ -16,7 +16,7 @@ struct VariableOperation: OperationValue {
         return name
     }
 
-    func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
+    func calculate(_ nodes: [MathNode], vars: VariableLookup, avoidRecursion: [String]) -> OperationResult {
         if name == "π" {
             return .number(number: 0, pi: 1)
         }
@@ -26,6 +26,6 @@ struct VariableOperation: OperationValue {
         else if name == "𝑒" {
             return .number(number: Decimal(string: "2.71828182845904523536028747135266249775724709369995")!, pi: 0)
         }
-        return vars.valueForVariable(name)
+        return vars.valueForVariable(name, avoidRecursion: avoidRecursion)
     }
 }

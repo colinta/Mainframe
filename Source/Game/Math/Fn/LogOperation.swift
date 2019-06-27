@@ -15,10 +15,10 @@ struct LogOperation: OperationValue {
         return "log(◻)"
     }
 
-    func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
+    func calculate(_ nodes: [MathNode], vars: VariableLookup, avoidRecursion: [String]) -> OperationResult {
         guard let node = nodes.first, nodes.count == 1 else { return .needsInput }
 
-        let nodeVal = node.calculate(vars)
+        let nodeVal = node.calculate(vars: vars, avoidRecursion: avoidRecursion)
         switch nodeVal {
         case .nan, .divZero, .needsInput: return nodeVal
         case let .number(number, numberPi):
@@ -38,9 +38,9 @@ struct LnOperation: OperationValue {
         return "ln(\(node.formula(isTop: true)))"
     }
 
-    func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
+    func calculate(_ nodes: [MathNode], vars: VariableLookup, avoidRecursion: [String]) -> OperationResult {
         guard let node = nodes.first, nodes.count == 1 else { return .needsInput }
-        let nodeVal = node.calculate(vars)
+        let nodeVal = node.calculate(vars: vars, avoidRecursion: avoidRecursion)
         switch nodeVal {
         case .nan, .divZero, .needsInput: return nodeVal
         case let .number(number, numberPi):
@@ -65,11 +65,11 @@ struct LogNOperation: OperationValue {
         return "logₒ(◻)"
     }
 
-    func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
+    func calculate(_ nodes: [MathNode], vars: VariableLookup, avoidRecursion: [String]) -> OperationResult {
         guard let base = nodes.safe(0), let number = nodes.safe(1) else { return .needsInput }
 
-        let baseVal = base.calculate(vars)
-        let numberVal = number.calculate(vars)
+        let baseVal = base.calculate(vars: vars, avoidRecursion: avoidRecursion)
+        let numberVal = number.calculate(vars: vars, avoidRecursion: avoidRecursion)
 
         switch (numberVal, baseVal) {
         case (.nan, _), (.divZero, _), (.needsInput, _): return numberVal

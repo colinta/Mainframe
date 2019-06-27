@@ -26,14 +26,14 @@ struct NRootOperation: OperationValue {
         return "(\(inside))"
     }
 
-    func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
+    func calculate(_ nodes: [MathNode], vars: VariableLookup, avoidRecursion: [String]) -> OperationResult {
         guard
             let node1 = nodes.safe(0),
             let node2 = nodes.safe(1)
         else { return .needsInput }
 
-        let node1Val = node1.calculate(vars)
-        let node2Val = node2.calculate(vars)
+        let node1Val = node1.calculate(vars: vars, avoidRecursion: avoidRecursion)
+        let node2Val = node2.calculate(vars: vars, avoidRecursion: avoidRecursion)
         switch (node1Val, node2Val) {
         case (.needsInput, _), (_, .needsInput): return .needsInput
         case (.divZero, _), (_, .divZero): return .divZero

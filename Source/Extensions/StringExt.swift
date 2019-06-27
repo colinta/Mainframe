@@ -1,4 +1,7 @@
 public extension String {
+    func removeFirst() -> String {
+        return String(self[index(after: startIndex)..<endIndex])
+    }
 
     func withCommas() -> String {
         guard Decimal(string: self) != nil else { return self }

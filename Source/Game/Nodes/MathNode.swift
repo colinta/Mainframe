@@ -192,8 +192,8 @@ class MathNode: Node {
         return op.formula(activeMathChildren, isTop: isTop)
     }
 
-    func calculate(_ vars: VariableLookup) -> OperationResult {
-        return op.calculate(activeMathChildren, vars: vars)
+    func calculate(vars: VariableLookup, avoidRecursion: [String]) -> OperationResult {
+        return op.calculate(activeMathChildren, vars: vars, avoidRecursion: avoidRecursion)
     }
 
     private func updateMathNodes(select: Bool = false) {

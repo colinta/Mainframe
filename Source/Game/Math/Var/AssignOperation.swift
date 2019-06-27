@@ -20,9 +20,9 @@ struct AssignOperation: OperationValue {
         return "\(name)=◻"
     }
 
-    func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult {
+    func calculate(_ nodes: [MathNode], vars: VariableLookup, avoidRecursion: [String]) -> OperationResult {
         guard let node = nodes.first, nodes.count == 1 else { return .needsInput }
 
-        return node.calculate(vars)
+        return node.calculate(vars: vars, avoidRecursion: avoidRecursion)
     }
 }

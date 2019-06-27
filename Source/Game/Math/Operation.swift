@@ -3,7 +3,7 @@
 //
 
 enum Operation {
-    case nxttt
+    case nextBlankOp
     case key(KeyCode)
 
     case number(String)
@@ -75,7 +75,7 @@ extension Operation {
     var opValue: OperationValue {
         switch self {
         case let .key(key):      return KeyOperation(op: key)
-        case .nxttt:              return NextOperation()
+        case .nextBlankOp:              return NextOperation()
         case let .number(num):   return NumberOperation(num)
         case let .variable(num): return VariableOperation(num)
         case let .assign(num):   return AssignOperation(num)
@@ -88,7 +88,7 @@ extension Operation {
 
 extension Operation: OperationValue {
     func formula(_ nodes: [MathNode], isTop: Bool) -> String { return opValue.formula(nodes, isTop: isTop) }
-    func calculate(_ nodes: [MathNode], vars: VariableLookup) -> OperationResult { return opValue.calculate(nodes, vars: vars) }
+    func calculate(_ nodes: [MathNode], vars: VariableLookup, avoidRecursion: [String]) -> OperationResult { return opValue.calculate(nodes, vars: vars, avoidRecursion: avoidRecursion) }
     var mustBeTop: Bool { return opValue.mustBeTop }
     var minChildNodes: Int? { return opValue.minChildNodes }
     var maxChildNodes: Int? { return opValue.maxChildNodes }
@@ -119,7 +119,7 @@ extension Operation {
         guard let currentOp = mainframe.currentOp else { return }
 
         switch self {
-        case .nxttt:
+        case .nextBlankOp:
             mainframe.currentOp = findNextOp(currentOp, mainframe: mainframe, skip: currentOp)
             mainframe.checkCameraLocation()
         case let .key(keyCode):
@@ -139,22 +139,54 @@ extension Operation {
             case .clear:
                 currentOp.numberString = ""
                 currentOp.op = .noOp(isSelected: true)
+            case .dot:
+                if isFirst {
+                    currentOp.numberString = "0."
+                    currentOp.op = .number("0.")
+                }
+                else {
+                    var string = currentOp.numberString
+                    if !string.contains(".") {
+                        string += keyCode.string
+                        if string == "-." {
+                            string = "-0."
+                        }
+                    }
+                    currentOp.numberString = string
+                    currentOp.op = .number(string)
+                }
             case .num1, .num2, .num3, .num4, .num5,
-                 .num6, .num7, .num8, .num9, .num0,
-                 .dot:
+                 .num6, .num7, .num8, .num9, .num0:
                 if isFirst {
                     currentOp.numberString = keyCode.string
                     currentOp.op = .number(keyCode.string)
                 }
                 else {
-                    currentOp.numberString += keyCode.string
-                    currentOp.op = .number(currentOp.numberString)
+                    var string = currentOp.numberString
+                    while string.hasPrefix("0") {
+                        string = string.removeFirst()
+                    }
+                    while string.hasPrefix("-0") {
+                        string = "-" + string.removeFirst().removeFirst()
+                    }
+                    string += keyCode.string
+                    if string.hasPrefix(".") {
+                        string = "0" + string
+                    }
+                    else if string.hasPrefix("-.") {
+                        string = "-0" + string.removeFirst()
+                    }
+                    currentOp.numberString = string
+                    currentOp.op = .number(string)
                 }
             case .sign:
                 var string = currentOp.numberString
                 if !string.isEmpty {
-                    if string[string.startIndex] == "-" {
-                        string = String(string[string.index(after: string.startIndex)..<string.endIndex])
+                    if string.hasPrefix("-") {
+                        string = string.removeFirst()
+                    }
+                    else if string.hasPrefix(".") {
+                        string = "-0" + string
                     }
                     else {
                         string = "-" + string
