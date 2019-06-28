@@ -19,10 +19,8 @@ struct LogOperation: OperationValue {
         guard let node = nodes.first, nodes.count == 1 else { return .needsInput }
 
         let nodeVal = node.calculate(vars: vars, avoidRecursion: avoidRecursion)
-        switch nodeVal {
-        case .nan, .divZero, .needsInput: return nodeVal
-        case let .number(number, numberPi):
-            return .checkNumber(number: Decimal(log10((number + Decimal.pi(times: numberPi)).asDouble)), pi: 0)
+        return nodeVal.mapDecimal { number in
+            return number.mapDouble(log10)
         }
     }
 }
@@ -41,10 +39,8 @@ struct LnOperation: OperationValue {
     func calculate(_ nodes: [MathNode], vars: VariableLookup, avoidRecursion: [String]) -> OperationResult {
         guard let node = nodes.first, nodes.count == 1 else { return .needsInput }
         let nodeVal = node.calculate(vars: vars, avoidRecursion: avoidRecursion)
-        switch nodeVal {
-        case .nan, .divZero, .needsInput: return nodeVal
-        case let .number(number, numberPi):
-            return .checkNumber(number: Decimal(log((number + Decimal.pi(times: numberPi)).asDouble)), pi: 0)
+        return nodeVal.mapDecimal { number in
+            return number.mapDouble(log)
         }
     }
 }
@@ -70,16 +66,8 @@ struct LogNOperation: OperationValue {
 
         let baseVal = base.calculate(vars: vars, avoidRecursion: avoidRecursion)
         let numberVal = number.calculate(vars: vars, avoidRecursion: avoidRecursion)
-
-        switch (numberVal, baseVal) {
-        case (.nan, _), (.divZero, _), (.needsInput, _): return numberVal
-        case (_, .nan), (_, .divZero), (_, .needsInput): return baseVal
-        case let (.number(number: numberNumber, pi: numberPi), .number(baseNumber, basePi)):
-            let numberActual = numberNumber + Decimal.pi(times: numberPi)
-            let baseActual = baseNumber + Decimal.pi(times: basePi)
-            return .checkNumber(number: Decimal(log(numberActual.asDouble) / log(baseActual.asDouble)), pi: 0)
-        default:
-            return .needsInput
+        return OperationResult.map2(baseVal, numberVal) { number, base in
+            return number.mapDouble(log) / base.mapDouble(log)
         }
-}
+    }
 }

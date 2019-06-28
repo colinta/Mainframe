@@ -43,20 +43,20 @@ struct KeyOperation: OperationValue {
 
     init(op: KeyCode) {
         switch op {
-        case .delete:     description = "⌫"
-        case .clear:      description = "C"
-        case .num1:       description = "1"
-        case .num2:       description = "2"
-        case .num3:       description = "3"
-        case .num4:       description = "4"
-        case .num5:       description = "5"
-        case .num6:       description = "6"
-        case .num7:       description = "7"
-        case .num8:       description = "8"
-        case .num9:       description = "9"
-        case .num0:       description = "0"
-        case .dot:     description = "."
-        case .sign: description = "+/-"
+        case .delete: description = "⌫"
+        case .clear:  description = "C"
+        case .num1:   description = "1"
+        case .num2:   description = "2"
+        case .num3:   description = "3"
+        case .num4:   description = "4"
+        case .num5:   description = "5"
+        case .num6:   description = "6"
+        case .num7:   description = "7"
+        case .num8:   description = "8"
+        case .num9:   description = "9"
+        case .num0:   description = "0"
+        case .dot:    description = "."
+        case .sign:   description = "+/-"
         }
     }
 }

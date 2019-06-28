@@ -20,8 +20,14 @@ struct VariableOperation: OperationValue {
         if name == "π" {
             return .number(number: 0, pi: 1)
         }
+        else if name == "-π" {
+            return .number(number: 0, pi: -1)
+        }
         else if name == "τ" {
             return .number(number: 0, pi: 2)
+        }
+        else if name == "-τ" {
+            return .number(number: 0, pi: -2)
         }
         else if name == "𝑒" {
             return .number(number: Decimal(string: "2.71828182845904523536028747135266249775724709369995")!, pi: 0)

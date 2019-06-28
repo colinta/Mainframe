@@ -31,68 +31,55 @@ struct DivideOperation: OperationValue {
     func calculate(_ nodes: [MathNode], vars: VariableLookup, avoidRecursion: [String]) -> OperationResult {
         guard nodes.count > 1 else { return .needsInput }
 
-        var numbers: [(Decimal, pi: Decimal)] = []
-        var numerZero = false
+        // filter out non-numbers and pass them through, and quick return when
+        // dividing by zero
+        var numerator: (Decimal, pi: Decimal) = (0, 0)
+        var denominators: [(Decimal, pi: Decimal)] = []
+        var isFirst = true
         for node in nodes {
             let nodeVal = node.calculate(vars: vars, avoidRecursion: avoidRecursion)
             switch nodeVal {
             case .nan, .divZero, .needsInput: return nodeVal
             case let .number(number, pi):
-                if number == 0 && pi == 0 {
-                    if node == nodes.first {
-                        numerZero = true
-                    }
-                    else {
-                        return .divZero
-                    }
+                if number == 0 && pi == 0 && !isFirst {
+                    return .divZero
                 }
-                numbers << (number, pi)
+
+                if isFirst {
+                    numerator = (number, pi)
+                }
+                else {
+                    denominators << (number, pi)
+                }
             }
+            isFirst = false
         }
 
-        if numerZero {
+        // quick return if dividing 0 by anything non-zero
+        if numerator.0 == 0 && numerator.pi == 0 {
             return .number(number: 0, pi: 0)
         }
 
-        // no denominator is zero,
-        // we have at least two numbers
-
-        var result: Decimal
-        var resultPi: Decimal
-        var first = true
-
-        let firstIsPi = numbers[0].pi != 0
-        let piCounts = numbers.filter { (_, pi) in pi != 0 }.count
-        let piAndNumberCounts = numbers.filter { (number, pi) in pi != 0 && number != 0 }.count
-        if firstIsPi && piCounts == 1 && piAndNumberCounts == 0 {
-            // first one is pi, none of the others
-            // none have pi and number
-            // so every number except the first have a number
-            result = 0
-            resultPi = 1
-            for (number, pi) in numbers {
-                if first {
-                    resultPi = pi
-                }
-                else {
-                    resultPi = resultPi / number
-                }
-                first = false
+        let firstIsPi = numerator.0 == 0 && numerator.pi != 0
+        let piCounts = denominators.filter { (_, pi) in pi != 0 }.count
+        if firstIsPi && piCounts == 0 {
+            // first number has pi in it, and no number
+            // none of the denominators have pi
+            // set the result to the first pi number, and divide the rest
+            // so 2 * pi / 4 aka (number: 0, pi: 2) / (number: 4, pi: 0) becomes
+            // (number: 0, pi: 0.5)
+            var resultPi: Decimal = numerator.pi
+            for (number, _) in denominators {
+                resultPi /= number
             }
+            return .number(number: 0, pi: resultPi)
         }
         else {
-            result = 1
-            resultPi = 0
-            for (number, numberPi) in numbers {
-                if first {
-                    result = number + Decimal.pi(times: numberPi)
-                }
-                else {
-                    result = result / (number + Decimal.pi(times: numberPi))
-                }
-                first = false
+            var result: Decimal = numerator.0 + numerator.pi.timesPi
+            for (number, numberPi) in denominators {
+                result /= number + numberPi.timesPi
             }
+            return .number(number: result, pi: 0)
         }
-        return .number(number: result, pi: resultPi)
     }
 }

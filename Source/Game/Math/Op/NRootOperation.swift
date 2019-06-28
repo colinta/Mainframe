@@ -38,8 +38,8 @@ struct NRootOperation: OperationValue {
         case (.needsInput, _), (_, .needsInput): return .needsInput
         case (.divZero, _), (_, .divZero): return .divZero
         case let (.number(number1, number1Pi), .number(number2, number2Pi)):
-            let root = number1 + Decimal.pi(times: number1Pi)
-            let number = number2 + Decimal.pi(times: number2Pi)
+            let root = number1 + number1Pi.timesPi
+            let number = number2 + number2Pi.timesPi
             return .checkNumber(number: Decimal(pow(number.asDouble, 1/root.asDouble)), pi: 0)
         default:
             return .nan

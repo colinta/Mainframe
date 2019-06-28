@@ -19,10 +19,8 @@ struct SinOperation: OperationValue {
         guard let node = nodes.first, nodes.count == 1 else { return .needsInput }
 
         let nodeVal = node.calculate(vars: vars, avoidRecursion: avoidRecursion)
-        switch nodeVal {
-        case .nan, .divZero, .needsInput: return nodeVal
-        case let .number(number, numberPi):
-            return .checkNumber(number: Decimal(sin((number + Decimal.pi(times: numberPi)).asDouble)), pi: 0)
+        return nodeVal.mapDecimal { number in
+            return number.mapDouble(sin)
         }
     }
 }

@@ -30,8 +30,8 @@ struct ExponentOperation: OperationValue {
         case (.needsInput, _), (_, .needsInput): return .needsInput
         case (.divZero, _), (_, .divZero): return .divZero
         case let (.number(number1, number1Pi), .number(number2, number2Pi)):
-            let base = number1 + Decimal.pi(times: number1Pi)
-            let power = number2 + Decimal.pi(times: number2Pi)
+            let base = number1 + number1Pi.timesPi
+            let power = number2 + number2Pi.timesPi
             return .checkNumber(number: Decimal(pow(base.asDouble, power.asDouble)), pi: 0)
         default:
             return .nan

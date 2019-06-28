@@ -18,21 +18,19 @@ struct ArcSinOperation: OperationValue {
     func calculate(_ nodes: [MathNode], vars: VariableLookup, avoidRecursion: [String]) -> OperationResult {
         guard let node = nodes.first, nodes.count == 1 else { return .needsInput }
         let nodeVal = node.calculate(vars: vars, avoidRecursion: avoidRecursion)
-        switch nodeVal {
-        case .nan, .divZero, .needsInput: return nodeVal
-        case let .number(number, numberPi):
+        return nodeVal.map { number, numberPi in
             if numberPi == 0 {
                 switch number {
                 case -1:
-                    return .number(number: 0, pi: -0.5)
+                    return (number: 0, pi: -0.5)
                 case 0:
-                    return .number(number: 0, pi: 0)
+                    return (number: 0, pi: 0)
                 case 1:
-                    return .number(number: 0, pi: 0.5)
+                    return (number: 0, pi: 0.5)
                 default: break
                 }
             }
-            return .checkNumber(number: Decimal(asin((number + Decimal.pi(times: numberPi)).asDouble)), pi: 0)
+            return (number: (number + numberPi.timesPi).mapDouble(asin), pi: 0)
         }
     }
 }

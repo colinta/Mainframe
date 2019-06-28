@@ -18,11 +18,8 @@ struct FactorialOperation: OperationValue {
         guard let node = nodes.first, nodes.count == 1 else { return .needsInput }
 
         let nodeVal = node.calculate(vars: vars, avoidRecursion: avoidRecursion)
-        switch nodeVal {
-        case .nan, .divZero, .needsInput: return nodeVal
-        case let .number(number, numberPi):
-            let asDouble = (number + Decimal.pi(times: numberPi)).asDouble
-            return .checkNumber(number: Decimal(tgamma(1 + asDouble)), pi: 0)
+        return nodeVal.mapDecimal { number in
+            return (number + 1).mapDouble(tgamma)
         }
     }
 }

@@ -9,7 +9,33 @@ class MathNode: Node {
 
     var mainframe: Mainframe? { return world as? Mainframe }
 
+    enum Editing {
+        case number
+        case numerator
+        case denominator
+    }
     var numberString = ""
+    var numeratorString = ""
+    var denominatorString = ""
+
+    var editing: Editing = .number
+    var editingString: String {
+        get {
+            switch editing {
+            case .number: return numberString
+            case .numerator: return numeratorString
+            case .denominator: return denominatorString
+            }
+        }
+        set {
+            switch editing {
+            case .number: numberString = newValue
+            case .numerator: numeratorString = newValue
+            case .denominator: denominatorString = newValue
+            }
+        }
+    }
+
     private var prevOp: Operation = .noOp(isSelected: false)
     var op: Operation = .noOp(isSelected: false) {
         willSet { prevOp = op }

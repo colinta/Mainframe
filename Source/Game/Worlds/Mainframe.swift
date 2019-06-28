@@ -34,11 +34,6 @@ class Mainframe: World {
         static var treeOffset: CGFloat = 0
     }
 
-    enum OutputStyle {
-        case exact
-        case number
-    }
-
     var remainingScreenSize: CGSize { return CGSize(width: screenSize.width, height: screenSize.height - Size.formulaBgHeight - Size.tabbarHeight) }
 
     var outputStyle: OutputStyle = .exact
@@ -69,10 +64,11 @@ class Mainframe: World {
 
     var panel: PanelItem?
     let numbersItem = PanelItem()
+    let woodworkingItem = PanelItem()
     let operatorsItem = PanelItem()
     let functionsItem = PanelItem()
     let variablesItem = PanelItem()
-    var panelItems: [PanelItem] { return [numbersItem, operatorsItem, functionsItem, variablesItem] }
+    var panelItems: [PanelItem] { return [numbersItem, woodworkingItem, operatorsItem, functionsItem, variablesItem] }
 
     required init() {
         super.init()
@@ -106,12 +102,7 @@ class Mainframe: World {
         outputCalc.margins.right = 10
         outputCalc.touchableComponent?.off(.enter, .exit)
         outputCalc.onTapped {
-            switch self.outputStyle {
-            case .exact:
-                self.outputStyle = .number
-            case .number:
-                self.outputStyle = .exact
-            }
+            self.outputStyle = self.outputStyle.next
             self.updateCalc()
         }
         self << outputCalc
@@ -154,6 +145,7 @@ class Mainframe: World {
 
         let tabbarButtons = [
             ("123", numbersItem.button),
+            // ("1/2", woodworkingItem.button),
             ("±", operatorsItem.button),
             ("𝑓(𝑥)", functionsItem.button),
             ("𝑥𝑦𝑧=", variablesItem.button),
@@ -178,6 +170,12 @@ class Mainframe: World {
             [.key(.num7), .key(.num8), .key(.num9)],
             [.key(.dot), .key(.num0), .key(.sign)]
         ])
+        createPanel(woodworkingItem.panel, buttons: [
+            [.key(.num1), .key(.num2), .key(.num3)],
+            [.key(.num4), .key(.num5), .key(.num6)],
+            [.key(.num7), .key(.num8), .key(.num9)],
+            [.key(.num0)]
+            ])
         createPanel(operatorsItem.panel, buttons: [
             [.operator(AddOperation()), .operator(SubtractOperation()), .operator(DivideOperation()), .operator(MultiplyOperation())],
             [.operator(SquareRootOperation()), .operator(NRootOperation()), .operator(ExponentOperation()), .operator(FactorialOperation())],
@@ -193,6 +191,7 @@ class Mainframe: World {
         ])
 
         numbersItem.button.onTapped { self.togglePanel(self.numbersItem) }
+        woodworkingItem.button.onTapped { self.togglePanel(self.woodworkingItem) }
         operatorsItem.button.onTapped { self.togglePanel(self.operatorsItem) }
         functionsItem.button.onTapped { self.togglePanel(self.functionsItem) }
         variablesItem.button.onTapped { self.togglePanel(self.variablesItem) }
@@ -209,15 +208,19 @@ class Mainframe: World {
         }
     }
 
+    private func searchForTau(_ node: MathNode) -> Bool {
+        if case .variable("τ") = node.op { return true }
+        if case .variable("-τ") = node.op { return true }
+        for child in node.children {
+            if let child = child as? MathNode, searchForTau(child) { return true }
+        }
+        return false
+    }
+
     func updateCalc() {
         let calculation = topNode.calculate(vars: self, avoidRecursion: [])
-
-        switch outputStyle {
-        case .exact:
-            outputCalc.text = calculation.description
-        case .number:
-            outputCalc.text = calculation.number
-        }
+        let useTau = searchForTau(topNode)
+        outputCalc.text = calculation.describe(style: outputStyle, useTau: useTau)
 
         outputFormula.text = topNode.formula(isTop: true)
         if !outputFormula.text.contains("=") {
@@ -255,28 +258,28 @@ class Mainframe: World {
 
     func didSetCurrentOp(_ oldValue: MathNode?) {
         oldValue?.isClearEnabled = false
-        if let currentOp = currentOp {
-            var topMost: MathNode = currentOp
-            while let parent = topMost.parent as? MathNode {
-                topMost = parent
-            }
-            self.topNode = topMost
+        guard let currentOp = currentOp else { return }
 
-            if currentOp.op.isNoOp {
-                currentOp.op = .noOp(isSelected: true)
-                togglePanel(numbersItem, show: true)
-            }
-
-            if let panel = currentOp.op.panel(mainframe: self) {
-                togglePanel(panel, show: true)
-            }
-
-            let clearableOp = !currentOp.op.isNoOp
-            let isTopLevel = currentOp.topMostParent == currentOp
-            currentOp.isClearEnabled = clearableOp || isTopLevel && hasManyTopNodes
-
-            checkCameraLocation()
+        var topMost: MathNode = currentOp
+        while let parent = topMost.parent as? MathNode {
+            topMost = parent
         }
+        self.topNode = topMost
+
+        if currentOp.op.isNoOp {
+            currentOp.op = .noOp(isSelected: true)
+            togglePanel(numbersItem, show: true)
+        }
+
+        if let panel = currentOp.op.panel(mainframe: self) {
+            togglePanel(panel, show: true)
+        }
+
+        let clearableOp = !currentOp.op.isNoOp
+        let isTopLevel = currentOp.topMostParent == currentOp
+        currentOp.isClearEnabled = clearableOp || isTopLevel && hasManyTopNodes
+
+        checkCameraLocation()
     }
 
     func addTopNode(_ node: MathNode, at specificPosition: CGPoint?) {
@@ -308,7 +311,7 @@ class Mainframe: World {
                 button.style = .rectSized(buttonWidth, Size.tabbarHeight)
                 button.position = CGPoint(x, y)
                 button.onTapped {
-                    op.tapped(self, isFirst: self.firstKeyPress)
+                    op.tapped(self, isResetting: self.firstKeyPress)
                     self.firstKeyPress = false
                 }
                 panel << button
@@ -505,7 +508,7 @@ extension Mainframe: VariableLookup {
     }
 }
 
-func ==(lhs: Mainframe.PanelItem, rhs: Mainframe.PanelItem) -> Bool {
+func == (lhs: Mainframe.PanelItem, rhs: Mainframe.PanelItem) -> Bool {
     return lhs.panel == rhs.panel
 }
 
@@ -513,10 +516,10 @@ infix operator ||= : AssignmentPrecedence
 
 infix operator &&= : AssignmentPrecedence
 
-func ||=(lhs: inout Bool, rhs: Bool) {
+func ||= (lhs: inout Bool, rhs: Bool) {
     lhs = lhs || rhs
 }
 
-func &&=(lhs: inout Bool, rhs: Bool) {
+func &&= (lhs: inout Bool, rhs: Bool) {
     lhs = lhs && rhs
 }

@@ -2,11 +2,19 @@
 /// Operation.swift
 //
 
+enum WoodworkingUnit {
+    case inches
+    case feet
+    case centimeters
+    case millimeters
+}
+
 enum Operation {
     case nextBlankOp
     case key(KeyCode)
 
     case number(String)
+    case woodworking(WoodworkingUnit, number: String, numerator: String, denominator: String)
     case variable(String)
     case assign(String)
 
@@ -63,6 +71,8 @@ enum Operation {
             return mainframe.variablesItem
         case .number:
             return mainframe.numbersItem
+        case .woodworking:
+            return mainframe.woodworkingItem
         case .function:
             return mainframe.functionsItem
         default:
@@ -77,6 +87,8 @@ extension Operation {
         case let .key(key):      return KeyOperation(op: key)
         case .nextBlankOp:              return NextOperation()
         case let .number(num):   return NumberOperation(num)
+        case let .woodworking(unit, number, numerator, denominator):
+            return NumberOperation(number)
         case let .variable(num): return VariableOperation(num)
         case let .assign(num):   return AssignOperation(num)
         case let .operator(op):  return op
@@ -115,7 +127,7 @@ extension Operation {
         return nil
     }
 
-    func tapped(_ mainframe: Mainframe, isFirst: Bool) {
+    func tapped(_ mainframe: Mainframe, isResetting: Bool) {
         guard let currentOp = mainframe.currentOp else { return }
 
         switch self {
@@ -140,7 +152,7 @@ extension Operation {
                 currentOp.numberString = ""
                 currentOp.op = .noOp(isSelected: true)
             case .dot:
-                if isFirst {
+                if isResetting {
                     currentOp.numberString = "0."
                     currentOp.op = .number("0.")
                 }
@@ -157,7 +169,7 @@ extension Operation {
                 }
             case .num1, .num2, .num3, .num4, .num5,
                  .num6, .num7, .num8, .num9, .num0:
-                if isFirst {
+                if isResetting {
                     currentOp.numberString = keyCode.string
                     currentOp.op = .number(keyCode.string)
                 }
@@ -180,6 +192,19 @@ extension Operation {
                     currentOp.op = .number(string)
                 }
             case .sign:
+                if case .variable("π") = currentOp.op {
+                    currentOp.op = .variable("-π")
+                }
+                else if case .variable("-π") = currentOp.op {
+                    currentOp.op = .variable("π")
+                }
+                else if case .variable("τ") = currentOp.op {
+                    currentOp.op = .variable("-τ")
+                }
+                else if case .variable("-τ") = currentOp.op {
+                    currentOp.op = .variable("τ")
+                }
+
                 var string = currentOp.numberString
                 if !string.isEmpty {
                     if string.hasPrefix("-") {

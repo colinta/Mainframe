@@ -29,17 +29,15 @@ struct AddOperation: OperationValue {
     }
 
     func calculate(_ nodes: [MathNode], vars: VariableLookup, avoidRecursion: [String]) -> OperationResult {
-        guard nodes.count > 1 else { return .needsInput }
-
-        var result = Decimal(0)
-        var resultPi = Decimal(0)
+        var result: Decimal = 0
+        var resultPi: Decimal = 0
         for node in nodes {
             let nodeVal = node.calculate(vars: vars, avoidRecursion: avoidRecursion)
             switch nodeVal {
             case .nan, .divZero, .needsInput: return nodeVal
             case let .number(number, pi):
-                result = result + number
-                resultPi = resultPi + pi
+                result += number
+                resultPi += pi
             }
         }
         return .number(number: result, pi: resultPi)

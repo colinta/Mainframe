@@ -31,6 +31,8 @@ struct MultiplyOperation: OperationValue {
     func calculate(_ nodes: [MathNode], vars: VariableLookup, avoidRecursion: [String]) -> OperationResult {
         guard nodes.count > 1 else { return .needsInput }
 
+        // filter out non-numbers and pass them through, and quick return when
+        // multiplying times zero
         var numbers: [(Decimal, Decimal)] = []
         for node in nodes {
             let nodeVal = node.calculate(vars: vars, avoidRecursion: avoidRecursion)
@@ -44,29 +46,29 @@ struct MultiplyOperation: OperationValue {
             }
         }
 
-        var result: Decimal
-        var resultPi: Decimal
         let piCounts = numbers.filter { (_, pi) in pi != 0 }.count
         let piAndNumberCounts = numbers.filter { (number, pi) in pi != 0 && number != 0 }.count
         if piCounts == 1 && piAndNumberCounts == 0 {
-            result = 0
-            resultPi = 1
+            // more accurate calculation for (a * b * c * pi); when one number
+            // has a pi value, multiply the non-pi numbers and retain the pi number
+            // e.g. 2 * pi aka (number 2, pi: 0) * (number: 0, pi: 1) becomes (number: 0, pi: 2)
+            var resultPi: Decimal = 1
             for (number, pi) in numbers {
                 if number == 0 {
-                    resultPi = resultPi * pi
+                    resultPi *= pi
                 }
                 else {
-                    resultPi = resultPi * number
+                    resultPi *= number
                 }
             }
+            return .number(number: 0, pi: resultPi)
         }
         else {
-            result = 1
-            resultPi = 0
+            var result: Decimal = 1
             for (number, numberPi) in numbers {
-                result = result * (number + Decimal.pi(times: numberPi))
+                result *= number + numberPi.timesPi
             }
+            return .number(number: result, pi: 0)
         }
-        return .number(number: result, pi: resultPi)
     }
 }
