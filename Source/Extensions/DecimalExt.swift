@@ -13,16 +13,15 @@ extension Decimal {
         return Decimal.pi(times: self)
     }
 
-    var toFraction: (Int, Int)? {
+    var asFraction: (Int, Int)? {
         switch self.split {
-        case let (sign, num, 0):
+        case let (sign, num, 0, 0):
             return (sign * num, 1)
-        case let (sign, num, decimals):
-            let decimalsLength = Double(decimals.description.count)
-            if decimalsLength > 6 {
+        case let (sign, num, decimalsLength, decimals):
+            if decimalsLength > 6 {  // up to 1/64 resolution, or 0.015625
                 return nil
             }
-            let tenDenominator = Int(pow(10, decimalsLength))
+            let tenDenominator = Int(pow(10, Double(decimalsLength)))
             let tenNumerator = sign * (num * tenDenominator + decimals)
             let tenGcd = gcd(tenNumerator, tenDenominator)
             return (tenNumerator / tenGcd, tenDenominator / tenGcd)
@@ -43,16 +42,18 @@ extension Decimal {
         return Decimal.pi(times: times) * Decimal(2)
     }
 
-    private var split: (Int, Int, Int) {
+    private var split: (sign: Int, num: Int, decimalLength: Int, decimals: Int) {
         guard self >= 0 else {
-            let (_, a, b) = (-self).split
-            return (-1, a, b)
+            let (_, a, b, c) = (-self).split
+            return (sign: -1, num: a, decimalLength: b, decimals: c)
         }
         switch description.split(separator: ".").headAndHeadAndTail {
         case let .some((lhs, rhs, _)):
-            return (1, Int(String(lhs)) ?? .zero, Int(String(rhs)) ?? .zero)
+            let numStr = String(lhs)
+            let decimalStr = String(rhs)
+            return (sign: 1, num: Int(numStr) ?? .zero, decimalLength: decimalStr.count, decimals: Int(decimalStr) ?? .zero)
         default:
-            return (1, self.asInt, 0)
+            return (sign: 1, num: self.asInt, decimalLength: 0, decimals: 0)
         }
     }
 }

@@ -54,7 +54,7 @@ class Mainframe: World {
         }
     }
     let tree = Node()
-    var currentOp: MathNode? {
+    var currentMathNode: MathNode? {
         willSet { willSetCurrentOp(newValue) }
         didSet { didSetCurrentOp(oldValue) }
     }
@@ -62,9 +62,11 @@ class Mainframe: World {
 
     let addButton = AddButton()
 
-    var panel: PanelItem?
+    var selectedPanel: PanelItem?
     let numbersItem = PanelItem()
     let woodworkingItem = PanelItem()
+    var numeratorButton: Button?
+    var denominatorButton: Button?
     let operatorsItem = PanelItem()
     let functionsItem = PanelItem()
     let variablesItem = PanelItem()
@@ -87,7 +89,7 @@ class Mainframe: World {
             self.tree.position += p2 - p1
         }
         treeDrag.on(.tapped) { _ in
-            self.currentOp = nil
+            self.currentMathNode = nil
         }
         self.addComponent(treeDrag)
         defaultNode = self
@@ -198,7 +200,102 @@ class Mainframe: World {
         functionsItem.button.onTapped { self.togglePanel(self.functionsItem) }
         variablesItem.button.onTapped { self.togglePanel(self.variablesItem) }
 
-        currentOp = topNode
+        currentMathNode = topNode
+    }
+
+    func createPanel(_ panel: Node, buttons: [[Operation]]) {
+        let totalHeight: CGFloat = CGFloat(buttons.count) * Size.tabbarHeight
+        panel.fixedPosition = .bottom(x: 0, y: Size.tabbarHeight + totalHeight / 2)
+        var y = totalHeight / 2 - Size.tabbarHeight / 2
+        for ops in buttons {
+            let buttonWidth = remainingScreenSize.width / CGFloat(ops.count)
+            var x = -remainingScreenSize.width / 2 + buttonWidth / 2
+            for op in ops {
+                let button = op.asButton()
+                button.z = .above
+                button.style = .rectSized(buttonWidth, Size.tabbarHeight)
+                button.position = CGPoint(x, y)
+                button.onTapped {
+                    guard let currentMathNode = self.currentMathNode else { return }
+                    op.tapped(self, currentMathNode: currentMathNode, isResetting: self.firstKeyPress)
+                    self.firstKeyPress = false
+                }
+                panel << button
+                x += buttonWidth
+
+                switch op {
+                case .key(.numerator):
+                    numeratorButton = button
+                case .key(.denominator):
+                    denominatorButton = button
+                default: break
+                }
+            }
+            y -= Size.tabbarHeight
+        }
+        panel.alpha = 0
+        panel.size = CGSize(remainingScreenSize.width, totalHeight)
+        self << panel
+    }
+
+    func hidePanel() {
+        guard let panel = selectedPanel else { return }
+        togglePanel(panel)
+    }
+
+    func togglePanel(_ nextPanel: PanelItem, show: Bool? = nil) {
+        if show == true && selectedPanel == nextPanel { return }
+
+        selectedPanel?.panel.fadeTo(0, duration: 0.3)
+
+        if let button = selectedPanel?.button {
+            button.color = 0xFFFFFF
+            button.backgroundColor = 0x0
+            button.borderColor = 0xFFFFFF
+        }
+
+        if selectedPanel == nextPanel {
+            selectedPanel = nil
+        }
+        else {
+            nextPanel.panel.fadeTo(1, duration: 0.3)
+
+            let button = nextPanel.button
+            button.color = 0x0
+            button.backgroundColor = 0xFFFFFF
+            button.borderColor = 0xFFFFFF
+
+            for node in nextPanel.panel.children {
+                if let button = node as? OperationButton {
+                    button.isEnabled = button.op.compatible(mainframe: self)
+                }
+            }
+
+            selectedPanel = nextPanel
+
+            if numbersItem.panel == nextPanel.panel,
+                let currentMathNode = currentMathNode
+            {
+                currentMathNode.editing = .number
+                if currentMathNode.op.isNumber {
+                    currentMathNode.op = currentMathNode.editingNumberOp
+                }
+            }
+            else if woodworkingItem.panel == nextPanel.panel,
+                let currentMathNode = currentMathNode,
+                currentMathNode.editing == .number
+            {
+                currentMathNode.editing = .numerator
+                if currentMathNode.op.isNumber || currentMathNode.op.isNoOp {
+                    currentMathNode.numeratorString = "5"
+                    currentMathNode.denominatorString = "10"
+                    currentMathNode.op = currentMathNode.editingNumberOp
+                }
+            }
+
+            updateEditingButtons()
+            checkCameraLocation()
+        }
     }
 
     func selectAnyTopNode() {
@@ -240,11 +337,14 @@ class Mainframe: World {
     }
 
     func willSetCurrentOp(_ newValue: MathNode?) {
-        guard currentOp != newValue else { return }
+        guard currentMathNode != newValue else { return }
 
-        if let currentOp = currentOp, currentOp.op.isSelected {
-            currentOp.op = .noOp(isSelected: false)
+        if let currentMathNode = currentMathNode, currentMathNode.op.isSelectedNoOp {
+            currentMathNode.op = .noOp(isSelected: false)
         }
+
+        newValue?.editing = currentMathNode?.editing ?? .number
+        currentMathNode?.editing = .number
 
         let panelButtonsEnabled = newValue != nil
         for panelItem in panelItems {
@@ -260,26 +360,31 @@ class Mainframe: World {
 
     func didSetCurrentOp(_ oldValue: MathNode?) {
         oldValue?.isClearEnabled = false
-        guard let currentOp = currentOp else { return }
+        guard let currentMathNode = currentMathNode else { return }
 
-        var topMost: MathNode = currentOp
+        var topMost: MathNode = currentMathNode
         while let parent = topMost.parent as? MathNode {
             topMost = parent
         }
         self.topNode = topMost
 
-        if currentOp.op.isNoOp {
-            currentOp.op = .noOp(isSelected: true)
-            togglePanel(numbersItem, show: true)
+        if currentMathNode.op.isNoOp {
+            currentMathNode.op = .noOp(isSelected: true)
+            if currentMathNode.editing == .number {
+                togglePanel(numbersItem, show: true)
+            }
+            else {
+                togglePanel(woodworkingItem, show: true)
+            }
         }
 
-        if let panel = currentOp.op.panel(mainframe: self) {
+        if let panel = currentMathNode.op.panel(mainframe: self) {
             togglePanel(panel, show: true)
         }
 
-        let clearableOp = !currentOp.op.isNoOp
-        let isTopLevel = currentOp.topMostParent == currentOp
-        currentOp.isClearEnabled = clearableOp || isTopLevel && hasManyTopNodes
+        let clearableOp = !currentMathNode.op.isNoOp
+        let isTopLevel = currentMathNode.topMostParent == currentMathNode
+        currentMathNode.isClearEnabled = clearableOp || isTopLevel && hasManyTopNodes
 
         checkCameraLocation()
     }
@@ -297,87 +402,30 @@ class Mainframe: World {
 
         node.position = position
         tree << node
-        currentOp = node
+        currentMathNode = node
     }
 
-    func createPanel(_ panel: Node, buttons: [[Operation]]) {
-        let totalHeight: CGFloat = CGFloat(buttons.count) * Size.tabbarHeight
-        panel.fixedPosition = .bottom(x: 0, y: Size.tabbarHeight + totalHeight / 2)
-        var y = totalHeight / 2 - Size.tabbarHeight / 2
-        for ops in buttons {
-            let buttonWidth = remainingScreenSize.width / CGFloat(ops.count)
-            var x = -remainingScreenSize.width / 2 + buttonWidth / 2
-            for op in ops {
-                let button = op.asButton()
-                button.z = .above
-                button.style = .rectSized(buttonWidth, Size.tabbarHeight)
-                button.position = CGPoint(x, y)
-                button.onTapped {
-                    guard let currentOp = self.currentOp else { return }
-                    op.tapped(self, currentOp: currentOp, isResetting: self.firstKeyPress)
-                    self.firstKeyPress = false
-                }
-                panel << button
-                x += buttonWidth
-            }
-            y -= Size.tabbarHeight
-        }
-        panel.alpha = 0
-        panel.size = CGSize(remainingScreenSize.width, totalHeight)
-        self << panel
-    }
-
-    func hidePanel() {
-        guard let panel = panel else { return }
-        togglePanel(panel)
-    }
-
-    func togglePanel(_ nextPanel: PanelItem, show: Bool? = nil) {
-        if show == true && panel == nextPanel { return }
-
-        panel?.panel.fadeTo(0, duration: 0.3)
-
-        if let button = panel?.button {
-            button.color = 0xFFFFFF
-            button.backgroundColor = 0x0
-            button.borderColor = 0xFFFFFF
-        }
-
-        if panel == nextPanel {
-            panel = nil
-        }
-        else {
-            nextPanel.panel.fadeTo(1, duration: 0.3)
-
-            let button = nextPanel.button
-            button.color = 0x0
-            button.backgroundColor = 0xFFFFFF
-            button.borderColor = 0xFFFFFF
-
-            for node in nextPanel.panel.children {
-                if let button = node as? OperationButton {
-                    button.isEnabled = button.op.compatible(mainframe: self)
-                }
-            }
-
-            panel = nextPanel
-
-            checkCameraLocation()
-        }
+    func updateEditingButtons() {
+        let fgColor = 0xFFFFFF
+        let bgColor = 0x0
+        numeratorButton?.backgroundColor = currentMathNode?.editing == .numerator ? fgColor : bgColor
+        denominatorButton?.backgroundColor = currentMathNode?.editing == .denominator ? fgColor : bgColor
+        numeratorButton?.color = currentMathNode?.editing == .numerator ? bgColor : fgColor
+        denominatorButton?.color = currentMathNode?.editing == .denominator ? bgColor : fgColor
     }
 
     func checkCameraLocation() {
-        guard let currentOp = currentOp else { return }
+        guard let currentMathNode = currentMathNode else { return }
 
         let currentPosition: CGPoint
-        if let target = currentOp.moveToComponent?.target, let currentParent = currentOp.parent {
+        if let target = currentMathNode.moveToComponent?.target, let currentParent = currentMathNode.parent {
             currentPosition = convert(target, from: currentParent)
         }
         else {
-            currentPosition = convertPosition(currentOp)
+            currentPosition = convertPosition(currentMathNode)
         }
 
-        let currentSize = currentOp.button.size
+        let currentSize = currentMathNode.button.size
         let opLeft = currentPosition.x - currentSize.width / 2
         let opRight = currentPosition.x + currentSize.width / 2
         let opBottom = currentPosition.y - currentSize.height / 2
@@ -395,7 +443,7 @@ class Mainframe: World {
         let margin: CGFloat = 5
         let rightMargin: CGFloat = 25
 
-        if let panel = panel?.panel {
+        if let panel = selectedPanel?.panel {
             let panelTop = panel.position.y + panel.size.height / 2
             screenRect.origin.y = panelTop
             screenRect.size.height -= panel.size.height
@@ -423,7 +471,7 @@ class Mainframe: World {
     }
 
     func expandToExtents() {
-        currentOp = nil
+        currentMathNode = nil
         hidePanel()
 
         var extents: CGRect?

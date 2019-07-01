@@ -35,6 +35,14 @@ class MathNode: Node {
             }
         }
     }
+    var editingNumberOp: Operation {
+        if editing == .numerator || editing == .denominator || !numeratorString.isEmpty || !denominatorString.isEmpty {
+            return .woodworking(number: numberString, numerator: numeratorString, denominator: denominatorString)
+        }
+        else {
+            return .number(numberString)
+        }
+    }
 
     private var prevOp: Operation = .noOp(isSelected: false)
     var op: Operation = .noOp(isSelected: false) {
@@ -157,7 +165,7 @@ class MathNode: Node {
             }
         }
         button.onTapped {
-            self.mainframe?.currentOp = self
+            self.mainframe?.currentMathNode = self
         }
 
         clearButton.isHidden = true
@@ -178,14 +186,14 @@ class MathNode: Node {
             }
 
             for node in self.mathChildren {
-                if mainframe.currentOp == node {
-                    mainframe.currentOp = self
+                if mainframe.currentMathNode == node {
+                    mainframe.currentMathNode = self
                 }
                 node.removeFromParent()
             }
 
             self._isClearEnabled = false
-            self.op = mainframe.currentOp == self ? .noOp(isSelected: true) : .noOp(isSelected: false)
+            self.op = mainframe.currentMathNode == self ? .noOp(isSelected: true) : .noOp(isSelected: false)
         }
 
         updateSize([])
@@ -235,8 +243,8 @@ class MathNode: Node {
             button.style = .rectToFit
         }
 
-        let isCurrentOp = mainframe?.currentOp == self
-        let childIsCurrentOp = isCurrentOp || mainframe?.currentOp?.parent == self
+        let isCurrentOp = mainframe?.currentMathNode == self
+        let childIsCurrentOp = isCurrentOp || mainframe?.currentMathNode?.parent == self
 
         button.textScale = isCurrentOp ? 1.5 : 1
         clearButton.position = CGPoint(x: button.size.width / 2 + 5 + clearButton.size.width / 2)
@@ -319,7 +327,7 @@ class MathNode: Node {
 
         if let selectNode = selectNode, isCurrentOp && select
         {
-            mainframe?.currentOp = selectNode
+            mainframe?.currentMathNode = selectNode
         }
     }
 

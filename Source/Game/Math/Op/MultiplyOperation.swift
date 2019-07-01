@@ -27,7 +27,12 @@ struct MultiplyOperation: OperationValue {
     }
 
     func calculate(_ nodes: [MathNode], vars: VariableLookup, avoidRecursion: [String]) -> OperationResult {
-        guard nodes.count > 1 else { return .needsInput }
+        guard nodes.count > 1 else {
+            if let firstNode = nodes.first {
+                return firstNode.calculate(vars: vars, avoidRecursion: avoidRecursion)
+            }
+            return .needsInput
+        }
 
         // filter out non-numbers and pass them through, and quick return when
         // multiplying times zero
@@ -44,12 +49,13 @@ struct MultiplyOperation: OperationValue {
             }
         }
 
+        var hasFraction = true
         let piCounts = numbers.filter { exact in exact.hasPi }.count
-        let piAndNumberCounts = numbers.filter { exact in exact.hasPi && exact.hasWhole }.count
+        let piAndNumberCounts = numbers.filter { exact in exact.hasPi && exact.hasDecimal }.count
         if piCounts == 1 && piAndNumberCounts == 0 {
             // more accurate calculation for (a * b * c * pi); when one number
             // has a pi value, multiply the non-pi numbers and retain the pi number
-            // e.g. 2 * pi aka (number 2, pi: 0) * (number: 0, pi: 1) becomes (number: 0, pi: 2)
+            // e.g. 2 * pi aka (whole: 2) * (pi: 1) becomes (pi: 2)
             var resultPi: Decimal = 1
             var isFirst = true
             for exact in numbers {
@@ -58,17 +64,20 @@ struct MultiplyOperation: OperationValue {
                     isFirst = false
                 }
                 else {
-                    resultPi *= exact.whole
+                    resultPi *= exact.toDecimal
                 }
+
+                hasFraction ||= exact.hasFraction
             }
-            return .number(ExactNumber(pi: resultPi))
+            return .number(ExactNumber(pi: resultPi).reduce(tryFraction: hasFraction))
         }
         else {
             var result: Decimal = 1
             for exact in numbers {
                 result *= exact.toDecimal
+                hasFraction ||= exact.hasFraction
             }
-            return .number(ExactNumber(whole: result))
+            return .number(ExactNumber(whole: result).reduce(tryFraction: hasFraction))
         }
     }
 }

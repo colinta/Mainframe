@@ -11,23 +11,28 @@ struct DivideOperation: OperationValue {
         guard isTop else { return "(\(formula(nodes, isTop: true)))" }
 
         if let node = nodes.first, nodes.count == 1 {
-            return node.formula() + "÷◼"
+            return node.formula() + "/◼"
         }
         else if nodes.count > 1 {
             var result = ""
             for node in nodes {
                 if node != nodes.first {
-                    result += "÷"
+                    result += "/"
                 }
                 result += node.formula()
             }
             return result
         }
-        return "◻÷◼"
+        return "◻/◼"
     }
 
     func calculate(_ nodes: [MathNode], vars: VariableLookup, avoidRecursion: [String]) -> OperationResult {
-        guard nodes.count > 1 else { return .needsInput }
+        guard nodes.count > 1 else {
+            if let firstNode = nodes.first {
+                return firstNode.calculate(vars: vars, avoidRecursion: avoidRecursion)
+            }
+            return .needsInput
+        }
 
         // filter out non-numbers and pass them through, and quick return when
         // dividing by zero
@@ -58,26 +63,29 @@ struct DivideOperation: OperationValue {
             return .number(.zero)
         }
 
-        let firstIsPi = !numerator.hasWhole && numerator.hasPi
+        var hasFraction = true
+        let firstIsPi = !numerator.hasDecimal && numerator.hasPi
         let denominatorHasPi = denominators.any({ $0.hasPi })
         if firstIsPi && !denominatorHasPi {
             // first number has pi in it, and no number
             // none of the denominators have pi
             // set the result to the first pi number, and divide the rest
-            // so 2 * pi / 4 aka (number: 0, pi: 2) / (number: 4, pi: 0) becomes
-            // (number: 0, pi: 0.5)
+            // so 2 * pi / 4 aka (pi: 2) / (whole: 4, pi: 0) becomes
+            // (pi: 0.5)
             var resultPi: Decimal = numerator.pi
             for exact in denominators {
-                resultPi /= exact.whole
+                resultPi /= exact.toDecimal
+                hasFraction ||= exact.hasFraction
             }
-            return .number(ExactNumber(pi: resultPi))
+            return .number(ExactNumber(pi: resultPi).reduce(tryFraction: hasFraction))
         }
         else {
             var result: Decimal = numerator.toDecimal
             for exact in denominators {
                 result /= exact.toDecimal
+                hasFraction ||= exact.hasFraction
             }
-            return .number(ExactNumber(whole: result))
+            return .number(ExactNumber(whole: result).reduce(tryFraction: hasFraction))
         }
     }
 }

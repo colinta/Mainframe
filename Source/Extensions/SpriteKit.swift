@@ -35,7 +35,7 @@ extension SKNode {
 
     var isVisible: Bool {
         get {
-            if let parent = parent, !parent.isVisible {
+            guard parent?.isVisible != false else {
                 return false
             }
             return !isHidden && alpha > 0.1

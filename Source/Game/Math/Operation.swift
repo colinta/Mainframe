@@ -23,9 +23,16 @@ enum Operation {
         }
     }
 
-    var isSelected: Bool {
+    var isSelectedNoOp: Bool {
         switch self {
         case let .noOp(isSelected): return isSelected
+        default: return false
+        }
+    }
+
+    var isNumber: Bool {
+        switch self {
+        case .number, .woodworking: return true
         default: return false
         }
     }
@@ -42,9 +49,9 @@ enum Operation {
     func compatible(mainframe: Mainframe) -> Bool {
         switch self {
         case .assign:
-            return mainframe.currentOp == mainframe.topNode
+            return mainframe.currentMathNode == mainframe.topNode
         case let .variable(name):
-            if var ancestor = mainframe.currentOp {
+            if var ancestor = mainframe.currentMathNode {
                 while let parent = ancestor.parent as? MathNode {
                     if parent.op.isVariable(name) { return false }
                     ancestor = parent
@@ -80,8 +87,7 @@ extension Operation {
         case let .key(key):      return KeyOperation(op: key)
         case .nextBlankOp:       return NextOperation()
         case let .number(num):   return NumberOperation(num)
-        case let .woodworking(number, numerator, denominator):
-            return NumberOperation(number)
+        case let .woodworking(number, numerator, denominator): return WoodworkingOperation(number, numerator: numerator, denominator: denominator)
         case let .variable(num): return VariableOperation(num)
         case let .assign(num):   return AssignOperation(num)
         case let .operator(op):  return op
@@ -102,35 +108,35 @@ extension Operation: OperationValue {
 }
 
 extension Operation {
-    private func findNextOp(_ currentOp: MathNode, mainframe: Mainframe, checkParent: Bool = true, skip: MathNode? = nil) -> MathNode? {
-        if currentOp.op.isNoOp && currentOp != skip {
-            return currentOp
+    private func findNextOp(_ currentMathNode: MathNode, mainframe: Mainframe, checkParent: Bool = true, skip: MathNode? = nil) -> MathNode? {
+        if currentMathNode.op.isNoOp && currentMathNode != skip {
+            return currentMathNode
         }
 
-        for child in currentOp.mathChildren {
+        for child in currentMathNode.mathChildren {
             if child == skip { continue }
             if let nextOp = findNextOp(child, mainframe: mainframe, checkParent: false) {
                 return nextOp
             }
         }
 
-        if let parent = currentOp.parent as? MathNode, checkParent {
-            return findNextOp(parent, mainframe: mainframe, skip: currentOp)
+        if let parent = currentMathNode.parent as? MathNode, checkParent {
+            return findNextOp(parent, mainframe: mainframe, skip: currentMathNode)
         }
         return nil
     }
 
-    func tapped(_ mainframe: Mainframe, currentOp: MathNode, isResetting: Bool) {
+    func tapped(_ mainframe: Mainframe, currentMathNode: MathNode, isResetting: Bool) {
         switch self {
         case .nextBlankOp:
-            mainframe.currentOp = findNextOp(currentOp, mainframe: mainframe, skip: currentOp)
+            mainframe.currentMathNode = findNextOp(currentMathNode, mainframe: mainframe, skip: currentMathNode)
             mainframe.checkCameraLocation()
         case .variable:
             let copyNumber: Bool
-            if case .number = currentOp.op {
+            if case .number = currentMathNode.op {
                 copyNumber = true
             }
-            else if case .woodworking = currentOp.op {
+            else if case .woodworking = currentMathNode.op {
                 copyNumber = true
             }
             else {
@@ -139,65 +145,69 @@ extension Operation {
 
             if copyNumber {
                 let numberNode = MathNode()
-                numberNode.numberString = currentOp.numberString
-                numberNode.numeratorString = currentOp.numeratorString
-                numberNode.denominatorString = currentOp.denominatorString
-                numberNode.op = currentOp.op
-                currentOp << numberNode
+                numberNode.numberString = currentMathNode.numberString
+                numberNode.numeratorString = currentMathNode.numeratorString
+                numberNode.denominatorString = currentMathNode.denominatorString
+                numberNode.op = currentMathNode.op
+                currentMathNode << numberNode
 
                 let variableNode = MathNode()
                 variableNode.op = self
-                currentOp << variableNode
-                currentOp.op = .operator(MultiplyOperation())
+                currentMathNode << variableNode
+                currentMathNode.op = .operator(MultiplyOperation())
             }
             else {
-                currentOp.op = self
+                currentMathNode.op = self
             }
         case let .key(keyCode):
             switch keyCode {
-            case .numerator, .denominator:
-                break
+            case .numerator:
+                currentMathNode.editing = .numerator
+                mainframe.updateEditingButtons()
+            case .denominator:
+                currentMathNode.editing = .denominator
+                mainframe.updateEditingButtons()
             case .delete:
-                var string = currentOp.numberString
+                var string = currentMathNode.numberString
                 if !string.isEmpty {
                     string = String(string[string.startIndex..<string.index(before: string.endIndex)])
                 }
-                currentOp.numberString = string
+                currentMathNode.numberString = string
                 if string == "" {
-                    currentOp.op = .noOp(isSelected: true)
+                    currentMathNode.op = .noOp(isSelected: true)
                 }
                 else {
-                    currentOp.op = .number(string)
+                    currentMathNode.op = currentMathNode.editingNumberOp
                 }
             case .clear:
-                currentOp.numberString = ""
-                currentOp.numeratorString = ""
-                currentOp.denominatorString = ""
-                currentOp.op = .noOp(isSelected: true)
+                currentMathNode.numberString = ""
+                currentMathNode.numeratorString = ""
+                currentMathNode.denominatorString = ""
+                currentMathNode.op = .noOp(isSelected: true)
             case .dot:
                 if isResetting {
-                    currentOp.numberString = "0."
-                    currentOp.op = .number("0.")
+                    currentMathNode.numberString = "0."
+                    currentMathNode.op = currentMathNode.editingNumberOp
                 }
                 else {
-                    var string = currentOp.numberString
+                    var string = currentMathNode.numberString
                     if !string.contains(".") {
                         string += keyCode.string
                         if string == "-." {
                             string = "-0."
                         }
                     }
-                    currentOp.numberString = string
-                    currentOp.op = .number(string)
+                    currentMathNode.numberString = string
+                    currentMathNode.op = currentMathNode.editingNumberOp
                 }
             case .num1, .num2, .num3, .num4, .num5,
                  .num6, .num7, .num8, .num9, .num0:
                 if isResetting {
-                    currentOp.numberString = keyCode.string
-                    currentOp.op = .number(keyCode.string)
+                    currentMathNode.numberString = keyCode.string
+                    currentMathNode.op = currentMathNode.editingNumberOp
                 }
                 else {
-                    var string = currentOp.numberString
+                    var string = currentMathNode.numberString
                     while string.hasPrefix("0") {
                         string = string.removeFirst()
                     }
@@ -211,24 +221,24 @@ extension Operation {
                     else if string.hasPrefix("-.") {
                         string = "-0" + string.removeFirst()
                     }
-                    currentOp.numberString = string
-                    currentOp.op = .number(string)
+                    currentMathNode.numberString = string
+                    currentMathNode.op = currentMathNode.editingNumberOp
                 }
             case .sign:
-                if case .variable("π") = currentOp.op {
-                    currentOp.op = .variable("-π")
+                if case .variable("π") = currentMathNode.op {
+                    currentMathNode.op = .variable("-π")
                 }
-                else if case .variable("-π") = currentOp.op {
-                    currentOp.op = .variable("π")
+                else if case .variable("-π") = currentMathNode.op {
+                    currentMathNode.op = .variable("π")
                 }
-                else if case .variable("τ") = currentOp.op {
-                    currentOp.op = .variable("-τ")
+                else if case .variable("τ") = currentMathNode.op {
+                    currentMathNode.op = .variable("-τ")
                 }
-                else if case .variable("-τ") = currentOp.op {
-                    currentOp.op = .variable("τ")
+                else if case .variable("-τ") = currentMathNode.op {
+                    currentMathNode.op = .variable("τ")
                 }
 
-                var string = currentOp.numberString
+                var string = currentMathNode.numberString
                 if !string.isEmpty {
                     if string.hasPrefix("-") {
                         string = string.removeFirst()
@@ -239,12 +249,12 @@ extension Operation {
                     else {
                         string = "-" + string
                     }
-                    currentOp.numberString = string
-                    currentOp.op = .number(string)
+                    currentMathNode.numberString = string
+                    currentMathNode.op = currentMathNode.editingNumberOp
                 }
             }
         default:
-            currentOp.op = self
+            currentMathNode.op = self
         }
     }
 }

@@ -20,7 +20,7 @@ struct SinOperation: OperationValue {
 
         let nodeVal = node.calculate(vars: vars, avoidRecursion: avoidRecursion)
         return nodeVal.map { exact in
-            if exact.fractionalPart == 0, let (a, b) = exact.pi.toFraction {
+            if exact.fractionalPart == 0, let (a, b) = exact.pi.asFraction {
                 switch ((2 * a) % 4, b) {
                 case (0, 2):
                     return ExactNumber(whole: 0)

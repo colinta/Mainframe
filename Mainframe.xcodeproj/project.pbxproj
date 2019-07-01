@@ -28,6 +28,8 @@
 		1D0567A622C4FAFA001DF7B4 /* LetterAndFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D05679C22C4FAFA001DF7B4 /* LetterAndFont.swift */; };
 		1D0F58CC1F9A849000AB48A0 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D0F58CB1F9A849000AB48A0 /* Launch Screen.storyboard */; };
 		1D458A3622C68B7F008F1E04 /* WoodworkingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D458A3522C68B7F008F1E04 /* WoodworkingOperation.swift */; };
+		1D5322D722CA7EA400CC1377 /* ExactNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D5322D522CA7EA400CC1377 /* ExactNumber.swift */; };
+		1D5322D822CA7EA400CC1377 /* OutputStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D5322D622CA7EA400CC1377 /* OutputStyle.swift */; };
 		206DC25A72CECF5D670618E5 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93474894F34CE8463FA53F54 /* Component.swift */; };
 		211E6E89716C020F15327473 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = E889A19284B55A8D974AF14D /* Node.swift */; };
 		2DC86B229F079604829A182B /* KeyOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCAE6E1D20941E3629BB7B3 /* KeyOperation.swift */; };
@@ -108,6 +110,8 @@
 		1D05679C22C4FAFA001DF7B4 /* LetterAndFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LetterAndFont.swift; sourceTree = "<group>"; };
 		1D0F58CB1F9A849000AB48A0 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "Launch Screen.storyboard"; path = "Resources/Launch Screen.storyboard"; sourceTree = "<group>"; };
 		1D458A3522C68B7F008F1E04 /* WoodworkingOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WoodworkingOperation.swift; sourceTree = "<group>"; };
+		1D5322D522CA7EA400CC1377 /* ExactNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExactNumber.swift; sourceTree = "<group>"; };
+		1D5322D622CA7EA400CC1377 /* OutputStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutputStyle.swift; sourceTree = "<group>"; };
 		1D7BFD81433148601E346CEC /* Easing.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Easing.swift; sourceTree = "<group>"; };
 		1E3885DB38F015DE6ACCA142 /* TanOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TanOperation.swift; sourceTree = "<group>"; };
 		1F58AF12B89BF9E641D3A514 /* DivideOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DivideOperation.swift; sourceTree = "<group>"; };
@@ -244,6 +248,7 @@
 		5F40D2BCEFB52E748CD37003 /* Math */ = {
 			isa = PBXGroup;
 			children = (
+				1D5322D522CA7EA400CC1377 /* ExactNumber.swift */,
 				C4427D33ABDC0EA03C687117 /* Fn */,
 				8FC182DF02BA5860917D5AAF /* Key */,
 				B4880BD0CD03CEC9C04A8B54 /* Meta */,
@@ -251,6 +256,7 @@
 				A71059F6441B8CDA9B56D620 /* Operation.swift */,
 				00B972AB8B19FA8052786026 /* OperationResult.swift */,
 				4A64B4289EA88ACAA949C059 /* OperationValue.swift */,
+				1D5322D622CA7EA400CC1377 /* OutputStyle.swift */,
 				C41FC40E4B43DAC183E73F5D /* Var */,
 			);
 			path = Math;
@@ -540,6 +546,7 @@
 				8A3197FB92525A16BA4307A8 /* ScaleToComponent.swift in Sources */,
 				1D0567A622C4FAFA001DF7B4 /* LetterAndFont.swift in Sources */,
 				1D05679E22C4FAFA001DF7B4 /* TextArtist.swift in Sources */,
+				1D5322D722CA7EA400CC1377 /* ExactNumber.swift in Sources */,
 				5A011BC7DF26C97C9D4A0444 /* SelectableComponent.swift in Sources */,
 				DAD7ADE1C789916A4CA68C54 /* TouchableComponent.swift in Sources */,
 				B55BF3E753AD1A23CA1B19A2 /* ArcCosOperation.swift in Sources */,
@@ -569,6 +576,7 @@
 				701DAC2FE19A96287DDE1B5F /* AssignOperation.swift in Sources */,
 				B1E1D73A47AFC5B563EA1F3B /* VariableOperation.swift in Sources */,
 				1D05679222C4FAF0001DF7B4 /* DefaultFont.swift in Sources */,
+				1D5322D822CA7EA400CC1377 /* OutputStyle.swift in Sources */,
 				DF2E31707C1DA23FA4CD54F5 /* AcceptButton.swift in Sources */,
 				849B779CC61B733F2ED270E6 /* AddButton.swift in Sources */,
 				BCBAD7F6B53D5619991A263E /* Button.swift in Sources */,
