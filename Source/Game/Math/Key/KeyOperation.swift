@@ -18,6 +18,14 @@ enum KeyCode {
     case dot
     case sign
 
+    case numerator
+    case denominator
+
+    // case feet
+    // case inches
+    // case centimeters
+    // case millimeters
+
     var string: String {
         switch self {
         case .num1: return "1"
@@ -37,26 +45,32 @@ enum KeyCode {
 }
 
 struct KeyOperation: OperationValue {
-    var minChildNodes: Int? { return 0 }
-    var maxChildNodes: Int? { return 0 }
-    var description: String
+   var minChildNodes: Int? { return 0 }
+   var maxChildNodes: Int? { return 0 }
+   var description: String
 
-    init(op: KeyCode) {
-        switch op {
-        case .delete: description = "⌫"
-        case .clear:  description = "C"
-        case .num1:   description = "1"
-        case .num2:   description = "2"
-        case .num3:   description = "3"
-        case .num4:   description = "4"
-        case .num5:   description = "5"
-        case .num6:   description = "6"
-        case .num7:   description = "7"
-        case .num8:   description = "8"
-        case .num9:   description = "9"
-        case .num0:   description = "0"
-        case .dot:    description = "."
-        case .sign:   description = "+/-"
-        }
-    }
+   init(op: KeyCode) {
+       switch op {
+       case .delete: description = "⌫"
+       case .clear:  description = "C"
+       case .num1:   description = "1"
+       case .num2:   description = "2"
+       case .num3:   description = "3"
+       case .num4:   description = "4"
+       case .num5:   description = "5"
+       case .num6:   description = "6"
+       case .num7:   description = "7"
+       case .num8:   description = "8"
+       case .num9:   description = "9"
+       case .num0:   description = "0"
+       case .dot:    description = "."
+       case .sign:   description = "+/-"
+       case .numerator:   description = "◤"
+       case .denominator:   description = "◢"
+       // case .feet:   description = "ft"
+       // case .inches:   description = "in"
+       // case .centimeters:   description = "cm"
+       // case .millimeters:   description = "mm"
+       }
+   }
 }

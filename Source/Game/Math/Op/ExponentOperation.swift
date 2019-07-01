@@ -26,15 +26,8 @@ struct ExponentOperation: OperationValue {
 
         let node1Val = node1.calculate(vars: vars, avoidRecursion: avoidRecursion)
         let node2Val = node2.calculate(vars: vars, avoidRecursion: avoidRecursion)
-        switch (node1Val, node2Val) {
-        case (.needsInput, _), (_, .needsInput): return .needsInput
-        case (.divZero, _), (_, .divZero): return .divZero
-        case let (.number(number1, number1Pi), .number(number2, number2Pi)):
-            let base = number1 + number1Pi.timesPi
-            let power = number2 + number2Pi.timesPi
-            return .checkNumber(number: Decimal(pow(base.asDouble, power.asDouble)), pi: 0)
-        default:
-            return .nan
+        return OperationResult.map2(node1Val, node2Val) { base, power in
+            Decimal(pow(base.asDouble, power.asDouble))
         }
     }
 

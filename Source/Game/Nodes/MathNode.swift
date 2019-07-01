@@ -227,7 +227,7 @@ class MathNode: Node {
         case let .noOp(isSelected):
             button.text = ""
             button.style = .squareSized(isSelected ? 50 : 25)
-        case .number:
+        case .number, .woodworking:
             button.text = op.description
             button.style = .rectToFit
         default:
@@ -247,7 +247,7 @@ class MathNode: Node {
         if let minCount = op.minChildNodes {
             if mathChildren.count < minCount {
                 (minCount - mathChildren.count).times { (i: Int) in
-                    let node = generateNode()
+                    let node = generateNode(usePrev: true)
                     self << node
                     visibleNodes << node
                     if node.op.isNoOp && selectNode == nil {
@@ -268,7 +268,7 @@ class MathNode: Node {
                 visibleNodes = Array(mathChildren[0..<maxCount])
             }
             else if childIsCurrentOp && mathChildren.all({ !$0.op.isNoOp }) {
-                let node = generateNode()
+                let node = generateNode(usePrev: false)
                 self << node
                 visibleNodes << node
                 if node.op.isNoOp && selectNode == nil {
@@ -304,8 +304,11 @@ class MathNode: Node {
         }
 
         switch op {
-        case .number: break
-        default: numberString = ""
+        case .number, .woodworking: break
+        default:
+            numberString = ""
+            numeratorString = ""
+            denominatorString = ""
         }
 
         (parent as? MathNode)?.updateMathNodes()
@@ -328,19 +331,23 @@ class MathNode: Node {
         )
     }
 
-    private func generateNode() -> MathNode {
+    private func generateNode(usePrev: Bool) -> MathNode {
         let node = MathNode()
         node.alpha = 0
-        if node.op.isNoOp {
+        if usePrev {
             switch prevOp {
-            case .number, .variable:
+            case .number, .woodworking:
                 node.numberString = numberString
+                node.numeratorString = numeratorString
+                node.denominatorString = denominatorString
+                node.op = prevOp
+            case .variable:
                 node.op = prevOp
             default: break
             }
-            prevOp = .noOp(isSelected: false)
-            numberString = ""
         }
+        prevOp = .noOp(isSelected: false)
+        numberString = ""
         return node
     }
 

@@ -111,3 +111,25 @@ func areaOf(_ a: CGPoint, _ b: CGPoint, _ c: CGPoint, _ d: CGPoint) -> CGFloat {
 func hex(r: Int, g: Int, b: Int) -> Int {
     return r << 16 + g << 8 + b
 }
+
+func gcd(_ n: Int, _ m: Int) -> Int {
+    if n < 0 && m < 0 {
+        return gcd(-n, -m)
+    }
+    else if n < 0 {
+        return gcd(-n, m)
+    }
+    else if m < 0 {
+        return gcd(m, -n)
+    }
+
+    var a: Int = 0
+    var b: Int = max(n, m)
+    var r: Int = min(n, m)
+    while r != 0 {
+        a = b
+        b = r
+        r = a % b
+    }
+    return b
+}

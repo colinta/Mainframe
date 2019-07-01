@@ -21,19 +21,19 @@ struct ArcCosOperation: OperationValue {
         }
 
         let nodeVal = node.calculate(vars: vars, avoidRecursion: avoidRecursion)
-        return nodeVal.map { number, numberPi in
-            if numberPi == 0 {
-                switch number {
+        return nodeVal.map { exact in
+            if exact.pi == 0 {
+                switch exact.toDecimal {
                 case -1:
-                    return (number: 0, pi: 1)
+                    return ExactNumber(pi: 1)
                 case 0:
-                    return (number: 0, pi: 0.5)
+                    return ExactNumber(pi: 0.5)
                 case 1:
-                    return (number: 0, pi: 0)
+                    return ExactNumber(pi: 0)
                 default: break
                 }
             }
-            return (number: (number + numberPi.timesPi).mapDouble(acos), pi: 0)
+            return ExactNumber(whole: exact.toDecimal.mapDouble(acos))
         }
     }
 }

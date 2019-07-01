@@ -61,6 +61,13 @@ extension Array {
         return self[i]
     }
 
+    var headAndTail: (Element, [Element])? {
+        return (count > 0) ? (self[0], Array(self[1..<count])) : nil
+    }
+
+    var headAndHeadAndTail: (Element, Element, [Element])? {
+        return (count > 1) ? (self[0], self[1], Array(self[2..<count])) : nil
+    }
 }
 
 extension Array {

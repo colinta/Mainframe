@@ -215,17 +215,28 @@ let l23 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 3),
         CGPoint(x: 3, y: 3),
     ]])
+// "f"
+let l24 = Letter(style: .line, size: mediumSize, points: [[
+        CGPoint(x: 1, y: 6.25),
+        CGPoint(x: 1, y: 0.5),
+        CGPoint(x: 1.5, y: 0),
+        CGPoint(x: 2, y: 0.5),
+        CGPoint(x: 2, y: 0.75),
+    ], [
+        CGPoint(x: 0, y: 2),
+        CGPoint(x: 2, y: 2),
+    ]])
 // "F"
-let l24 = Letter(style: .line, size: defaultSize, points: [[
+let l25 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 6.25),
         CGPoint(x: 0, y: 0),
         CGPoint(x: 4, y: 0),
     ], [
         CGPoint(x: 0, y: 3),
-        CGPoint(x: 1.5, y: 3),
+        CGPoint(x: 2, y: 3),
     ]])
 // "g"
-let l25 = Letter(style: .line, size: defaultSize, points: [[
+let l26 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 3, y: 6),
         CGPoint(x: 1, y: 6),
         CGPoint(x: 0, y: 5.25),
@@ -237,7 +248,7 @@ let l25 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 7.25),
     ]])
 // "G"
-let l26 = Letter(style: .line, size: defaultSize, points: [[
+let l27 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 4, y: 0),
         CGPoint(x: 1, y: 0),
         CGPoint(x: 0, y: 1),
@@ -248,7 +259,7 @@ let l26 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 3, y: 3),
     ]])
 // "H"
-let l27 = Letter(style: .line, size: defaultSize, points: [[
+let l28 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: -0.25),
         CGPoint(x: 0, y: 6.25),
     ], [
@@ -259,7 +270,7 @@ let l27 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 4, y: 6.25),
     ]])
 // "i"
-let l28 = Letter(style: .line, size: CGSize(width: 2, height: defaultSize.height), points: [[
+let l29 = Letter(style: .line, size: CGSize(width: 2, height: defaultSize.height), points: [[
         CGPoint(x: 1, y: 1.75),
         CGPoint(x: 1, y: 6.25),
     ], [
@@ -267,12 +278,12 @@ let l28 = Letter(style: .line, size: CGSize(width: 2, height: defaultSize.height
         CGPoint(x: 1, y: 0.7),
     ]])
 // "I"
-let l29 = Letter(style: .line, size: CGSize(width: 2, height: defaultSize.height), points: [[
+let l30 = Letter(style: .line, size: CGSize(width: 2, height: defaultSize.height), points: [[
         CGPoint(x: 1, y: -0.25),
         CGPoint(x: 1, y: 6.25),
     ]])
 // "J"
-let l30 = Letter(style: .line, size: defaultSize, points: [[
+let l31 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 4, y: -0.25),
         CGPoint(x: 4, y: 6),
         CGPoint(x: 1, y: 6),
@@ -280,7 +291,7 @@ let l30 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 4),
     ]])
 // "K"
-let l31 = Letter(style: .line, size: defaultSize, points: [[
+let l32 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: -0.25),
         CGPoint(x: 0, y: 6.25),
     ], [
@@ -289,19 +300,29 @@ let l31 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 4, y: 6),
     ]])
 // "l"
-let l32 = Letter(style: .line, size: narrowSize, points: [[
+let l33 = Letter(style: .line, size: narrowSize, points: [[
         CGPoint(x: 0, y: 0),
         CGPoint(x: 1, y: 0),
         CGPoint(x: 1, y: 6),
     ]])
 // "L"
-let l33 = Letter(style: .line, size: defaultSize, points: [[
+let l34 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: -0.25),
         CGPoint(x: 0, y: 6),
         CGPoint(x: 4, y: 6),
     ]])
+// "m"
+let l35 = Letter(style: .line, size: defaultSize, points: [[
+        CGPoint(x: 0, y: 6.25),
+        CGPoint(x: 0, y: 2),
+        CGPoint(x: 2, y: 2),
+        CGPoint(x: 2, y: 4),
+        CGPoint(x: 2, y: 2),
+        CGPoint(x: 4, y: 2),
+        CGPoint(x: 4, y: 6.25),
+    ]])
 // "M"
-let l34 = Letter(style: .line, size: defaultSize, points: [[
+let l36 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 6.25),
         CGPoint(x: 0, y: 0),
         CGPoint(x: 2, y: 3),
@@ -309,7 +330,7 @@ let l34 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 4, y: 6.25),
     ]])
 // "n"
-let l35 = Letter(style: .line, size: mediumSize, points: [[
+let l37 = Letter(style: .line, size: mediumSize, points: [[
         CGPoint(x: 0, y: 1.75),
         CGPoint(x: 0, y: 6.25),
         CGPoint(x: 0, y: 3),
@@ -319,14 +340,14 @@ let l35 = Letter(style: .line, size: mediumSize, points: [[
         CGPoint(x: 3, y: 6.25),
     ]])
 // "N"
-let l36 = Letter(style: .line, size: defaultSize, points: [[
+let l38 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 6.25),
         CGPoint(x: 0, y: 0),
         CGPoint(x: 4, y: 6),
         CGPoint(x: 4, y: -0.25),
     ]])
 // "o"
-let l37 = Letter(style: .loop, size: mediumSize, points: [[
+let l39 = Letter(style: .loop, size: mediumSize, points: [[
         CGPoint(x: 1, y: 2),
         CGPoint(x: 2, y: 2),
         CGPoint(x: 3, y: 2.75),
@@ -337,7 +358,7 @@ let l37 = Letter(style: .loop, size: mediumSize, points: [[
         CGPoint(x: 0, y: 2.75),
     ]])
 // "O"
-let l38 = Letter(style: .loop, size: defaultSize, points: [[
+let l40 = Letter(style: .loop, size: defaultSize, points: [[
         CGPoint(x: 1, y: 0),
         CGPoint(x: 3, y: 0),
         CGPoint(x: 4, y: 1),
@@ -348,7 +369,7 @@ let l38 = Letter(style: .loop, size: defaultSize, points: [[
         CGPoint(x: 0, y: 1),
     ]])
 // "P"
-let l39 = Letter(style: .line, size: defaultSize, points: [[
+let l41 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 6.25),
         CGPoint(x: 0, y: 0),
         CGPoint(x: 3, y: 0),
@@ -358,7 +379,7 @@ let l39 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 3),
     ]])
 // "Q"
-let l40 = Letter(style: .loop, size: defaultSize, points: [[
+let l42 = Letter(style: .loop, size: defaultSize, points: [[
         CGPoint(x: 1, y: 0),
         CGPoint(x: 3, y: 0),
         CGPoint(x: 4, y: 1),
@@ -372,7 +393,7 @@ let l40 = Letter(style: .loop, size: defaultSize, points: [[
         CGPoint(x: 3, y: 6),
     ]])
 // "r"
-let l41 = Letter(style: .line, size: CGSize(1.75, defaultSize.height), points: [[
+let l43 = Letter(style: .line, size: CGSize(1.75, defaultSize.height), points: [[
         CGPoint(x: 0, y: 1.75),
         CGPoint(x: 0, y: 6.25),
         CGPoint(x: 0, y: 3),
@@ -380,7 +401,7 @@ let l41 = Letter(style: .line, size: CGSize(1.75, defaultSize.height), points: [
         CGPoint(x: 2, y: 2),
     ]])
 // "R"
-let l42 = Letter(style: .line, size: defaultSize, points: [[
+let l44 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 6.25),
         CGPoint(x: 0, y: 0),
         CGPoint(x: 3, y: 0),
@@ -391,7 +412,7 @@ let l42 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 4, y: 6.25),
     ]])
 // "s"
-let l43 = Letter(style: .line, size: mediumSize, points: [[
+let l45 = Letter(style: .line, size: mediumSize, points: [[
         CGPoint(x: 3, y: 2),
         CGPoint(x: 1, y: 2),
         CGPoint(x: 0, y: 2.75),
@@ -402,7 +423,7 @@ let l43 = Letter(style: .line, size: mediumSize, points: [[
         CGPoint(x: 0, y: 6),
     ]])
 // "S"
-let l44 = Letter(style: .line, size: defaultSize, points: [[
+let l46 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 4, y: 0),
         CGPoint(x: 1, y: 0),
         CGPoint(x: 0, y: 1),
@@ -413,7 +434,7 @@ let l44 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 6),
     ]])
 // "t"
-let l45 = Letter(style: .line, size: mediumSize, points: [[
+let l47 = Letter(style: .line, size: mediumSize, points: [[
         CGPoint(x: 0, y: 2),
         CGPoint(x: 3, y: 2),
     ], [
@@ -421,7 +442,7 @@ let l45 = Letter(style: .line, size: mediumSize, points: [[
         CGPoint(x: 1.5, y: 6.25),
     ]])
 // "T"
-let l46 = Letter(style: .line, size: defaultSize, points: [[
+let l48 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 0),
         CGPoint(x: 4, y: 0),
     ], [
@@ -429,7 +450,7 @@ let l46 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 2, y: 6.25),
     ]])
 // "U"
-let l47 = Letter(style: .line, size: defaultSize, points: [[
+let l49 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: -0.25),
         CGPoint(x: 0, y: 5),
         CGPoint(x: 1, y: 6),
@@ -438,13 +459,13 @@ let l47 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 4, y: -0.25),
     ]])
 // "V"
-let l48 = Letter(style: .line, size: defaultSize, points: [[
+let l50 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 0),
         CGPoint(x: 2, y: 6),
         CGPoint(x: 4, y: 0),
     ]])
 // "W"
-let l49 = Letter(style: .line, size: defaultSize, points: [[
+let l51 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 0),
         CGPoint(x: 0, y: 6),
         CGPoint(x: 2, y: 3),
@@ -452,7 +473,7 @@ let l49 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 4, y: 0),
     ]])
 // "X"
-let l50 = Letter(style: .line, size: defaultSize, points: [[
+let l52 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 0),
         CGPoint(x: 4, y: 6),
     ], [
@@ -460,7 +481,7 @@ let l50 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 4, y: 0),
     ]])
 // "Y"
-let l51 = Letter(style: .line, size: defaultSize, points: [[
+let l53 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 0),
         CGPoint(x: 2, y: 3),
         CGPoint(x: 4, y: 0),
@@ -469,14 +490,14 @@ let l51 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 2, y: 6.25),
     ]])
 // "Z"
-let l52 = Letter(style: .line, size: defaultSize, points: [[
+let l54 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 0),
         CGPoint(x: 4, y: 0),
         CGPoint(x: 0, y: 6),
         CGPoint(x: 4, y: 6),
     ]])
 // "π"
-let l53 = Letter(style: .line, size: defaultSize, points: [[
+let l55 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 2),
         CGPoint(x: 4, y: 2),
     ], [
@@ -487,7 +508,7 @@ let l53 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 3, y: 6),
     ]])
 // "τ"
-let l54 = Letter(style: .line, size: defaultSize, points: [[
+let l56 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 2),
         CGPoint(x: 4, y: 2),
     ], [
@@ -496,7 +517,7 @@ let l54 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 3, y: 6),
     ]])
 // "𝑒"
-let l55 = Letter(style: .line, size: defaultSize, points: [[
+let l57 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 4),
         CGPoint(x: 3.5, y: 4),
         CGPoint(x: 4, y: 3.5),
@@ -510,7 +531,7 @@ let l55 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 4, y: 5.5),
     ]])
 // "𝑓"
-let l56 = Letter(style: .line, size: CGSize(width: 3, height: defaultSize.height), points: [[
+let l58 = Letter(style: .line, size: CGSize(width: 3, height: defaultSize.height), points: [[
         CGPoint(x: 3, y: 0),
         CGPoint(x: 2, y: 0),
         CGPoint(x: 1, y: 6),
@@ -520,7 +541,7 @@ let l56 = Letter(style: .line, size: CGSize(width: 3, height: defaultSize.height
         CGPoint(x: 2.5, y: 3),
     ]])
 // "𝑥"
-let l57 = Letter(style: .line, size: defaultSize, points: [[
+let l59 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 2.5),
         CGPoint(x: 0.5, y: 2),
         CGPoint(x: 3.5, y: 6),
@@ -530,7 +551,7 @@ let l57 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 4, y: 1.75),
     ]])
 // "𝑦"
-let l58 = Letter(style: .line, size: defaultSize, points: [[
+let l60 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 2.5),
         CGPoint(x: 0.5, y: 2),
         CGPoint(x: 2, y: 6),
@@ -542,7 +563,7 @@ let l58 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 8),
     ]])
 // "𝑧"
-let l59 = Letter(style: .line, size: defaultSize, points: [[
+let l61 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 2.5),
         CGPoint(x: 0, y: 2),
         CGPoint(x: 4, y: 2),
@@ -551,7 +572,7 @@ let l59 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 4, y: 5.5),
     ]])
 // "?"
-let l60 = Letter(style: .line, size: mediumSize, points: [[
+let l62 = Letter(style: .line, size: mediumSize, points: [[
         CGPoint(x: 0, y: 0.5),
         CGPoint(x: 0.5, y: 0),
         CGPoint(x: 2.5, y: 0),
@@ -564,26 +585,26 @@ let l60 = Letter(style: .line, size: mediumSize, points: [[
         CGPoint(x: 1.75, y: 6),
     ]])
 // "/"
-let l61 = Letter(style: .line, size: defaultSize, points: [[
+let l63 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 4, y: 0),
         CGPoint(x: 0, y: 6),
     ]])
 // "("
-let l62 = Letter(style: .line, size: CGSize(width: 1, height: defaultSize.height), points: [[
+let l64 = Letter(style: .line, size: CGSize(width: 1, height: defaultSize.height), points: [[
         CGPoint(x: 1, y: -0.5),
         CGPoint(x: 0, y: 2),
         CGPoint(x: 0, y: 4),
         CGPoint(x: 1, y: 6.5),
     ]])
 // ")"
-let l63 = Letter(style: .line, size: CGSize(width: 1, height: defaultSize.height), points: [[
+let l65 = Letter(style: .line, size: CGSize(width: 1, height: defaultSize.height), points: [[
         CGPoint(x: 0, y: -0.5),
         CGPoint(x: 1, y: 2),
         CGPoint(x: 1, y: 4),
         CGPoint(x: 0, y: 6.5),
     ]])
 // "!"
-let l64 = Letter(style: .line, size: CGSize(width: 0.5, height: defaultSize.height), points: [[
+let l66 = Letter(style: .line, size: CGSize(width: 0.5, height: defaultSize.height), points: [[
         CGPoint(x: 0, y: 0),
         CGPoint(x: 0, y: 5),
     ], [
@@ -591,7 +612,7 @@ let l64 = Letter(style: .line, size: CGSize(width: 0.5, height: defaultSize.heig
         CGPoint(x: 0.25, y: 6),
     ]])
 // "↓"
-let l65 = Letter(style: .line, size: defaultSize, points: [[
+let l67 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 2, y: 0),
         CGPoint(x: 2, y: 6),
     ], [
@@ -600,7 +621,7 @@ let l65 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 4, y: 4),
     ]])
 // "↑"
-let l66 = Letter(style: .line, size: defaultSize, points: [[
+let l68 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 2, y: 6),
         CGPoint(x: 2, y: 0),
     ], [
@@ -609,7 +630,7 @@ let l66 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 4, y: 2),
     ]])
 // "→"
-let l67 = Letter(style: .line, size: CGSize(width: 6, height: 4), points: [[
+let l69 = Letter(style: .line, size: CGSize(width: 6, height: 4), points: [[
         CGPoint(x: 0, y: 2),
         CGPoint(x: 6, y: 2),
     ], [
@@ -618,7 +639,7 @@ let l67 = Letter(style: .line, size: CGSize(width: 6, height: 4), points: [[
         CGPoint(x: 4, y: 4),
     ]])
 // "←"
-let l68 = Letter(style: .line, size: CGSize(width: 6, height: 4), points: [[
+let l70 = Letter(style: .line, size: CGSize(width: 6, height: 4), points: [[
         CGPoint(x: 6, y: 2),
         CGPoint(x: 0, y: 2),
     ], [
@@ -627,19 +648,19 @@ let l68 = Letter(style: .line, size: CGSize(width: 6, height: 4), points: [[
         CGPoint(x: 2, y: 4),
     ]])
 // ">"
-let l69 = Letter(style: .line, size: defaultSize, points: [[
+let l71 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 0),
         CGPoint(x: 4, y: 3),
         CGPoint(x: 0, y: 6),
     ]])
 // "<"
-let l70 = Letter(style: .line, size: defaultSize, points: [[
+let l72 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 4, y: 0),
         CGPoint(x: 0, y: 3),
         CGPoint(x: 4, y: 6),
     ]])
 // "⌫"
-let l71 = Letter(style: .loop, size: CGSize(5, defaultSize.height), points: [[
+let l73 = Letter(style: .loop, size: CGSize(5, defaultSize.height), points: [[
         CGPoint(x: 2, y: 1),
         CGPoint(x: 0, y: 3),
         CGPoint(x: 2, y: 5),
@@ -653,7 +674,7 @@ let l71 = Letter(style: .loop, size: CGSize(5, defaultSize.height), points: [[
         CGPoint(x: 4, y: 2),
     ]])
 // "="
-let l72 = Letter(style: .line, size: defaultSize, points: [[
+let l74 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 2),
         CGPoint(x: 4, y: 2),
     ], [
@@ -661,7 +682,7 @@ let l72 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 4, y: 4),
     ]])
 // "+"
-let l73 = Letter(style: .line, size: defaultSize, points: [[
+let l75 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 3),
         CGPoint(x: 4, y: 3),
     ], [
@@ -669,12 +690,12 @@ let l73 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 2, y: 5),
     ]])
 // "-"
-let l74 = Letter(style: .line, size: defaultSize, points: [[
+let l76 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 3),
         CGPoint(x: 4, y: 3),
     ]])
 // "÷"
-let l75 = Letter(style: .line, size: defaultSize, points: [[
+let l77 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0, y: 3),
         CGPoint(x: 4, y: 3),
     ], [
@@ -689,7 +710,7 @@ let l75 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 1.75, y: 5.25),
     ]])
 // "×"
-let l76 = Letter(style: .line, size: defaultSize, points: [[
+let l78 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0.5, y: 1.5),
         CGPoint(x: 3.5, y: 4.5),
     ], [
@@ -697,7 +718,7 @@ let l76 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 0.5, y: 4.5),
     ]])
 // "±" - plus and divide
-let l77 = Letter(style: .line, size: doubleWidthSize, points: [[
+let l79 = Letter(style: .line, size: doubleWidthSize, points: [[
         CGPoint(x: 0, y: 2),
         CGPoint(x: 4, y: 2),
     ], [
@@ -723,7 +744,7 @@ let l77 = Letter(style: .line, size: doubleWidthSize, points: [[
         CGPoint(x: 5, y: 7),
     ]])
 // "√"
-let l78 = Letter(style: .line, size: defaultSize, points: [[
+let l80 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: -0.5, y: 4),
         CGPoint(x: 0, y: 4),
         CGPoint(x: 1, y: 6),
@@ -731,45 +752,69 @@ let l78 = Letter(style: .line, size: defaultSize, points: [[
         CGPoint(x: 5, y: 0),
     ]])
 // "▝" - exponentiation
-let l79 = Letter(style: .loop, size: narrowSize, points: [[
+let l81 = Letter(style: .loop, size: narrowSize, points: [[
         CGPoint(x: 0, y: 0),
         CGPoint(x: 2, y: 0),
         CGPoint(x: 2, y: 2),
         CGPoint(x: 0, y: 2),
     ]])
 // "ₒ"
-let l80 = Letter(style: .loop, size: narrowSize, points: [[
+let l82 = Letter(style: .loop, size: narrowSize, points: [[
         CGPoint(x: 0, y: 6),
         CGPoint(x: 2, y: 6),
         CGPoint(x: 2, y: 8),
         CGPoint(x: 0, y: 8),
     ]])
 // "◻"
-let l81 = Letter(style: .loop, size: mediumSize, points: [[
+let l83 = Letter(style: .loop, size: mediumSize, points: [[
         CGPoint(x: 0, y: 1.5),
         CGPoint(x: 3, y: 1.5),
         CGPoint(x: 3, y: 4.5),
         CGPoint(x: 0, y: 4.5),
     ]])
 // "◼"
-let l82 = Letter(style: .fill, size: mediumSize, points: [[
+let l84 = Letter(style: .fill, size: mediumSize, points: [[
         CGPoint(x: 0, y: 1.5),
         CGPoint(x: 3, y: 1.5),
         CGPoint(x: 3, y: 4.5),
         CGPoint(x: 0, y: 4.5),
     ]])
 // "^"
-let l83 = Letter(style: .line, size: mediumSize, points: [[
+let l85 = Letter(style: .line, size: mediumSize, points: [[
         CGPoint(x: -0.5, y: 3),
         CGPoint(x: 1.5, y: 1),
         CGPoint(x: 3.5, y: 3),
     ]])
 // "ⁿ"
-let l84 = Letter(style: .loop, size: mediumSize, points: [[
+let l86 = Letter(style: .loop, size: mediumSize, points: [[
         CGPoint(x: 0, y: 0),
         CGPoint(x: 2, y: 0),
         CGPoint(x: 2, y: 2),
         CGPoint(x: 0, y: 2),
+    ]])
+// "◤" - edit numerator
+let l87 = Letter(style: .fill, size: defaultSize, points: [[
+        CGPoint(x: 3.75, y: -0.25),
+        CGPoint(x: -0.25, y: 5.75),
+        CGPoint(x: 0, y: 6),
+        CGPoint(x: 4, y: 0),
+    ], [
+        CGPoint(x: 0, y: 0),
+        CGPoint(x: 2, y: 0),
+        CGPoint(x: 2, y: 2),
+        CGPoint(x: 0, y: 2),
+    ]])
+// "◢" - edit denominator
+let l88 = Letter(style: .fill, size: defaultSize, points: [[
+        CGPoint(x: 3.75, y: -0.25),
+        CGPoint(x: -0.25, y: 5.75),
+        CGPoint(x: 0, y: 6),
+        CGPoint(x: 4, y: 0),
+    ], [
+        CGPoint(x: 4, y: 6),
+        CGPoint(x: 4-2, y: 6),
+        CGPoint(x: 4-2, y: 6-2),
+        CGPoint(x: 4, y: 6-2),
     ]])
 
 let DefaultFont = Font(
@@ -801,65 +846,69 @@ let DefaultFont = Font(
     "𝚎": l21,
     "e": l22,
     "E": l23,
-    "F": l24,
-    "g": l25,
-    "G": l26,
-    "H": l27,
-    "i": l28,
-    "I": l29,
-    "J": l30,
-    "K": l31,
-    "l": l32,
-    "L": l33,
-    "M": l34,
-    "n": l35,
-    "N": l36,
-    "o": l37,
-    "O": l38,
-    "P": l39,
-    "Q": l40,
-    "r": l41,
-    "R": l42,
-    "s": l43,
-    "S": l44,
-    "t": l45,
-    "T": l46,
-    "U": l47,
-    "V": l48,
-    "W": l49,
-    "X": l50,
-    "Y": l51,
-    "Z": l52,
-    "π": l53,
-    "τ": l54,
-    "𝑒": l55,
-    "𝑓": l56,
-    "𝑥": l57,
-    "𝑦": l58,
-    "𝑧": l59,
-    "?": l60,
-    "/": l61,
-    "(": l62,
-    ")": l63,
-    "!": l64,
-    "↓": l65,
-    "↑": l66,
-    "→": l67,
-    "←": l68,
-    ">": l69,
-    "<": l70,
-    "⌫": l71,
-    "=": l72,
-    "+": l73,
-    "-": l74,
-    "÷": l75,
-    "×": l76,
-    "±": l77,
-    "√": l78,
-    "▝": l79,
-    "ₒ": l80,
-    "◻": l81,
-    "◼": l82,
-    "^": l83,
-    "ⁿ": l84,
+    "f": l24,
+    "F": l25,
+    "g": l26,
+    "G": l27,
+    "H": l28,
+    "i": l29,
+    "I": l30,
+    "J": l31,
+    "K": l32,
+    "l": l33,
+    "L": l34,
+    "m": l35,
+    "M": l36,
+    "n": l37,
+    "N": l38,
+    "o": l39,
+    "O": l40,
+    "P": l41,
+    "Q": l42,
+    "r": l43,
+    "R": l44,
+    "s": l45,
+    "S": l46,
+    "t": l47,
+    "T": l48,
+    "U": l49,
+    "V": l50,
+    "W": l51,
+    "X": l52,
+    "Y": l53,
+    "Z": l54,
+    "π": l55,
+    "τ": l56,
+    "𝑒": l57,
+    "𝑓": l58,
+    "𝑥": l59,
+    "𝑦": l60,
+    "𝑧": l61,
+    "?": l62,
+    "/": l63,
+    "(": l64,
+    ")": l65,
+    "!": l66,
+    "↓": l67,
+    "↑": l68,
+    "→": l69,
+    "←": l70,
+    ">": l71,
+    "<": l72,
+    "⌫": l73,
+    "=": l74,
+    "+": l75,
+    "-": l76,
+    "÷": l77,
+    "×": l78,
+    "±": l79,
+    "√": l80,
+    "▝": l81,
+    "ₒ": l82,
+    "◻": l83,
+    "◼": l84,
+    "^": l85,
+    "ⁿ": l86,
+    "◤": l87,
+    "◢": l88,
 ])

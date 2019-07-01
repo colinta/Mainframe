@@ -15,13 +15,11 @@ struct MultiplyOperation: OperationValue {
         }
         else if nodes.count > 1 {
             var result = ""
-            var first = true
             for node in nodes {
-                if !first {
+                if node != nodes.first {
                     result += "×"
                 }
                 result += node.formula()
-                first = false
             }
             return result
         }
@@ -33,42 +31,44 @@ struct MultiplyOperation: OperationValue {
 
         // filter out non-numbers and pass them through, and quick return when
         // multiplying times zero
-        var numbers: [(Decimal, Decimal)] = []
+        var numbers: [ExactNumber] = []
         for node in nodes {
             let nodeVal = node.calculate(vars: vars, avoidRecursion: avoidRecursion)
             switch nodeVal {
             case .nan, .divZero, .needsInput: return nodeVal
-            case let .number(number, pi):
-                if number == 0 && pi == 0 {
-                    return .number(number: 0, pi: 0)
+            case let .number(exact):
+                if exact.isZero {
+                    return .number(.zero)
                 }
-                numbers << (number, pi)
+                numbers << exact
             }
         }
 
-        let piCounts = numbers.filter { (_, pi) in pi != 0 }.count
-        let piAndNumberCounts = numbers.filter { (number, pi) in pi != 0 && number != 0 }.count
+        let piCounts = numbers.filter { exact in exact.hasPi }.count
+        let piAndNumberCounts = numbers.filter { exact in exact.hasPi && exact.hasWhole }.count
         if piCounts == 1 && piAndNumberCounts == 0 {
             // more accurate calculation for (a * b * c * pi); when one number
             // has a pi value, multiply the non-pi numbers and retain the pi number
             // e.g. 2 * pi aka (number 2, pi: 0) * (number: 0, pi: 1) becomes (number: 0, pi: 2)
             var resultPi: Decimal = 1
-            for (number, pi) in numbers {
-                if number == 0 {
-                    resultPi *= pi
+            var isFirst = true
+            for exact in numbers {
+                if isFirst {
+                    resultPi *= exact.pi
+                    isFirst = false
                 }
                 else {
-                    resultPi *= number
+                    resultPi *= exact.whole
                 }
             }
-            return .number(number: 0, pi: resultPi)
+            return .number(ExactNumber(pi: resultPi))
         }
         else {
             var result: Decimal = 1
-            for (number, numberPi) in numbers {
-                result *= number + numberPi.timesPi
+            for exact in numbers {
+                result *= exact.toDecimal
             }
-            return .number(number: result, pi: 0)
+            return .number(ExactNumber(whole: result))
         }
     }
 }

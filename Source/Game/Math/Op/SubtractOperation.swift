@@ -15,13 +15,11 @@ struct SubtractOperation: OperationValue {
         }
         else if nodes.count > 1 {
             var result = ""
-            var first = true
             for node in nodes {
-                if !first {
+                if node != nodes.first {
                     result += "-"
                 }
                 result += node.formula()
-                first = false
             }
             return result
         }
@@ -29,25 +27,13 @@ struct SubtractOperation: OperationValue {
     }
 
     func calculate(_ nodes: [MathNode], vars: VariableLookup, avoidRecursion: [String]) -> OperationResult {
-        var result: Decimal = 0
-        var resultPi: Decimal = 0
-        var first = true
-        for node in nodes {
-            let nodeVal = node.calculate(vars: vars, avoidRecursion: avoidRecursion)
-            switch nodeVal {
-            case .nan, .divZero, .needsInput: return nodeVal
-            case let .number(number, pi):
-                if first {
-                    result = number
-                    resultPi = pi
-                    first = false
-                }
-                else {
-                    result -= -number
-                    resultPi -= pi
-                }
+        var isFirst = false
+        return OperationResult.reduce(nodes.lazy.map { $0.calculate(vars: vars, avoidRecursion: avoidRecursion) }) { result, exact in
+            if isFirst {
+                isFirst = false
+                return exact
             }
+            return result - exact
         }
-        return .number(number: result, pi: resultPi)
     }
 }

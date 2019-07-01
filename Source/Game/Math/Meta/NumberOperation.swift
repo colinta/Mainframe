@@ -26,7 +26,7 @@ struct NumberOperation: OperationValue {
 
     func calculate(_ nodes: [MathNode], vars: VariableLookup, avoidRecursion: [String]) -> OperationResult {
         if let number = number {
-            return .number(number: number, pi: 0)
+            return .number(ExactNumber(whole: number))
         }
         return .needsInput
     }

@@ -2,19 +2,12 @@
 /// Operation.swift
 //
 
-enum WoodworkingUnit {
-    case inches
-    case feet
-    case centimeters
-    case millimeters
-}
-
 enum Operation {
     case nextBlankOp
     case key(KeyCode)
 
     case number(String)
-    case woodworking(WoodworkingUnit, number: String, numerator: String, denominator: String)
+    case woodworking(number: String, numerator: String, denominator: String)
     case variable(String)
     case assign(String)
 
@@ -25,7 +18,7 @@ enum Operation {
 
     var isNoOp: Bool {
         switch self {
-        case .noOp(_): return true
+        case .noOp: return true
         default: return false
         }
     }
@@ -85,9 +78,9 @@ extension Operation {
     var opValue: OperationValue {
         switch self {
         case let .key(key):      return KeyOperation(op: key)
-        case .nextBlankOp:              return NextOperation()
+        case .nextBlankOp:       return NextOperation()
         case let .number(num):   return NumberOperation(num)
-        case let .woodworking(unit, number, numerator, denominator):
+        case let .woodworking(number, numerator, denominator):
             return NumberOperation(number)
         case let .variable(num): return VariableOperation(num)
         case let .assign(num):   return AssignOperation(num)
@@ -127,15 +120,43 @@ extension Operation {
         return nil
     }
 
-    func tapped(_ mainframe: Mainframe, isResetting: Bool) {
-        guard let currentOp = mainframe.currentOp else { return }
-
+    func tapped(_ mainframe: Mainframe, currentOp: MathNode, isResetting: Bool) {
         switch self {
         case .nextBlankOp:
             mainframe.currentOp = findNextOp(currentOp, mainframe: mainframe, skip: currentOp)
             mainframe.checkCameraLocation()
+        case .variable:
+            let copyNumber: Bool
+            if case .number = currentOp.op {
+                copyNumber = true
+            }
+            else if case .woodworking = currentOp.op {
+                copyNumber = true
+            }
+            else {
+                copyNumber = false
+            }
+
+            if copyNumber {
+                let numberNode = MathNode()
+                numberNode.numberString = currentOp.numberString
+                numberNode.numeratorString = currentOp.numeratorString
+                numberNode.denominatorString = currentOp.denominatorString
+                numberNode.op = currentOp.op
+                currentOp << numberNode
+
+                let variableNode = MathNode()
+                variableNode.op = self
+                currentOp << variableNode
+                currentOp.op = .operator(MultiplyOperation())
+            }
+            else {
+                currentOp.op = self
+            }
         case let .key(keyCode):
             switch keyCode {
+            case .numerator, .denominator:
+                break
             case .delete:
                 var string = currentOp.numberString
                 if !string.isEmpty {
@@ -150,6 +171,8 @@ extension Operation {
                 }
             case .clear:
                 currentOp.numberString = ""
+                currentOp.numeratorString = ""
+                currentOp.denominatorString = ""
                 currentOp.op = .noOp(isSelected: true)
             case .dot:
                 if isResetting {

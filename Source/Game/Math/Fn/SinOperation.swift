@@ -19,8 +19,21 @@ struct SinOperation: OperationValue {
         guard let node = nodes.first, nodes.count == 1 else { return .needsInput }
 
         let nodeVal = node.calculate(vars: vars, avoidRecursion: avoidRecursion)
-        return nodeVal.mapDecimal { number in
-            return number.mapDouble(sin)
+        return nodeVal.map { exact in
+            if exact.fractionalPart == 0, let (a, b) = exact.pi.toFraction {
+                switch ((2 * a) % 4, b) {
+                case (0, 2):
+                    return ExactNumber(whole: 0)
+                case (1, 2):
+                    return ExactNumber(whole: 1)
+                case (2, 2):
+                    return ExactNumber(whole: 0)
+                case (3, 2):
+                    return ExactNumber(whole: -1)
+                default: break
+                }
+            }
+            return ExactNumber(whole: exact.toDecimal.mapDouble(sin))
         }
     }
 }

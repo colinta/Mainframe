@@ -34,15 +34,8 @@ struct NRootOperation: OperationValue {
 
         let node1Val = node1.calculate(vars: vars, avoidRecursion: avoidRecursion)
         let node2Val = node2.calculate(vars: vars, avoidRecursion: avoidRecursion)
-        switch (node1Val, node2Val) {
-        case (.needsInput, _), (_, .needsInput): return .needsInput
-        case (.divZero, _), (_, .divZero): return .divZero
-        case let (.number(number1, number1Pi), .number(number2, number2Pi)):
-            let root = number1 + number1Pi.timesPi
-            let number = number2 + number2Pi.timesPi
-            return .checkNumber(number: Decimal(pow(number.asDouble, 1/root.asDouble)), pi: 0)
-        default:
-            return .nan
+        return OperationResult.map2(node1Val, node2Val) { root, number in
+            return Decimal(pow(number.asDouble, 1/root.asDouble))
         }
     }
 

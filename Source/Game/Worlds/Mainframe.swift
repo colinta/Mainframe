@@ -145,7 +145,7 @@ class Mainframe: World {
 
         let tabbarButtons = [
             ("123", numbersItem.button),
-            // ("1/2", woodworkingItem.button),
+            ("1/2", woodworkingItem.button),
             ("±", operatorsItem.button),
             ("𝑓(𝑥)", functionsItem.button),
             ("𝑥𝑦𝑧=", variablesItem.button),
@@ -171,10 +171,12 @@ class Mainframe: World {
             [.key(.dot), .key(.num0), .key(.sign)]
         ])
         createPanel(woodworkingItem.panel, buttons: [
+            [.key(.delete), .key(.clear), .nextBlankOp],
             [.key(.num1), .key(.num2), .key(.num3)],
             [.key(.num4), .key(.num5), .key(.num6)],
             [.key(.num7), .key(.num8), .key(.num9)],
-            [.key(.num0)]
+            [.key(.numerator), .key(.num0), .key(.denominator)],
+            // [.key(.feet), .key(.inches), .key(.centimeters), .key(.millimeters)],
             ])
         createPanel(operatorsItem.panel, buttons: [
             [.operator(AddOperation()), .operator(SubtractOperation()), .operator(DivideOperation()), .operator(MultiplyOperation())],
@@ -311,7 +313,8 @@ class Mainframe: World {
                 button.style = .rectSized(buttonWidth, Size.tabbarHeight)
                 button.position = CGPoint(x, y)
                 button.onTapped {
-                    op.tapped(self, isResetting: self.firstKeyPress)
+                    guard let currentOp = self.currentOp else { return }
+                    op.tapped(self, currentOp: currentOp, isResetting: self.firstKeyPress)
                     self.firstKeyPress = false
                 }
                 panel << button

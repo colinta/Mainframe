@@ -27,6 +27,7 @@
 		1D0567A522C4FAFA001DF7B4 /* ExpandArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D05679B22C4FAFA001DF7B4 /* ExpandArtist.swift */; };
 		1D0567A622C4FAFA001DF7B4 /* LetterAndFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D05679C22C4FAFA001DF7B4 /* LetterAndFont.swift */; };
 		1D0F58CC1F9A849000AB48A0 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D0F58CB1F9A849000AB48A0 /* Launch Screen.storyboard */; };
+		1D458A3622C68B7F008F1E04 /* WoodworkingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D458A3522C68B7F008F1E04 /* WoodworkingOperation.swift */; };
 		206DC25A72CECF5D670618E5 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93474894F34CE8463FA53F54 /* Component.swift */; };
 		211E6E89716C020F15327473 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = E889A19284B55A8D974AF14D /* Node.swift */; };
 		2DC86B229F079604829A182B /* KeyOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCAE6E1D20941E3629BB7B3 /* KeyOperation.swift */; };
@@ -51,7 +52,7 @@
 		64AECE6A9EEC4E94A8488622 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB2C4B970002C522E2626C80 /* Foundation.framework */; };
 		66CF4E127B946962B06A4DEA /* OperationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93867326C4599121D2C89F44 /* OperationButton.swift */; };
 		701DAC2FE19A96287DDE1B5F /* AssignOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71E5175B29F6617FC83D1D7 /* AssignOperation.swift */; };
-		7104B8D4A4C97258B0C8ADA8 /* NSDecimalNumberExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4324D9CBFCE1625FA107DA /* NSDecimalNumberExt.swift */; };
+		7104B8D4A4C97258B0C8ADA8 /* DecimalExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4324D9CBFCE1625FA107DA /* DecimalExt.swift */; };
 		71D30B713869FA70DBFEF915 /* WorldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEAE256C5B715AD60B632BD /* WorldView.swift */; };
 		73FDAE3932C1ABB5C472BF8C /* Mainframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFE2C0CE79AB207827F16D0 /* Mainframe.swift */; };
 		780C053E3BE4125E354E72E4 /* UIColorExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0EAAE5315F028FC37AE692 /* UIColorExt.swift */; };
@@ -106,6 +107,7 @@
 		1D05679B22C4FAFA001DF7B4 /* ExpandArtist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandArtist.swift; sourceTree = "<group>"; };
 		1D05679C22C4FAFA001DF7B4 /* LetterAndFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LetterAndFont.swift; sourceTree = "<group>"; };
 		1D0F58CB1F9A849000AB48A0 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "Launch Screen.storyboard"; path = "Resources/Launch Screen.storyboard"; sourceTree = "<group>"; };
+		1D458A3522C68B7F008F1E04 /* WoodworkingOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WoodworkingOperation.swift; sourceTree = "<group>"; };
 		1D7BFD81433148601E346CEC /* Easing.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Easing.swift; sourceTree = "<group>"; };
 		1E3885DB38F015DE6ACCA142 /* TanOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TanOperation.swift; sourceTree = "<group>"; };
 		1F58AF12B89BF9E641D3A514 /* DivideOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DivideOperation.swift; sourceTree = "<group>"; };
@@ -160,7 +162,7 @@
 		CB2C4B970002C522E2626C80 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		CBFDE6D33B2F436C0270A609 /* AppDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD8A8B74006E0201876DA1F2 /* AddOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AddOperation.swift; sourceTree = "<group>"; };
-		CE4324D9CBFCE1625FA107DA /* NSDecimalNumberExt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NSDecimalNumberExt.swift; sourceTree = "<group>"; };
+		CE4324D9CBFCE1625FA107DA /* DecimalExt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DecimalExt.swift; sourceTree = "<group>"; };
 		D42B5CC00FAD111C74AF9C57 /* ArcCosOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ArcCosOperation.swift; sourceTree = "<group>"; };
 		D7ADB8A48D532538159D5242 /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/SpriteKit.framework; sourceTree = DEVELOPER_DIR; };
 		D9CCBEF8ADDEF01F2A211F0F /* Button.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
@@ -296,7 +298,7 @@
 				7D20F221527DB3EB3CF61B2B /* CGRectExt.swift */,
 				9C0CB9981162F93945D293E2 /* CGSizeExt.swift */,
 				24DF920677164F3A7A5AA414 /* ChevronExt.swift */,
-				CE4324D9CBFCE1625FA107DA /* NSDecimalNumberExt.swift */,
+				CE4324D9CBFCE1625FA107DA /* DecimalExt.swift */,
 				FF31C7B5AE0665127DA11F1E /* NumberExt.swift */,
 				A9A0F452BF4C031C40800851 /* SpriteKit.swift */,
 				595E310D354E117A9C376164 /* StringExt.swift */,
@@ -350,6 +352,7 @@
 			children = (
 				EE070BF96562D65FDC562441 /* NoOperation.swift */,
 				88B1C0780CFEBC58F4920319 /* NumberOperation.swift */,
+				1D458A3522C68B7F008F1E04 /* WoodworkingOperation.swift */,
 			);
 			path = Meta;
 			sourceTree = "<group>";
@@ -524,7 +527,7 @@
 				5AACE0261EBD62616E71F614 /* CGRectExt.swift in Sources */,
 				DD446FA78A949DE2F0A0D3DA /* CGSizeExt.swift in Sources */,
 				5B8753F1DF5E1772D777DC08 /* ChevronExt.swift in Sources */,
-				7104B8D4A4C97258B0C8ADA8 /* NSDecimalNumberExt.swift in Sources */,
+				7104B8D4A4C97258B0C8ADA8 /* DecimalExt.swift in Sources */,
 				1D0567A222C4FAFA001DF7B4 /* ImageArtists.swift in Sources */,
 				F333774C34FF98E1F8C822D9 /* NumberExt.swift in Sources */,
 				40928E68E540F55D888A2F2A /* SpriteKit.swift in Sources */,
@@ -543,6 +546,7 @@
 				C8A708756F0891C4BF02D8BB /* ArcSinOperation.swift in Sources */,
 				F0EB4D81A0C22751288E40F7 /* ArcTanOperation.swift in Sources */,
 				83C36AF984DBE1B1AF1F0922 /* CosOperation.swift in Sources */,
+				1D458A3622C68B7F008F1E04 /* WoodworkingOperation.swift in Sources */,
 				1625B6A9D6C55A9983FEF4AC /* LogOperation.swift in Sources */,
 				CF6264AF52CA8412A95338B7 /* SinOperation.swift in Sources */,
 				08CC1015CC2870384E7BC2BC /* TanOperation.swift in Sources */,
