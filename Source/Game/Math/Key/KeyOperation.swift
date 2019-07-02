@@ -18,8 +18,7 @@ enum KeyCode {
     case dot
     case sign
 
-    case numerator
-    case denominator
+    case swapFraction
 
     // case feet
     // case inches
@@ -65,8 +64,7 @@ struct KeyOperation: OperationValue {
        case .num0:   description = "0"
        case .dot:    description = "."
        case .sign:   description = "+/-"
-       case .numerator:   description = "◤"
-       case .denominator:   description = "◢"
+       case .swapFraction:   description = "▚"
        // case .feet:   description = "ft"
        // case .inches:   description = "in"
        // case .centimeters:   description = "cm"

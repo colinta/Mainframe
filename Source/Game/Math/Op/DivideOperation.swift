@@ -43,6 +43,7 @@ struct DivideOperation: OperationValue {
             let nodeVal = node.calculate(vars: vars, avoidRecursion: avoidRecursion)
             switch nodeVal {
             case .nan, .divZero, .needsInput: return nodeVal
+            case .skip: break
             case let .number(exact):
                 if exact.isZero && !isFirst {
                     return .divZero

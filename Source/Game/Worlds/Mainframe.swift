@@ -34,7 +34,8 @@ class Mainframe: World {
         static var treeOffset: CGFloat = 0
     }
 
-    var remainingScreenSize: CGSize { return CGSize(width: screenSize.width, height: screenSize.height - Size.formulaBgHeight - Size.tabbarHeight) }
+    var remainingScreenSize: CGSize { CGSize(width: screenSize.width, height: screenSize.height - Size.formulaBgHeight - Size.tabbarHeight) }
+    var yCorrection: CGFloat { (Size.tabbarHeight - Size.formulaBgHeight) / 2 }
 
     var outputStyle: OutputStyle = .exact
     let outputCalc = Button()
@@ -58,19 +59,19 @@ class Mainframe: World {
         willSet { willSetCurrentOp(newValue) }
         didSet { didSetCurrentOp(oldValue) }
     }
-    var firstKeyPress = true
+    private var firstKeyPress = true
 
-    let addButton = AddButton()
+    private let addButton = AddButton()
 
-    var selectedPanel: PanelItem?
+    private var selectedPanel: PanelItem?
     let numbersItem = PanelItem()
     let woodworkingItem = PanelItem()
-    var numeratorButton: Button?
-    var denominatorButton: Button?
     let operatorsItem = PanelItem()
     let functionsItem = PanelItem()
     let variablesItem = PanelItem()
-    var panelItems: [PanelItem] { return [numbersItem, woodworkingItem, operatorsItem, functionsItem, variablesItem] }
+    private var panelItems: [PanelItem] { return [numbersItem, woodworkingItem, operatorsItem, functionsItem, variablesItem] }
+    private var swapFractionButton: Button?
+    private var denominatorButton: Button?
 
     required init() {
         super.init()
@@ -86,7 +87,7 @@ class Mainframe: World {
             self.hidePanel()
         }
         treeDrag.onDragged { p1, p2 in
-            self.tree.position += p2 - p1
+            self.tree.position = (self.tree.position + p2 - p1).integral
         }
         treeDrag.on(.tapped) { _ in
             self.currentMathNode = nil
@@ -177,7 +178,7 @@ class Mainframe: World {
             [.key(.num1), .key(.num2), .key(.num3)],
             [.key(.num4), .key(.num5), .key(.num6)],
             [.key(.num7), .key(.num8), .key(.num9)],
-            [.key(.numerator), .key(.num0), .key(.denominator)],
+            [.key(.swapFraction), .key(.num0), .key(.sign)],
             // [.key(.feet), .key(.inches), .key(.centimeters), .key(.millimeters)],
             ])
         createPanel(operatorsItem.panel, buttons: [
@@ -203,7 +204,7 @@ class Mainframe: World {
         currentMathNode = topNode
     }
 
-    func createPanel(_ panel: Node, buttons: [[Operation]]) {
+    private func createPanel(_ panel: Node, buttons: [[Operation]]) {
         let totalHeight: CGFloat = CGFloat(buttons.count) * Size.tabbarHeight
         panel.fixedPosition = .bottom(x: 0, y: Size.tabbarHeight + totalHeight / 2)
         var y = totalHeight / 2 - Size.tabbarHeight / 2
@@ -217,17 +218,16 @@ class Mainframe: World {
                 button.position = CGPoint(x, y)
                 button.onTapped {
                     guard let currentMathNode = self.currentMathNode else { return }
-                    op.tapped(self, currentMathNode: currentMathNode, isResetting: self.firstKeyPress)
+                    let isResetting = self.firstKeyPress
                     self.firstKeyPress = false
+                    op.tapped(self, currentMathNode: currentMathNode, isResetting: isResetting)
                 }
                 panel << button
                 x += buttonWidth
 
                 switch op {
-                case .key(.numerator):
-                    numeratorButton = button
-                case .key(.denominator):
-                    denominatorButton = button
+                case .key(.swapFraction):
+                    swapFractionButton = button
                 default: break
                 }
             }
@@ -243,7 +243,7 @@ class Mainframe: World {
         togglePanel(panel)
     }
 
-    func togglePanel(_ nextPanel: PanelItem, show: Bool? = nil) {
+    private func togglePanel(_ nextPanel: PanelItem, show: Bool? = nil) {
         if show == true && selectedPanel == nextPanel { return }
 
         selectedPanel?.panel.fadeTo(0, duration: 0.3)
@@ -273,7 +273,7 @@ class Mainframe: World {
 
             selectedPanel = nextPanel
 
-            if numbersItem.panel == nextPanel.panel,
+            if numbersItem == nextPanel,
                 let currentMathNode = currentMathNode
             {
                 currentMathNode.editing = .number
@@ -281,14 +281,12 @@ class Mainframe: World {
                     currentMathNode.op = currentMathNode.editingNumberOp
                 }
             }
-            else if woodworkingItem.panel == nextPanel.panel,
+            else if woodworkingItem == nextPanel,
                 let currentMathNode = currentMathNode,
                 currentMathNode.editing == .number
             {
                 currentMathNode.editing = .numerator
-                if currentMathNode.op.isNumber || currentMathNode.op.isNoOp {
-                    currentMathNode.numeratorString = "5"
-                    currentMathNode.denominatorString = "10"
+                if currentMathNode.op.isNumber || currentMathNode.op.isEmptyOp {
                     currentMathNode.op = currentMathNode.editingNumberOp
                 }
             }
@@ -296,6 +294,15 @@ class Mainframe: World {
             updateEditingButtons()
             checkCameraLocation()
         }
+    }
+
+    func showNumbersPanel() {
+        togglePanel(numbersItem, show: true)
+    }
+
+    func showWoodworkingPanel() {
+        togglePanel(woodworkingItem, show: true)
+        updateEditingButtons()
     }
 
     func selectAnyTopNode() {
@@ -339,12 +346,7 @@ class Mainframe: World {
     func willSetCurrentOp(_ newValue: MathNode?) {
         guard currentMathNode != newValue else { return }
 
-        if let currentMathNode = currentMathNode, currentMathNode.op.isSelectedNoOp {
-            currentMathNode.op = .noOp(isSelected: false)
-        }
-
         newValue?.editing = currentMathNode?.editing ?? .number
-        currentMathNode?.editing = .number
 
         let panelButtonsEnabled = newValue != nil
         for panelItem in panelItems {
@@ -359,7 +361,13 @@ class Mainframe: World {
     }
 
     func didSetCurrentOp(_ oldValue: MathNode?) {
-        oldValue?.isClearEnabled = false
+        guard currentMathNode != oldValue else { return }
+
+        if let oldValue = oldValue {
+            oldValue.isClearEnabled = false
+            oldValue.updateMathNodes()
+        }
+
         guard let currentMathNode = currentMathNode else { return }
 
         var topMost: MathNode = currentMathNode
@@ -368,21 +376,28 @@ class Mainframe: World {
         }
         self.topNode = topMost
 
-        if currentMathNode.op.isNoOp {
-            currentMathNode.op = .noOp(isSelected: true)
+        if case .noOp = currentMathNode.op {
+            currentMathNode.setAndSelect(op: .noOp)
             if currentMathNode.editing == .number {
                 togglePanel(numbersItem, show: true)
             }
             else {
+                currentMathNode.editing = .numerator
                 togglePanel(woodworkingItem, show: true)
+                updateEditingButtons()
             }
+            currentMathNode.op = currentMathNode.editingNumberOp
+        }
+        else if case .woodworking = currentMathNode.op, currentMathNode.editing == .denominator {
+            currentMathNode.editing = .numerator
+            updateEditingButtons()
         }
 
         if let panel = currentMathNode.op.panel(mainframe: self) {
             togglePanel(panel, show: true)
         }
 
-        let clearableOp = !currentMathNode.op.isNoOp
+        let clearableOp = !currentMathNode.op.isEmptyOp
         let isTopLevel = currentMathNode.topMostParent == currentMathNode
         currentMathNode.isClearEnabled = clearableOp || isTopLevel && hasManyTopNodes
 
@@ -405,13 +420,27 @@ class Mainframe: World {
         currentMathNode = node
     }
 
+    func shouldResetNumber() {
+        firstKeyPress = true
+    }
+
     func updateEditingButtons() {
         let fgColor = 0xFFFFFF
         let bgColor = 0x0
-        numeratorButton?.backgroundColor = currentMathNode?.editing == .numerator ? fgColor : bgColor
-        denominatorButton?.backgroundColor = currentMathNode?.editing == .denominator ? fgColor : bgColor
-        numeratorButton?.color = currentMathNode?.editing == .numerator ? bgColor : fgColor
-        denominatorButton?.color = currentMathNode?.editing == .denominator ? bgColor : fgColor
+        switch currentMathNode?.editing ?? .number {
+        case .number:
+            swapFractionButton?.text = "▚"
+            swapFractionButton?.backgroundColor = bgColor
+            swapFractionButton?.color = fgColor
+        case .numerator:
+            swapFractionButton?.text = "◤"
+            swapFractionButton?.backgroundColor = fgColor
+            swapFractionButton?.color = bgColor
+        case .denominator:
+            swapFractionButton?.text = "◢"
+            swapFractionButton?.backgroundColor = fgColor
+            swapFractionButton?.color = bgColor
+        }
     }
 
     func checkCameraLocation() {
@@ -478,38 +507,48 @@ class Mainframe: World {
         for node in topNodes {
             let nodeRect = CGRect(center: tree.convertPosition(node), size: node.calculateAccumulatedFrame().size)
             if let prevExtents = extents {
-                extents = prevExtents.union(nodeRect)
+                extents = prevExtents.union(nodeRect).integral
             }
             else {
-                extents = nodeRect
+                extents = nodeRect.integral
             }
         }
 
         if let extents = extents {
-            let insets: CGFloat = 10
+            for node in topNodes {
+                //let nodeRect = CGRect(center: tree.convertPosition(node), size: node.calculateAccumulatedFrame().size)
+                node.moveTo(node.position - extents.center, duration: 0.2)
+            }
+            tree.moveTo(CGPoint(y: yCorrection), duration: 0.2)
 
-            let yCorrection = (Size.tabbarHeight - Size.formulaBgHeight) / 2
+            let insets: CGFloat = 10
             let scaleX = (remainingScreenSize.width - insets) / extents.width
             let scaleY = (remainingScreenSize.height - insets) / extents.height
             let scale = min(1, scaleX, scaleY)
-            let treePosition = CGPoint(x: -extents.center.x * scale, y: -extents.center.y * scale + yCorrection)
             tree.scaleTo(scale, duration: 0.2)
-            tree.moveTo(treePosition, duration: 0.2)
 
             if scale < 1 {
-                let zoomButton = Node()
+                let zoomButton = Button()
+
                 let touchableComponent = TouchableComponent()
                 touchableComponent.on(.upInside) { location in
                     self.tree.scaleTo(1, duration: 0.2)
                     self.tree.moveTo(CGPoint(x: -location.x / scale, y: -location.y / scale), duration: 0.2)
-                    zoomButton.removeFromParent()
+                    zoomButton.fadeTo(0, duration: 0.2, removeNode: true)
                 }
                 touchableComponent.containsTouchTest = TouchableComponent.defaultTouchTest()
                 zoomButton.addComponent(touchableComponent)
                 zoomButton.size = CGSize(width: remainingScreenSize.width, height: remainingScreenSize.height)
                 zoomButton.z = .top
                 zoomButton.position.y = yCorrection
+
+                let overlay = SKSpriteNode()
+                overlay.textureId(.fillColorBox(size: zoomButton.size, color: 0xFFFFFF))
+                overlay.alpha = 0.25
+                zoomButton << overlay
+
                 self << zoomButton
+                zoomButton.fadeTo(1, start: 0, duration: 0.2)
             }
         }
     }
@@ -518,21 +557,20 @@ class Mainframe: World {
          repositionTopNodes()
     }
 
-    func repositionTopNodes() {
-        let yCorrection = (Size.tabbarHeight - Size.formulaBgHeight) / 2
-        let totalWidth = (topNodes.reduce(CGFloat(0)) { memo, node in
+    private func repositionTopNodes() {
+        let totalSize = (topNodes.reduce(CGSize.zero) { memo, node in
             let nodeSize = node.calculateAccumulatedFrame().size
-            return memo + nodeSize.width
-        }) + CGFloat(topNodes.count - 1) * Size.newNodeSpacing
+            return CGSize(memo.width + nodeSize.width, max(memo.height, nodeSize.height))
+        }) + CGSize(width: CGFloat(topNodes.count - 1) * Size.newNodeSpacing)
 
-        var centerX = -totalWidth / 2
+        var centerX = -totalSize.width / 2
         let sortedNodes = topNodes.sorted { a, b in
             return a.position.x < b.position.x
         }
         for node in sortedNodes {
             let nodeSize = node.calculateAccumulatedFrame().size
             centerX += nodeSize.width / 2
-            node.moveTo(CGPoint(x: centerX), duration: 0.3)
+            node.moveTo(CGPoint(x: centerX, y: 0), duration: 0.3)
             centerX += nodeSize.width / 2 + Size.newNodeSpacing
         }
 
@@ -549,7 +587,7 @@ protocol VariableLookup {
 extension Mainframe: VariableLookup {
     func valueForVariable(_ name: String, avoidRecursion: [String]) -> OperationResult {
         for child in tree.children {
-            guard let child = child as? MathNode, child.op.isVariable(name) else { continue }
+            guard let child = child as? MathNode, child.op.isVariableAssignment(name) else { continue }
             if avoidRecursion.contains(name) {
                 return .needsInput
             }

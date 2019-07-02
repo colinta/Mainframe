@@ -18,6 +18,7 @@ class MathNode: Node {
     var numeratorString = ""
     var denominatorString = ""
 
+    var editingSign: Sign = .positive
     var editing: Editing = .number
     var editingString: String {
         get {
@@ -37,18 +38,32 @@ class MathNode: Node {
     }
     var editingNumberOp: Operation {
         if editing == .numerator || editing == .denominator || !numeratorString.isEmpty || !denominatorString.isEmpty {
-            return .woodworking(number: numberString, numerator: numeratorString, denominator: denominatorString)
+            return .woodworking(sign: editingSign, number: numberString, numerator: numeratorString, denominator: denominatorString)
+        }
+        else if !numberString.isEmpty || editingSign == .negative {
+            return .number(editingSign, numberString)
         }
         else {
-            return .number(numberString)
+            return .noOp
         }
     }
 
-    private var prevOp: Operation = .noOp(isSelected: false)
-    var op: Operation = .noOp(isSelected: false) {
-        willSet { prevOp = op }
-        didSet { updateMathNodes(select: true) }
+    private var prevOp: Operation = .noOp
+    private var _op: Operation = .noOp
+    var op: Operation {
+        get { _op }
+        set {
+            prevOp = _op
+            _op = newValue
+            updateMathNodes()
+        }
     }
+    func setAndSelect(op newValue: Operation) {
+        prevOp = _op
+        _op = newValue
+        updateMathNodes(select: true)
+    }
+
     var topMostParent: MathNode {
         var retval = self
         while let parent = retval.parent as? MathNode {
@@ -60,7 +75,7 @@ class MathNode: Node {
             $0 is MathNode
         } as! [MathNode]
     }
-    var activeMathChildren: [MathNode] { return mathChildren.filter { $0.active && !$0.op.isNoOp } }
+    var activeMathChildren: [MathNode] { return mathChildren.filter { $0.active && !$0.op.isEmptyOp } }
     var parentLine = SKSpriteNode()
     var dragLine = SKSpriteNode()
     var dragParent: MathNode? {
@@ -179,7 +194,7 @@ class MathNode: Node {
         clearButton.onTapped {
             guard let mainframe = self.mainframe else { return }
 
-            if self.op.isNoOp && self.topMostParent == self && mainframe.hasManyTopNodes {
+            if self.op.isEmptyOp && self.topMostParent == self && mainframe.hasManyTopNodes {
                 self.removeFromParent()
                 mainframe.selectAnyTopNode()
                 return
@@ -193,7 +208,8 @@ class MathNode: Node {
             }
 
             self._isClearEnabled = false
-            self.op = mainframe.currentMathNode == self ? .noOp(isSelected: true) : .noOp(isSelected: false)
+            self.editing = .number
+            self.op = .noOp
         }
 
         updateSize([])
@@ -201,11 +217,11 @@ class MathNode: Node {
 
     override func insertChild(_ node: SKNode, at index: Int) {
         var newIndex = index
-        if let node = node as? MathNode, index == children.count && !node.op.isNoOp
+        if let node = node as? MathNode, index == children.count && !node.op.isEmptyOp
         {
             newIndex = 0
             for (childIndex, child) in children.enumerated() {
-                if let child = child as? MathNode, !child.op.isNoOp {
+                if let child = child as? MathNode, !child.op.isEmptyOp {
                     newIndex = childIndex + 1
                 }
             }
@@ -230,21 +246,28 @@ class MathNode: Node {
         return op.calculate(activeMathChildren, vars: vars, avoidRecursion: avoidRecursion)
     }
 
-    private func updateMathNodes(select: Bool = false) {
+    func updateMathNodes(select: Bool = false) {
+        let isCurrentOp = mainframe?.currentMathNode == self
+        let childIsCurrentOp = isCurrentOp || mainframe?.currentMathNode?.parent == self
+
         switch op {
-        case let .noOp(isSelected):
+        case .noOp:
             button.text = ""
-            button.style = .squareSized(isSelected ? 50 : 25)
+            button.style = .squareSized(isCurrentOp ? 50 : 25)
         case .number, .woodworking:
-            button.text = op.description
-            button.style = .rectToFit
+            let text: String
+            if isCurrentOp {
+                text = op.description(editing: editing)
+            }
+            else {
+                text = op.description
+            }
+            button.text = text
+            button.style = text.isEmpty ? .squareSized(isCurrentOp ? 50 : 25) : .rectToFit
         default:
             button.text = op.treeDescription
             button.style = .rectToFit
         }
-
-        let isCurrentOp = mainframe?.currentMathNode == self
-        let childIsCurrentOp = isCurrentOp || mainframe?.currentMathNode?.parent == self
 
         button.textScale = isCurrentOp ? 1.5 : 1
         clearButton.position = CGPoint(x: button.size.width / 2 + 5 + clearButton.size.width / 2)
@@ -258,38 +281,38 @@ class MathNode: Node {
                     let node = generateNode(usePrev: true)
                     self << node
                     visibleNodes << node
-                    if node.op.isNoOp && selectNode == nil {
+                    if node.op.isEmptyOp && selectNode == nil {
                         selectNode = node
                     }
                 }
             }
         }
 
-        if !op.isNoOp {
+        if !op.isEmptyOp {
             if let maxCount = op.maxChildNodes {
                 if mathChildren.count > maxCount {
                     for node in mathChildren[maxCount..<mathChildren.count] {
-                        node.fadeTo(0, duration: 0.3, removeNode: node.op.isNoOp)
+                        node.fadeTo(0, duration: 0.3, removeNode: node.op.isEmptyOp)
                         node.active = false
                     }
                 }
                 visibleNodes = Array(mathChildren[0..<maxCount])
             }
-            else if childIsCurrentOp && mathChildren.all({ !$0.op.isNoOp }) {
+            else if childIsCurrentOp && mathChildren.all({ !$0.op.isEmptyOp }) {
                 let node = generateNode(usePrev: false)
                 self << node
                 visibleNodes << node
-                if node.op.isNoOp && selectNode == nil {
+                if node.op.isEmptyOp && selectNode == nil {
                     selectNode = node
                 }
             }
             else if !childIsCurrentOp {
                 for node in visibleNodes {
-                    guard node.op.isNoOp else { continue }
+                    guard node.op.isEmptyOp else { continue }
                     node.fadeTo(0, duration: 0.3, removeNode: true)
                     node.active = false
                 }
-                visibleNodes = visibleNodes.filter { !$0.op.isNoOp }
+                visibleNodes = visibleNodes.filter { !$0.op.isEmptyOp }
             }
         }
 
@@ -325,8 +348,7 @@ class MathNode: Node {
             handler()
         }
 
-        if let selectNode = selectNode, isCurrentOp && select
-        {
+        if let selectNode = selectNode, isCurrentOp && select {
             mainframe?.currentMathNode = selectNode
         }
     }
@@ -354,7 +376,7 @@ class MathNode: Node {
             default: break
             }
         }
-        prevOp = .noOp(isSelected: false)
+        prevOp = .noOp
         numberString = ""
         return node
     }

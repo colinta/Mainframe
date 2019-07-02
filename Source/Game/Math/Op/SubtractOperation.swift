@@ -27,7 +27,7 @@ struct SubtractOperation: OperationValue {
     }
 
     func calculate(_ nodes: [MathNode], vars: VariableLookup, avoidRecursion: [String]) -> OperationResult {
-        var isFirst = false
+        var isFirst = true
         return OperationResult.reduce(nodes.lazy.map { $0.calculate(vars: vars, avoidRecursion: avoidRecursion) }) { result, exact in
             if isFirst {
                 isFirst = false

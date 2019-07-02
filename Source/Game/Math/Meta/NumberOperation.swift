@@ -28,6 +28,6 @@ struct NumberOperation: OperationValue {
         if let number = number {
             return .number(ExactNumber(whole: number))
         }
-        return .needsInput
+        return .skip
     }
 }

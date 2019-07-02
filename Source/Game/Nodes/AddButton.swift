@@ -14,7 +14,7 @@ class AddButton: Button {
         borderColor = 0xffffff
 
         newNode.alpha = 0
-        newNode.op = .noOp(isSelected: true)
+        newNode.op = .noOp
         self << newNode
 
         let defaultOffset = CGPoint(x: 60, y: -10)

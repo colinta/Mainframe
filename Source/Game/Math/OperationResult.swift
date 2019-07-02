@@ -6,6 +6,7 @@ enum OperationResult: CustomStringConvertible {
     case nan
     case divZero
     case needsInput
+    case skip
     case number(ExactNumber)
 
     static func map2(_ lhsVal: OperationResult, _ rhsVal: OperationResult,
@@ -22,6 +23,7 @@ enum OperationResult: CustomStringConvertible {
         switch (lhsVal, rhsVal) {
         case (.nan, _), (.divZero, _), (.needsInput, _): return lhsVal
         case (_, .nan), (_, .divZero), (_, .needsInput): return rhsVal
+        case (.skip, _), (_, .skip): return .needsInput
         case let (.number(lhsExact), .number(rhsExact)):
             let result = fn(lhsExact, rhsExact)
             return .checkNaN(result)
@@ -37,6 +39,7 @@ enum OperationResult: CustomStringConvertible {
         for value in values {
             switch value {
             case .nan, .divZero, .needsInput: return value
+            case .skip: break
             case let .number(exact):
                 result = fn(result, exact)
             }
@@ -55,6 +58,8 @@ enum OperationResult: CustomStringConvertible {
         switch self {
         case .nan, .divZero, .needsInput:
             return self
+        case .skip:
+            return .needsInput
         case let .number(exact):
             let result = fn(exact)
             return .checkNaN(result)
@@ -69,8 +74,17 @@ enum OperationResult: CustomStringConvertible {
     }
 
     private func numDesc(_ num: Decimal, _ fraction: (Int, Int)? = nil) -> String {
-        if let (numerator, denominator) = fraction {
-            return "\(numDesc(num)) \(numerator)/\(denominator)"
+        if let (numerator, denominator) = fraction, numerator != 0 {
+            let numberDesc = numDesc(num)
+            if numberDesc.isEmpty || numberDesc == "0" {
+                return "\(numerator)/\(denominator)"
+            }
+            else if num < 0 && numerator < 0 {
+                return "\(numberDesc) \(-numerator)/\(denominator)"
+            }
+            else {
+                return "\(numberDesc) \(numerator)/\(denominator)"
+            }
         }
 
         if num > 100_000_000 {
@@ -97,12 +111,10 @@ enum OperationResult: CustomStringConvertible {
             return exactDescription(useTau: useTau)
         case .number:
             switch self {
-            case .nan, .divZero, .needsInput: return description
+            case .nan, .divZero, .needsInput, .skip: return description
             case let .number(exact):
                 return exact.toDecimal.description
             }
-        case .woodworking:
-            return describe(style: .number, useTau: useTau)
         }
     }
 
@@ -110,7 +122,7 @@ enum OperationResult: CustomStringConvertible {
         switch self {
         case .nan: return "NaN"
         case .divZero: return "◻/0!"
-        case .needsInput: return "..."
+        case .needsInput, .skip: return "..."
         case let .number(exact):
             if exact.pi == 0 {
                 return numDesc(exact.whole, exact.fraction)

@@ -11,7 +11,7 @@ class OperationButton: Button {
     }
 
     convenience required init() {
-        self.init(op: .noOp(isSelected: false))
+        self.init(op: .noOp)
     }
 
     required init?(coder: NSCoder) {

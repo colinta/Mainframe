@@ -24,6 +24,10 @@ extension CGPoint {
         self.init(x: r * cos(a), y: r * sin(a))
     }
 
+    var integral: CGPoint {
+        CGPoint(x: x.rounded(), y: y.rounded())
+    }
+
     var length: CGFloat {
         return CGFloat(sqrt(pow(self.x, 2) + pow(self.y, 2)))
     }

@@ -9,6 +9,10 @@ extension Decimal {
         return (self as NSDecimalNumber).intValue
     }
 
+    var sign: Int {
+        return self < 0 ? -1 : 1
+    }
+
     var timesPi: Decimal {
         return Decimal.pi(times: self)
     }

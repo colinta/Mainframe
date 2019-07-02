@@ -6,26 +6,21 @@ enum Operation {
     case nextBlankOp
     case key(KeyCode)
 
-    case number(String)
-    case woodworking(number: String, numerator: String, denominator: String)
+    case number(Sign, String)
+    case woodworking(sign: Sign, number: String, numerator: String, denominator: String)
     case variable(String)
     case assign(String)
 
     case `operator`(OperationValue)
     case function(OperationValue)
 
-    case noOp(isSelected: Bool)
+    case noOp
 
-    var isNoOp: Bool {
+    var isEmptyOp: Bool {
         switch self {
         case .noOp: return true
-        default: return false
-        }
-    }
-
-    var isSelectedNoOp: Bool {
-        switch self {
-        case let .noOp(isSelected): return isSelected
+        case let .number(_, num): return num.isEmpty
+        case let .woodworking(_, num, numer, denom): return num.isEmpty && numer.isEmpty && denom.isEmpty
         default: return false
         }
     }
@@ -37,7 +32,7 @@ enum Operation {
         }
     }
 
-    func isVariable(_ name: String) -> Bool {
+    func isVariableAssignment(_ name: String) -> Bool {
         switch self {
         case let .assign(varName):
             return name == varName
@@ -48,12 +43,17 @@ enum Operation {
 
     func compatible(mainframe: Mainframe) -> Bool {
         switch self {
-        case .assign:
+        case let .assign(name):
+            for node in mainframe.topNodes {
+                if node.op.isVariableAssignment(name) {
+                    return false
+                }
+            }
             return mainframe.currentMathNode == mainframe.topNode
         case let .variable(name):
             if var ancestor = mainframe.currentMathNode {
                 while let parent = ancestor.parent as? MathNode {
-                    if parent.op.isVariable(name) { return false }
+                    if parent.op.isVariableAssignment(name) { return false }
                     ancestor = parent
                 }
             }
@@ -86,8 +86,8 @@ extension Operation {
         switch self {
         case let .key(key):      return KeyOperation(op: key)
         case .nextBlankOp:       return NextOperation()
-        case let .number(num):   return NumberOperation(num)
-        case let .woodworking(number, numerator, denominator): return WoodworkingOperation(number, numerator: numerator, denominator: denominator)
+        case let .number(sign, num):   return NumberOperation(sign * num)
+        case let .woodworking(sign, number, numerator, denominator): return WoodworkingOperation(sign, number, numerator: numerator, denominator: denominator)
         case let .variable(num): return VariableOperation(num)
         case let .assign(num):   return AssignOperation(num)
         case let .operator(op):  return op
@@ -105,11 +105,14 @@ extension Operation: OperationValue {
     var maxChildNodes: Int? { return opValue.maxChildNodes }
     var description: String { return opValue.description }
     var treeDescription: String { return opValue.treeDescription }
+    func description(editing: MathNode.Editing) -> String {
+        opValue.description(editing: editing)
+    }
 }
 
 extension Operation {
     private func findNextOp(_ currentMathNode: MathNode, mainframe: Mainframe, checkParent: Bool = true, skip: MathNode? = nil) -> MathNode? {
-        if currentMathNode.op.isNoOp && currentMathNode != skip {
+        if currentMathNode.op.isEmptyOp && currentMathNode != skip {
             return currentMathNode
         }
 
@@ -129,7 +132,19 @@ extension Operation {
     func tapped(_ mainframe: Mainframe, currentMathNode: MathNode, isResetting: Bool) {
         switch self {
         case .nextBlankOp:
-            mainframe.currentMathNode = findNextOp(currentMathNode, mainframe: mainframe, skip: currentMathNode)
+            let nextNode = findNextOp(currentMathNode, mainframe: mainframe, skip: currentMathNode)
+            mainframe.currentMathNode = nextNode
+            if let nextNode = nextNode {
+                if currentMathNode.editing == .number {
+                    nextNode.editing = .number
+                    mainframe.showNumbersPanel()
+                }
+                else {
+                    nextNode.editing = .numerator
+                    mainframe.showWoodworkingPanel()
+                }
+                nextNode.op = nextNode.editingNumberOp
+            }
             mainframe.checkCameraLocation()
         case .variable:
             let copyNumber: Bool
@@ -161,30 +176,58 @@ extension Operation {
             }
         case let .key(keyCode):
             switch keyCode {
-            case .numerator:
-                currentMathNode.editing = .numerator
-                mainframe.updateEditingButtons()
-            case .denominator:
-                currentMathNode.editing = .denominator
-                mainframe.updateEditingButtons()
-            case .delete:
-                var string = currentMathNode.numberString
-                if !string.isEmpty {
-                    string = String(string[string.startIndex..<string.index(before: string.endIndex)])
-                }
-                currentMathNode.numberString = string
-                if string == "" {
-                    currentMathNode.op = .noOp(isSelected: true)
+            case .swapFraction:
+                if currentMathNode.editing == .numerator {
+                    currentMathNode.editing = .denominator
                 }
                 else {
-                    currentMathNode.op = currentMathNode.editingNumberOp
+                    currentMathNode.editing = .numerator
                 }
+                mainframe.updateEditingButtons()
+                mainframe.shouldResetNumber()
+                currentMathNode.op = currentMathNode.editingNumberOp
+            case .delete:
+                var string = currentMathNode.editingString
+                if !string.isEmpty {
+                    string = string.removeFirst()
+                }
+                else if currentMathNode.editing == .number && currentMathNode.editingSign == .negative {
+                    currentMathNode.editingSign = .positive
+                }
+                currentMathNode.editingString = string
+                currentMathNode.op = currentMathNode.editingNumberOp
             case .clear:
-                currentMathNode.numberString = ""
-                currentMathNode.numeratorString = ""
-                currentMathNode.denominatorString = ""
-                currentMathNode.op = .noOp(isSelected: true)
+                if currentMathNode.editing == .number {
+                    if currentMathNode.numberString.isEmpty {
+                        currentMathNode.numeratorString = ""
+                        currentMathNode.denominatorString = ""
+                    }
+                    currentMathNode.numberString = ""
+                    if currentMathNode.numeratorString.isEmpty && currentMathNode.denominatorString.isEmpty {
+                        currentMathNode.editingSign = .positive
+                        currentMathNode.op = .noOp
+                    }
+                    else {
+                        currentMathNode.op = currentMathNode.editingNumberOp
+                    }
+                }
+                else if (currentMathNode.editing == .numerator || currentMathNode.editing == .denominator) && (!currentMathNode.numeratorString.isEmpty || !currentMathNode.denominatorString.isEmpty) {
+                    currentMathNode.numeratorString = ""
+                    currentMathNode.denominatorString = ""
+                    currentMathNode.editing = .numerator
+                    currentMathNode.op = currentMathNode.editingNumberOp
+                    mainframe.updateEditingButtons()
+                }
+                else {
+                    currentMathNode.editing = .number
+                    currentMathNode.numeratorString = ""
+                    currentMathNode.denominatorString = ""
+                    currentMathNode.op = currentMathNode.editingNumberOp
+                    mainframe.showNumbersPanel()
+                }
             case .dot:
+                guard currentMathNode.editing == .number else { return }
+
                 if isResetting {
                     currentMathNode.numberString = "0."
                     currentMathNode.op = currentMathNode.editingNumberOp
@@ -193,33 +236,9 @@ extension Operation {
                     var string = currentMathNode.numberString
                     if !string.contains(".") {
                         string += keyCode.string
-                        if string == "-." {
-                            string = "-0."
+                        if string == "." {
+                            string = "0."
                         }
-                    }
-                    currentMathNode.numberString = string
-                    currentMathNode.op = currentMathNode.editingNumberOp
-                }
-            case .num1, .num2, .num3, .num4, .num5,
-                 .num6, .num7, .num8, .num9, .num0:
-                if isResetting {
-                    currentMathNode.numberString = keyCode.string
-                    currentMathNode.op = currentMathNode.editingNumberOp
-                }
-                else {
-                    var string = currentMathNode.numberString
-                    while string.hasPrefix("0") {
-                        string = string.removeFirst()
-                    }
-                    while string.hasPrefix("-0") {
-                        string = "-" + string.removeFirst().removeFirst()
-                    }
-                    string += keyCode.string
-                    if string.hasPrefix(".") {
-                        string = "0" + string
-                    }
-                    else if string.hasPrefix("-.") {
-                        string = "-0" + string.removeFirst()
                     }
                     currentMathNode.numberString = string
                     currentMathNode.op = currentMathNode.editingNumberOp
@@ -237,24 +256,34 @@ extension Operation {
                 else if case .variable("-τ") = currentMathNode.op {
                     currentMathNode.op = .variable("τ")
                 }
-
-                var string = currentMathNode.numberString
-                if !string.isEmpty {
-                    if string.hasPrefix("-") {
-                        string = string.removeFirst()
-                    }
-                    else if string.hasPrefix(".") {
-                        string = "-0" + string
-                    }
-                    else {
-                        string = "-" + string
-                    }
-                    currentMathNode.numberString = string
+                else {
+                    currentMathNode.editingSign = -currentMathNode.editingSign
                     currentMathNode.op = currentMathNode.editingNumberOp
                 }
+            case .num1, .num2, .num3, .num4, .num5,
+                 .num6, .num7, .num8, .num9, .num0:
+                if isResetting {
+                    currentMathNode.editingString = keyCode.string
+                    currentMathNode.op = currentMathNode.editingNumberOp
+                }
+                else {
+                    var string = currentMathNode.editingString
+                    while string.hasPrefix("0") {
+                        string = string.removeFirst()
+                    }
+                    string += keyCode.string
+                    if string.hasPrefix(".") {
+                        string = "0" + string
+                    }
+                    currentMathNode.editingString = string
+                    currentMathNode.op = currentMathNode.editingNumberOp
             }
+                }
         default:
-            currentMathNode.op = self
+            currentMathNode.setAndSelect(op: self)
+            if mainframe.currentMathNode != currentMathNode {
+                mainframe.showNumbersPanel()
+            }
         }
     }
 }

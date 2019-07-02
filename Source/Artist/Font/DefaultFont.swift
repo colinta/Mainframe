@@ -816,6 +816,23 @@ let l88 = Letter(style: .fill, size: defaultSize, points: [[
         CGPoint(x: 4-2, y: 6-2),
         CGPoint(x: 4, y: 6-2),
     ]])
+// "▚" - swap editing numerator / denominator
+let l89 = Letter(style: .fill, size: defaultSize, points: [[
+    CGPoint(x: 3.75, y: -0.25),
+    CGPoint(x: -0.25, y: 5.75),
+    CGPoint(x: 0, y: 6),
+    CGPoint(x: 4, y: 0),
+    ], [
+        CGPoint(x: 0, y: 0),
+        CGPoint(x: 2, y: 0),
+        CGPoint(x: 2, y: 2),
+        CGPoint(x: 0, y: 2),
+    ], [
+        CGPoint(x: 4, y: 6),
+        CGPoint(x: 4-2, y: 6),
+        CGPoint(x: 4-2, y: 6-2),
+        CGPoint(x: 4, y: 6-2),
+    ]])
 
 let DefaultFont = Font(
     stroke: 0.5,
@@ -911,4 +928,5 @@ let DefaultFont = Font(
     "ⁿ": l86,
     "◤": l87,
     "◢": l88,
+    "▚": l89,
 ])
