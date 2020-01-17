@@ -31,6 +31,7 @@
 		1D5322D722CA7EA400CC1377 /* ExactNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D5322D522CA7EA400CC1377 /* ExactNumber.swift */; };
 		1D5322D822CA7EA400CC1377 /* OutputStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D5322D622CA7EA400CC1377 /* OutputStyle.swift */; };
 		1D5322DA22CBB78F00CC1377 /* Sign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D5322D922CBB78E00CC1377 /* Sign.swift */; };
+		1DCF9C6722D8DD4D009289C6 /* SquaredOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DCF9C6622D8DD4D009289C6 /* SquaredOperation.swift */; };
 		206DC25A72CECF5D670618E5 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93474894F34CE8463FA53F54 /* Component.swift */; };
 		211E6E89716C020F15327473 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = E889A19284B55A8D974AF14D /* Node.swift */; };
 		2DC86B229F079604829A182B /* KeyOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCAE6E1D20941E3629BB7B3 /* KeyOperation.swift */; };
@@ -115,6 +116,7 @@
 		1D5322D622CA7EA400CC1377 /* OutputStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutputStyle.swift; sourceTree = "<group>"; };
 		1D5322D922CBB78E00CC1377 /* Sign.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sign.swift; sourceTree = "<group>"; };
 		1D7BFD81433148601E346CEC /* Easing.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Easing.swift; sourceTree = "<group>"; };
+		1DCF9C6622D8DD4D009289C6 /* SquaredOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SquaredOperation.swift; sourceTree = "<group>"; };
 		1E3885DB38F015DE6ACCA142 /* TanOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TanOperation.swift; sourceTree = "<group>"; };
 		1F58AF12B89BF9E641D3A514 /* DivideOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DivideOperation.swift; sourceTree = "<group>"; };
 		22BBECC64D1D5C22AAE0550C /* ScaleToComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ScaleToComponent.swift; sourceTree = "<group>"; };
@@ -319,12 +321,13 @@
 		9AD60655D7156D70DB7F6D3F /* Op */ = {
 			isa = PBXGroup;
 			children = (
-				1D05678F22C4FAC5001DF7B4 /* NRootOperation.swift */,
 				CD8A8B74006E0201876DA1F2 /* AddOperation.swift */,
 				1F58AF12B89BF9E641D3A514 /* DivideOperation.swift */,
 				1D05678D22C41059001DF7B4 /* ExponentOperation.swift */,
 				E846127BD008459329645C04 /* FactorialOperation.swift */,
 				2AE492BAE6B3256DB5AE4097 /* MultiplyOperation.swift */,
+				1D05678F22C4FAC5001DF7B4 /* NRootOperation.swift */,
+				1DCF9C6622D8DD4D009289C6 /* SquaredOperation.swift */,
 				89EC8FFEA79297D729D5E7B2 /* SquareRootOperation.swift */,
 				A6EFE3C28339775C0BBB3E8D /* SubtractOperation.swift */,
 			);
@@ -548,6 +551,7 @@
 				EAC2508AFB22DF9765716351 /* MoveToComponent.swift in Sources */,
 				8A3197FB92525A16BA4307A8 /* ScaleToComponent.swift in Sources */,
 				1D0567A622C4FAFA001DF7B4 /* LetterAndFont.swift in Sources */,
+				1DCF9C6722D8DD4D009289C6 /* SquaredOperation.swift in Sources */,
 				1D05679E22C4FAFA001DF7B4 /* TextArtist.swift in Sources */,
 				1D5322D722CA7EA400CC1377 /* ExactNumber.swift in Sources */,
 				5A011BC7DF26C97C9D4A0444 /* SelectableComponent.swift in Sources */,

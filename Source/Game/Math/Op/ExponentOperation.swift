@@ -10,7 +10,13 @@ struct ExponentOperation: OperationValue {
 
     func formula(_ nodes: [MathNode], isTop: Bool) -> String {
         if let node1 = nodes.safe(0), let node2 = nodes.safe(1) {
-            return "(\(node1.formula(isTop: true)))^(\(node2.formula(isTop: true)))"
+            let node2formula = node2.formula(isTop: true)
+            switch node2formula {
+            case "2":
+                return "(\(node1.formula(isTop: true)))²"
+            default:
+                return "(\(node1.formula(isTop: true)))^(\(node2formula))"
+            }
         }
         if let node1 = nodes.safe(0), nodes.count == 1 {
             return "(\(node1.formula(isTop: true)))▝"

@@ -183,7 +183,7 @@ class Mainframe: World {
             ])
         createPanel(operatorsItem.panel, buttons: [
             [.operator(AddOperation()), .operator(SubtractOperation()), .operator(DivideOperation()), .operator(MultiplyOperation())],
-            [.operator(SquareRootOperation()), .operator(NRootOperation()), .operator(ExponentOperation()), .operator(FactorialOperation())],
+            [.operator(SquareRootOperation()), .operator(SquaredOperation()), .operator(NRootOperation()), .operator(ExponentOperation()), .operator(FactorialOperation())],
         ])
         createPanel(functionsItem.panel, buttons: [
             [.function(LogOperation()), .function(LnOperation()), .function(LogNOperation())],
